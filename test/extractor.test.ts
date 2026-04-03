@@ -1,9 +1,9 @@
-import fs from "node:fs";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 
-type SemanticCollectorCandidate = {
+type CssExtractorCandidate = {
 	kind: "declaration";
 	propertyName: string;
 	valueText: string;
@@ -13,33 +13,33 @@ type SemanticCollectorCandidate = {
 	};
 };
 
-type SemanticCollector = {
-	collectCandidates(sourceText: string): SemanticCollectorCandidate[];
+type CssExtractor = {
+	collectCandidates(sourceText: string): CssExtractorCandidate[];
 };
 
-const fixturesRoot = path.resolve(__dirname, "..", "..", "fixtures");
+const fixturesRoot = path.resolve(__dirname, "..", "..");
 
-function createSemanticCollector(): SemanticCollector {
-	const { createSemanticCollector: factory } = require("../src/semanticCollector.js") as {
-		createSemanticCollector: () => SemanticCollector;
+function createExtractor(): CssExtractor {
+	const { createCssExtractor: factory } = require("../src/extractor.js") as {
+		createCssExtractor: () => CssExtractor;
 	};
 
 	return factory();
 }
 
 function loadFixture(relativePath: string): string {
-	return fs.readFileSync(path.join(fixturesRoot, relativePath), "utf8");
+	return fs.readFileSync(path.join(fixturesRoot, "fixtures", relativePath), "utf8");
 }
 
-function hasCandidate(candidates: SemanticCollectorCandidate[], propertyName: string, valueText: string): boolean {
+function hasCandidate(candidates: CssExtractorCandidate[], propertyName: string, valueText: string): boolean {
 	return candidates.some((candidate) => candidate.propertyName === propertyName && candidate.valueText === valueText);
 }
 
-test("semantic collector gathers declaration candidates from the flex sample", () => {
-	const collector = createSemanticCollector();
+test("extractor gathers declaration candidates from the flex sample", () => {
+	const extractor = createExtractor();
 	const sourceText = loadFixture("flex.style.css");
 
-	const candidates = collector.collectCandidates(sourceText);
+	const candidates = extractor.collectCandidates(sourceText);
 
 	assert.ok(hasCandidate(candidates, "margin", "2px"));
 	assert.ok(hasCandidate(candidates, "padding", "2px"));
@@ -51,11 +51,11 @@ test("semantic collector gathers declaration candidates from the flex sample", (
 	);
 });
 
-test("semantic collector keeps declarations inside at-rules from the button hover sample", () => {
-	const collector = createSemanticCollector();
+test("extractor keeps declarations inside at-rules from the button hover sample", () => {
+	const extractor = createExtractor();
 	const sourceText = loadFixture("button-hover.style2.css");
 
-	const candidates = collector.collectCandidates(sourceText);
+	const candidates = extractor.collectCandidates(sourceText);
 
 	assert.ok(hasCandidate(candidates, "display", "flex"));
 	assert.ok(hasCandidate(candidates, "padding", "15px 30px"));
@@ -63,22 +63,22 @@ test("semantic collector keeps declarations inside at-rules from the button hove
 	assert.ok(candidates.every((candidate) => !candidate.propertyName.startsWith("@")));
 });
 
-test("semantic collector preserves shorthand value token order from the flex sample", () => {
-	const collector = createSemanticCollector();
+test("extractor preserves shorthand value token order from the flex sample", () => {
+	const extractor = createExtractor();
 	const sourceText = loadFixture("flex.style.css");
 
-	const candidates = collector.collectCandidates(sourceText);
+	const candidates = extractor.collectCandidates(sourceText);
 
 	assert.ok(hasCandidate(candidates, "margin", "2px"));
 	assert.ok(hasCandidate(candidates, "padding", "2px"));
 	assert.ok(hasCandidate(candidates, "transform", "scale(1.3)"));
 });
 
-test("semantic collector keeps variable references as raw candidates from the notes sample", () => {
-	const collector = createSemanticCollector();
+test("extractor keeps variable references as raw candidates from the notes sample", () => {
+	const extractor = createExtractor();
 	const sourceText = loadFixture("Notes.css");
 
-	const candidates = collector.collectCandidates(sourceText);
+	const candidates = extractor.collectCandidates(sourceText);
 
 	assert.ok(hasCandidate(candidates, "gap", "var(--gap)"));
 	assert.ok(hasCandidate(candidates, "flex", "1 1 var(--min)"));

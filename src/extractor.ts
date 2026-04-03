@@ -1,15 +1,15 @@
 import { getCSSLanguageService, TextDocument } from "vscode-css-languageservice";
 import type { Range } from "vscode-languageserver";
 
-export type SemanticCollectorCandidate = {
+export type CssExtractorCandidate = {
 	kind: "declaration";
 	propertyName: string;
 	valueText: string;
 	range: Range;
 };
 
-export type SemanticCollector = {
-	collectCandidates(sourceText: string): SemanticCollectorCandidate[];
+export type CssExtractor = {
+	collectCandidates(sourceText: string): CssExtractorCandidate[];
 };
 
 type CssNode = {
@@ -41,7 +41,7 @@ function isDeclarationNode(node: CssNode): boolean {
 	return typeof node.getProperty === "function" && typeof node.getValue === "function";
 }
 
-function collectDeclarationCandidate(document: TextDocument, node: CssNode): SemanticCollectorCandidate | null {
+function collectDeclarationCandidate(document: TextDocument, node: CssNode): CssExtractorCandidate | null {
 	if (!isDeclarationNode(node)) {
 		return null;
 	}
@@ -65,7 +65,7 @@ function collectDeclarationCandidate(document: TextDocument, node: CssNode): Sem
 	};
 }
 
-function visitNode(document: TextDocument, node: CssNode, candidates: SemanticCollectorCandidate[]): void {
+function visitNode(document: TextDocument, node: CssNode, candidates: CssExtractorCandidate[]): void {
 	const candidate = collectDeclarationCandidate(document, node);
 	if (candidate) {
 		candidates.push(candidate);
@@ -77,12 +77,12 @@ function visitNode(document: TextDocument, node: CssNode, candidates: SemanticCo
 	}
 }
 
-export function createSemanticCollector(): SemanticCollector {
+export function createCssExtractor(): CssExtractor {
 	return {
-		collectCandidates(sourceText: string): SemanticCollectorCandidate[] {
+		collectCandidates(sourceText: string): CssExtractorCandidate[] {
 			const document = createDocument(sourceText);
 			const stylesheet = cssLanguageService.parseStylesheet(document) as unknown as CssNode;
-			const candidates: SemanticCollectorCandidate[] = [];
+			const candidates: CssExtractorCandidate[] = [];
 
 			visitNode(document, stylesheet, candidates);
 
