@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Unit Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--enable-source-maps",
+        "--test",
+        "lib/esm/test/**/*.test.js"
+      ],
+      "cwd": "${workspaceRoot}",
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/lib/esm/**"],
+      "skipFiles": ["<node_internals>/**"],
+      "smartStep": true,
+      "preLaunchTask": "npm: watch"
+    },
+    {
+      "name": "Launch CSS Inlay Hint Demo Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/demo-extension"],
+      "outFiles": ["${workspaceFolder}/demo-extension/out/**/*.js"],
+      "preLaunchTask": "watch all"
+    }
+  ]
+}

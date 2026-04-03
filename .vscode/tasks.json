@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "compile",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "demo-extension: compile",
+      "type": "shell",
+      "command": "npm",
+      "args": ["--prefix", "demo-extension", "run", "compile"],
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "demo-extension: watch",
+      "type": "shell",
+      "command": "npm",
+      "args": ["--prefix", "demo-extension", "run", "watch"],
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "watch all",
+      "dependsOn": ["npm: watch", "demo-extension: watch"],
+      "dependsOrder": "parallel"
+    },
+    {
+      "type": "npm",
+      "script": "watch",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

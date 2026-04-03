@@ -1,0 +1,19 @@
+{
+  "name": "css-inlay-hint-demo",
+  "displayName": "CSS Inlay Hint Demo",
+  "description": "Local VS Code extension to preview CSS inlay hints from this repository.",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "vscode": "^1.87.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:css"
+  ],
+  "scripts": {
+    "compile": "../node_modules/.bin/tsc -p .",
+    "watch": "../node_modules/.bin/tsc -w -p ."
+  }
+}
