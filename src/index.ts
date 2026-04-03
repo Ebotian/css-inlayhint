@@ -2,6 +2,7 @@ export * from "./protocol";
 export * from "./classifier";
 export * from "./collector";
 export * from "./filter";
+export * from "./mapper";
 export * from "./pipeline";
 export * from "./lsp";
 export * from "./scheduler";

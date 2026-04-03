@@ -12,7 +12,11 @@ type CssHintFilter = {
 	filter(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
 };
 
-function createCssHintPipeline(options: { collector: CssHintCollector; filter: CssHintFilter }) {
+type CssHintMapper = {
+	map(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
+};
+
+function createCssHintPipeline(options: { collector: CssHintCollector; filter: CssHintFilter; mapper: CssHintMapper }) {
 	const module = require("../src/pipeline.js") as any;
 
 	return module.createCssHintPipeline(options);
@@ -37,7 +41,7 @@ test("pipeline composes collector output with filter cleanup", () => {
 						label: "padding-4-values",
 						kind: "Parameter",
 						strategy: "inline-right",
-						tokenCount: 4,
+						tokenCount: generatedCase.valueAtoms.length,
 						range: {
 							start: { line: 2, character: 4 },
 							end: { line: 2, character: 19 },
@@ -50,7 +54,16 @@ test("pipeline composes collector output with filter cleanup", () => {
 		filter: {
 			filter(instructions) {
 				assert.strictEqual(instructions, capturedCollectorOutput);
-				return instructions.slice().reverse();
+				return instructions;
+			},
+		},
+		mapper: {
+			map(instructions) {
+				assert.strictEqual(instructions, capturedCollectorOutput);
+				return instructions.map((instruction) => ({
+					...instruction,
+					label: "top/bottom, right/left",
+				}));
 			},
 		},
 	});
@@ -60,4 +73,5 @@ test("pipeline composes collector output with filter cleanup", () => {
 	assert.equal(capturedSourceText, generatedCase.code);
 	assert.equal(instructions.length, 1);
 	assert.equal(instructions[0].propertyName, "padding");
+	assert.equal(instructions[0].label, "top/bottom, right/left");
 });

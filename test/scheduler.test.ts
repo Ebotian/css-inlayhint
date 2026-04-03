@@ -48,7 +48,7 @@ describe("scheduler layer", () => {
 		const hints = await scheduler.inlayHints(file, fullRange);
 
 		assert.equal(hints.length, 1);
-		assert.equal(hints[0].label, "margin-1-values");
+		assert.equal(hints[0].label, "all");
 	});
 
 	test("cancels stale request when a newer edit arrives", async () => {
@@ -66,7 +66,7 @@ describe("scheduler layer", () => {
 		const secondHints = await secondRequest;
 
 		assert.equal(secondHints.length, 1);
-		assert.equal(secondHints[0].label, "margin-1-values");
+		assert.equal(secondHints[0].label, "all");
 	});
 
 	test("does not answer after the document is closed", async () => {
