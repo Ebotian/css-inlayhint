@@ -1,6 +1,10 @@
 import type { InlayHint, Range } from "vscode-languageserver";
 
-import { filterInlayHintsByRange } from "./protocol";
+import { createCssHintConstructor } from "./constructor";
+import { createCssHintGovernance } from "./govern";
+import { createCssHintPipeline } from "./pipeline";
+import { createCssHintRouter } from "./router";
+import { createCssHintResolver } from "./resolver";
 
 export type ServiceSchedulerDocumentVersion = number;
 
@@ -44,7 +48,6 @@ type RequestState = "ok" | "missing" | "stale" | "cancelled";
 function isAbortError(error: unknown): boolean {
 	return error instanceof Error && /abort|cancel|stale/i.test(error.message);
 }
-import { createCssHintPipeline } from "./pipeline";
 
 function createRequestError(message: string): Error {
 	return new Error(message);
@@ -105,16 +108,22 @@ function defaultProduceHints(snapshot: ServiceSchedulerDocumentSnapshot, range: 
 	}
 
 	const pipeline = createCssHintPipeline();
+	const router = createCssHintRouter();
+	const resolver = createCssHintResolver();
+	const constructor = createCssHintConstructor();
+	const governance = createCssHintGovernance();
 	const instructions = pipeline.collect(snapshot.contents);
-	return instructions.map(
-		(instruction) =>
-			({
-				position: instruction.range.start,
-				label: instruction.label,
-				kind: instruction.kind === "Parameter" ? 2 : undefined,
-				paddingLeft: instruction.strategy === "inline-right",
-			}) satisfies ServiceSchedulerHint,
-	);
+
+	const hints = router.route(instructions, {
+		inline(items) {
+			return constructor.construct(resolver.resolveInline(items));
+		},
+		blockEnd() {
+			return constructor.construct(resolver.resolveBlockEnd([]));
+		},
+	});
+
+	return governance.govern(hints, range);
 }
 export function createServiceScheduler(options: ServiceSchedulerOptions = {}): ServiceScheduler {
 	const documents = new Map<string, TrackedDocument>();
@@ -166,7 +175,7 @@ export function createServiceScheduler(options: ServiceSchedulerOptions = {}): S
 				throw createRequestStateError(file, requestState);
 			}
 			const hints = await produceHints(snapshot, range);
-			return filterInlayHintsByRange(hints, range);
+			return hints;
 		},
 	};
 }

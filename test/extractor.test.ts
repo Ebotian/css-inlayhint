@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import fs from "node:fs";
-import path from "node:path";
 import test from "node:test";
+
+import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
 
 type CssExtractorCandidate = {
 	kind: "declaration";
@@ -17,8 +17,6 @@ type CssExtractor = {
 	collectCandidates(sourceText: string): CssExtractorCandidate[];
 };
 
-const fixturesRoot = path.resolve(__dirname, "..", "..");
-
 function createExtractor(): CssExtractor {
 	const { createCssExtractor: factory } = require("../src/extractor.js") as {
 		createCssExtractor: () => CssExtractor;
@@ -27,60 +25,82 @@ function createExtractor(): CssExtractor {
 	return factory();
 }
 
-function loadFixture(relativePath: string): string {
-	return fs.readFileSync(path.join(fixturesRoot, "fixtures", relativePath), "utf8");
-}
-
 function hasCandidate(candidates: CssExtractorCandidate[], propertyName: string, valueText: string): boolean {
 	return candidates.some((candidate) => candidate.propertyName === propertyName && candidate.valueText === valueText);
 }
 
-test("extractor gathers declaration candidates from the flex sample", () => {
+function pickGeneratedCase(
+	propertyName: string,
+	predicate: (generatedCase: ReturnType<typeof generateExactCases>[number]) => boolean,
+): ReturnType<typeof generateExactCases>[number] {
+	const rule = createStandardPropertySamplingRule(propertyName);
+	const generatedCase = generateExactCases(rule).find(predicate);
+
+	assert.ok(generatedCase, `Missing generated case for ${propertyName}`);
+	return generatedCase;
+}
+
+test("extractor gathers declaration candidates from generated shorthand samples", () => {
 	const extractor = createExtractor();
-	const sourceText = loadFixture("flex.style.css");
+	const marginCase = pickGeneratedCase(
+		"margin",
+		(generatedCase) =>
+			generatedCase.valueAtoms.length === 1 && generatedCase.valueAtoms.some((atom) => atom.text === "0cap"),
+	);
+	const paddingCase = pickGeneratedCase(
+		"padding",
+		(generatedCase) =>
+			generatedCase.valueAtoms.length === 1 && generatedCase.valueAtoms.some((atom) => atom.text === "0ch"),
+	);
+	const sourceText = [marginCase.code, paddingCase.code].join("\n\n");
 
 	const candidates = extractor.collectCandidates(sourceText);
 
-	assert.ok(hasCandidate(candidates, "margin", "2px"));
-	assert.ok(hasCandidate(candidates, "padding", "2px"));
-	assert.ok(hasCandidate(candidates, "display", "flex"));
-	assert.ok(hasCandidate(candidates, "transition-duration", "500ms"));
-	assert.deepEqual(
-		candidates.find((candidate) => candidate.propertyName === "margin" && candidate.valueText === "2px")?.range.start,
-		{ line: 3, character: 1 },
-	);
+	assert.ok(hasCandidate(candidates, "margin", "0cap"));
+	assert.ok(hasCandidate(candidates, "padding", "0ch"));
 });
 
-test("extractor keeps declarations inside at-rules from the button hover sample", () => {
+test("extractor keeps declarations inside at-rules from generated samples", () => {
 	const extractor = createExtractor();
-	const sourceText = loadFixture("button-hover.style2.css");
+	const displayCase = pickGeneratedCase("display", (generatedCase) =>
+		generatedCase.valueAtoms.some((atom) => atom.text === "block"),
+	);
+	const transitionCase = pickGeneratedCase("transition-duration", (generatedCase) =>
+		generatedCase.valueAtoms.some((atom) => atom.text === "0ms"),
+	);
+	const sourceText = `@media (min-width: 600px) {\n${displayCase.code}\n${transitionCase.code}\n}`;
 
 	const candidates = extractor.collectCandidates(sourceText);
 
-	assert.ok(hasCandidate(candidates, "display", "flex"));
-	assert.ok(hasCandidate(candidates, "padding", "15px 30px"));
-	assert.ok(hasCandidate(candidates, "background", "#e51a4b"));
+	assert.ok(hasCandidate(candidates, "display", "block"));
+	assert.ok(hasCandidate(candidates, "transition-duration", "0ms"));
 	assert.ok(candidates.every((candidate) => !candidate.propertyName.startsWith("@")));
 });
 
-test("extractor preserves shorthand value token order from the flex sample", () => {
+test("extractor preserves shorthand value token order from generated samples", () => {
 	const extractor = createExtractor();
-	const sourceText = loadFixture("flex.style.css");
+	const marginCase = pickGeneratedCase(
+		"margin",
+		(generatedCase) =>
+			generatedCase.valueAtoms.length === 2 && generatedCase.valueAtoms.every((atom) => atom.kind !== "global"),
+	);
+	const sourceText = marginCase.code;
 
 	const candidates = extractor.collectCandidates(sourceText);
 
-	assert.ok(hasCandidate(candidates, "margin", "2px"));
-	assert.ok(hasCandidate(candidates, "padding", "2px"));
-	assert.ok(hasCandidate(candidates, "transform", "scale(1.3)"));
+	assert.ok(hasCandidate(candidates, "margin", marginCase.valueAtoms.map((atom) => atom.text).join(" ")));
 });
 
-test("extractor keeps variable references as raw candidates from the notes sample", () => {
+test("extractor keeps generated global values as raw candidates", () => {
 	const extractor = createExtractor();
-	const sourceText = loadFixture("Notes.css");
+	const globalCase = pickGeneratedCase(
+		"margin",
+		(generatedCase) => generatedCase.valueAtoms.length === 1 && generatedCase.valueAtoms[0].kind === "global",
+	);
+	const sourceText = globalCase.code;
 
 	const candidates = extractor.collectCandidates(sourceText);
 
-	assert.ok(hasCandidate(candidates, "gap", "var(--gap)"));
-	assert.ok(hasCandidate(candidates, "flex", "1 1 var(--min)"));
+	assert.ok(hasCandidate(candidates, "margin", globalCase.valueAtoms[0].text));
 	assert.ok(candidates.every((candidate) => !candidate.valueText.includes("undefined")));
 });

@@ -4,6 +4,16 @@ import { describe, test } from "node:test";
 import type { InlayHint, Range } from "vscode-languageserver";
 import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
 
+type CssExtractorCandidate = {
+	kind: "declaration";
+	propertyName: string;
+	valueText: string;
+	range: {
+		start: { line: number; character: number };
+		end: { line: number; character: number };
+	};
+};
+
 type ServiceScheduler = {
 	addDocument(file: string, contents: string, version: number): void;
 	updateDocument(file: string, contents: string, version: number): void;
@@ -16,6 +26,14 @@ function createServiceScheduler(): ServiceScheduler {
 		createServiceScheduler: () => ServiceScheduler;
 	};
 	return module.createServiceScheduler();
+}
+
+function createExtractor() {
+	const module = require("../src/extractor.js") as {
+		createCssExtractor: () => { collectCandidates(sourceText: string): CssExtractorCandidate[] };
+	};
+
+	return module.createCssExtractor();
 }
 
 const fullRange = {
@@ -40,15 +58,18 @@ if (!firstMarginCase || !secondMarginCase) {
 describe("scheduler layer", () => {
 	test("uses the in-memory draft instead of the disk file", async () => {
 		const scheduler = createServiceScheduler();
+		const extractor = createExtractor();
 		const file = "file:///workspace/example.css";
 
 		scheduler.addDocument(file, firstMarginCase.code, 1);
 		scheduler.updateDocument(file, secondMarginCase.code, 2);
 
 		const hints = await scheduler.inlayHints(file, fullRange);
+		const expectedRangeEnd = extractor.collectCandidates(secondMarginCase.code)[0]?.range.end;
 
 		assert.equal(hints.length, 1);
 		assert.equal(hints[0].label, "all");
+		assert.deepEqual(hints[0].position, expectedRangeEnd);
 	});
 
 	test("cancels stale request when a newer edit arrives", async () => {
