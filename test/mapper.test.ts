@@ -65,9 +65,9 @@ test("mapper derives border-radius corner labels from token counts", () => {
 
 	const expectedLabels = new Map([
 		[1, "all"],
-		[2, "top-left/bottom-right, top-right/bottom-left"],
-		[3, "top-left, top-right/bottom-left, bottom-right"],
-		[4, "top-left, top-right, bottom-right, bottom-left"],
+		[2, "top-L/bottom-R, top-R/bottom-L"],
+		[3, "top-L, top-R/bottom-L, bottom-R"],
+		[4, "top-L, top-R, bottom-R, bottom-L"],
 	]);
 
 	for (const [tokenCount, expectedLabel] of expectedLabels) {

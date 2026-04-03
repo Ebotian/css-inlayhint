@@ -69,14 +69,28 @@ function mapCornerLabel(tokenCount: number): string | null {
 		case 1:
 			return "all";
 		case 2:
-			return "top-left/bottom-right, top-right/bottom-left";
+			return `${formatCornerName("top-left")}/${formatCornerName("bottom-right")}, ${formatCornerName("top-right")}/${formatCornerName("bottom-left")}`;
 		case 3:
-			return "top-left, top-right/bottom-left, bottom-right";
+			return `${formatCornerName("top-left")}, ${formatCornerName("top-right")}/${formatCornerName("bottom-left")}, ${formatCornerName("bottom-right")}`;
 		case 4:
-			return "top-left, top-right, bottom-right, bottom-left";
+			return ["top-left", "top-right", "bottom-right", "bottom-left"].map(formatCornerName).join(", ");
 		default:
 			return null;
 	}
+}
+
+function formatCornerName(name: string): string {
+	const parts = name.split("-");
+	if (parts.length !== 2) {
+		return name;
+	}
+
+	const [prefix, suffix] = parts;
+	if (suffix !== "left" && suffix !== "right") {
+		return name;
+	}
+
+	return `${prefix}-${suffix === "left" ? "L" : "R"}`;
 }
 
 function getDirectionalFamily(propertyName: string): readonly string[] | null {

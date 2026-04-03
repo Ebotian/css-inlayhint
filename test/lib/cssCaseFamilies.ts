@@ -25,7 +25,7 @@ export function sampleExactCases(families: readonly ConstructedCssCaseFamily[]):
 			arity: family.arity,
 			valueAtoms,
 			code: renderCssDeclaration(family.propertyName, valueAtoms),
-			description: `${family.propertyName}/${family.arity}-value/${valueAtoms.map((atom) => atom.kind).join("+")}`,
+			description: `${family.propertyName}/${family.arity}-value/${formatCaseDescription(family.propertyName, valueAtoms)}`,
 		}));
 	});
 }
@@ -35,7 +35,8 @@ export function generateExactCases(rule: CssPropertySamplingRule): GeneratedCssC
 }
 
 export function renderCssDeclaration(propertyName: string, valueAtoms: readonly CssValueAtom[]): string {
-	return `.probe {\n  ${propertyName}: ${valueAtoms.map((atom) => atom.text).join(" ")};\n}`;
+	const separator = propertyName === "grid-area" && valueAtoms.length > 1 ? " / " : " ";
+	return `.probe {\n  ${propertyName}: ${valueAtoms.map((atom) => atom.text).join(separator)};\n}`;
 }
 
 export function countExactCases(families: readonly ConstructedCssCaseFamily[]): number {
@@ -47,4 +48,9 @@ export function countExactCases(families: readonly ConstructedCssCaseFamily[]): 
 		const width = family.slotAtomSets.reduce((product, slotAtomSet) => product * slotAtomSet.length, 1);
 		return total + width;
 	}, 0);
+}
+
+function formatCaseDescription(propertyName: string, valueAtoms: readonly CssValueAtom[]): string {
+	const separator = propertyName === "grid-area" && valueAtoms.length > 1 ? "/" : "+";
+	return valueAtoms.map((atom) => atom.kind).join(separator);
 }

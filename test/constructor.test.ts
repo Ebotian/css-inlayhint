@@ -54,7 +54,7 @@ test("constructor builds inline hints from resolved token placements", () => {
 		position: { line: 1, character: 14 },
 		label: "all:",
 		kind: 2,
-		paddingLeft: true,
+		paddingLeft: false,
 		paddingRight: true,
 	});
 });
@@ -93,14 +93,14 @@ test("constructor preserves separate hints for separate token placements", () =>
 		position: { line: 1, character: 9 },
 		label: "top/bottom:",
 		kind: 2,
-		paddingLeft: true,
+		paddingLeft: false,
 		paddingRight: true,
 	});
 	assert.deepEqual(hints[1], {
 		position: { line: 1, character: 14 },
 		label: "right/left:",
 		kind: 2,
-		paddingLeft: true,
+		paddingLeft: false,
 		paddingRight: true,
 	});
 });

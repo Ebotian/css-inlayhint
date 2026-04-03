@@ -4,6 +4,7 @@ import { describe, test } from "node:test";
 import {
 	DEFAULT_PROPERTY_SAMPLING_RULES,
 	createCssValidationOracle,
+	createStandardPropertySamplingRule,
 	constructExactCaseFamilies,
 	countExactCases,
 	sampleExactCases,
@@ -36,6 +37,21 @@ describe("matching machine", () => {
 		for (const generatedCase of cases) {
 			const diagnostics = oracle.validate(generatedCase.code);
 			assert.equal(diagnostics.length, 0, generatedCase.code);
+		}
+	});
+
+	test("grid-area generator emits slash-separated legal samples", () => {
+		const rule = createStandardPropertySamplingRule("grid-area");
+		assert.deepEqual(rule.arities, [1, 2, 3, 4]);
+
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes(" / ")));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("span")));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
 		}
 	});
 });

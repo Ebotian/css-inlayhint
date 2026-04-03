@@ -66,14 +66,27 @@ export function createDefaultPropertySamplingRules(limit = 8): CssPropertySampli
 export function createStandardPropertySamplingRule(propertyName: string): CssPropertySamplingRule {
 	const property = getPropertyRecord(propertyName);
 	const syntaxAst = parseStandardCssSyntax(property.syntax ?? "");
-	const arities = parseStandardShorthandArities(syntaxAst);
-	const valueAtoms = collectStandardValueAtoms(propertyName, syntaxAst);
+	const arities = propertyName === "grid-area" ? [1, 2, 3, 4] : parseStandardShorthandArities(syntaxAst);
+	const valueAtoms =
+		propertyName === "grid-area" ? collectGridAreaValueAtoms() : collectStandardValueAtoms(propertyName, syntaxAst);
 
 	return {
 		propertyName,
 		arities,
 		valueAtoms,
 	};
+}
+
+function collectGridAreaValueAtoms(): CssValueAtom[] {
+	return [
+		{ kind: "auto", text: "auto" },
+		{ kind: "global", text: "inherit" },
+		{ kind: "global", text: "initial" },
+		{ kind: "custom-ident", text: "some-grid-area" },
+		{ kind: "integer", text: "4 some-grid-area" },
+		{ kind: "integer", text: "span 3" },
+		{ kind: "custom-ident", text: "span some-grid-area" },
+	];
 }
 
 export function getPropertyRecord(propertyName: string): StandardPropertyRecord {

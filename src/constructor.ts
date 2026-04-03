@@ -29,7 +29,7 @@ function constructHint(instruction: CssHintResolvedInstruction): InlayHint[] {
 			position: instruction.position,
 			label: `${instruction.label}:`,
 			kind: 2,
-			paddingLeft: true,
+			paddingLeft: false,
 			paddingRight: true,
 		},
 	];

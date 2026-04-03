@@ -2,6 +2,8 @@ import type { Diagnostic } from "vscode-languageserver";
 
 export type CssValueKind =
 	| "keyword"
+	| "custom-ident"
+	| "integer"
 	| "length"
 	| "percent"
 	| "zero"

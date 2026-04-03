@@ -18,6 +18,8 @@ const cssTree = nodeRequire("css-tree") as {
 
 export type CssValueKind =
 	| "keyword"
+	| "custom-ident"
+	| "integer"
 	| "length"
 	| "percent"
 	| "zero"
