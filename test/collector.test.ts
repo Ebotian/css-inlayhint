@@ -16,6 +16,10 @@ type CssExtractorCandidate = {
 		start: { line: number; character: number };
 		end: { line: number; character: number };
 	};
+	valueRange: {
+		start: { line: number; character: number };
+		end: { line: number; character: number };
+	};
 };
 
 type CssExtractor = {
@@ -61,6 +65,10 @@ test("collector turns semantic candidates into classified instructions", () => {
 							start: { line: 0, character: 9 },
 							end: { line: 0, character: 18 },
 						},
+						valueRange: {
+							start: { line: 0, character: 9 },
+							end: { line: 0, character: 18 },
+						},
 					},
 				];
 			},
@@ -86,6 +94,7 @@ test("collector turns semantic candidates into classified instructions", () => {
 	assert.equal(instructions[0].kind, "Parameter");
 	assert.equal(instructions[0].strategy, "inline-right");
 	assert.equal(instructions[0].label, "margin-2-values");
+	assert.equal(instructions[0].valueText, "1rem 2rem");
 	assert.ok(instructions[0].range.start.line >= 0);
 });
 
@@ -106,6 +115,10 @@ test("collector drops suppressed global declarations", () => {
 						propertyName: "margin",
 						valueText: "inherit",
 						range: {
+							start: { line: 0, character: 9 },
+							end: { line: 0, character: 16 },
+						},
+						valueRange: {
 							start: { line: 0, character: 9 },
 							end: { line: 0, character: 16 },
 						},

@@ -41,6 +41,10 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 }
 
 function mapShorthandLabel(propertyName: string, tokenCount: number): string | null {
+	if (propertyName === "border-radius") {
+		return mapCornerLabel(tokenCount);
+	}
+
 	const directions = getDirectionalFamily(propertyName);
 	if (!directions) {
 		return null;
@@ -55,6 +59,21 @@ function mapShorthandLabel(propertyName: string, tokenCount: number): string | n
 			return `${directions[0]}, ${directions[1]}/${directions[3]}, ${directions[2]}`;
 		case 4:
 			return directions.join(", ");
+		default:
+			return null;
+	}
+}
+
+function mapCornerLabel(tokenCount: number): string | null {
+	switch (tokenCount) {
+		case 1:
+			return "all";
+		case 2:
+			return "top-left/bottom-right, top-right/bottom-left";
+		case 3:
+			return "top-left, top-right/bottom-left, bottom-right";
+		case 4:
+			return "top-left, top-right, bottom-right, bottom-left";
 		default:
 			return null;
 	}

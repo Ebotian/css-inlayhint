@@ -12,6 +12,10 @@ type CssExtractorCandidate = {
 		start: { line: number; character: number };
 		end: { line: number; character: number };
 	};
+	valueRange: {
+		start: { line: number; character: number };
+		end: { line: number; character: number };
+	};
 };
 
 type ServiceScheduler = {
@@ -65,11 +69,11 @@ describe("scheduler layer", () => {
 		scheduler.updateDocument(file, secondMarginCase.code, 2);
 
 		const hints = await scheduler.inlayHints(file, fullRange);
-		const expectedRangeEnd = extractor.collectCandidates(secondMarginCase.code)[0]?.range.end;
+		const expectedRangeStart = extractor.collectCandidates(secondMarginCase.code)[0]?.valueRange.start;
 
 		assert.equal(hints.length, 1);
-		assert.equal(hints[0].label, "all");
-		assert.deepEqual(hints[0].position, expectedRangeEnd);
+		assert.equal(hints[0].label, "all:");
+		assert.deepEqual(hints[0].position, expectedRangeStart);
 	});
 
 	test("cancels stale request when a newer edit arrives", async () => {
@@ -87,7 +91,7 @@ describe("scheduler layer", () => {
 		const secondHints = await secondRequest;
 
 		assert.equal(secondHints.length, 1);
-		assert.equal(secondHints[0].label, "all");
+		assert.equal(secondHints[0].label, "all:");
 	});
 
 	test("does not answer after the document is closed", async () => {

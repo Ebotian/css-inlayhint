@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
+import { TextDocument } from "vscode-css-languageservice";
 
 type CssHintInstruction = {
 	propertyName: string;
@@ -9,7 +9,12 @@ type CssHintInstruction = {
 	kind: "Parameter" | "BlockEnd";
 	strategy: "inline-right" | "block-end-right";
 	tokenCount: number;
+	valueText: string;
 	range: {
+		start: { line: number; character: number };
+		end: { line: number; character: number };
+	};
+	valueRange: {
 		start: { line: number; character: number };
 		end: { line: number; character: number };
 	};
@@ -17,9 +22,11 @@ type CssHintInstruction = {
 
 type CssHintResolver = {
 	resolveInline(
+		document: TextDocument,
 		instructions: readonly CssHintInstruction[],
 	): Array<{ position: CssHintInstruction["range"]["end"]; label: string; kind?: 2; paddingLeft?: boolean }>;
 	resolveBlockEnd(
+		document: TextDocument,
 		instructions: readonly CssHintInstruction[],
 	): Array<{ position: CssHintInstruction["range"]["end"]; label: string; kind?: 2; paddingLeft?: boolean }>;
 };
@@ -43,36 +50,42 @@ function createInstruction(
 		kind: strategy === "inline-right" ? "Parameter" : "BlockEnd",
 		strategy,
 		tokenCount,
+		valueText: Array.from({ length: tokenCount }, (_, index) => `value${index + 1}`).join(" "),
 		range: {
-			start: { line: 1, character: 2 },
-			end: { line: 1, character: 14 },
+			start: { line: 0, character: 0 },
+			end: { line: 0, character: 15 },
+		},
+		valueRange: {
+			start: { line: 0, character: 9 },
+			end: { line: 0, character: 22 },
 		},
 	};
 }
 
-test("resolver uses declaration end for inline hints", () => {
+test("resolver uses each token start for inline hints", () => {
 	const resolver = createCssHintResolver();
-	const rule = createStandardPropertySamplingRule("margin");
-	const generatedCase = generateExactCases(rule).find(
-		(candidateCase) =>
-			candidateCase.valueAtoms.length === 1 && !candidateCase.valueAtoms.some((atom) => atom.kind === "global"),
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, "padding: value1 value2;");
+	const hints = resolver.resolveInline(document, [createInstruction("padding", "inline-right", 2)]);
+
+	assert.equal(hints.length, 2);
+	assert.deepEqual(
+		hints.map((hint) => hint.label),
+		["padding-2-values", "padding-2-values"],
 	);
-
-	assert.ok(generatedCase);
-
-	const hint = resolver.resolveInline([
-		createInstruction(rule.propertyName, "inline-right", generatedCase.valueAtoms.length),
-	])[0];
-
-	assert.equal(hint.label, "margin-1-values");
-	assert.equal(hint.kind, "Parameter");
-	assert.deepEqual(hint.position, { line: 1, character: 14 });
+	assert.deepEqual(
+		hints.map((hint) => hint.position),
+		[
+			{ line: 0, character: 9 },
+			{ line: 0, character: 16 },
+		],
+	);
 });
 
 test("resolver ignores block-end hints for now", () => {
 	const resolver = createCssHintResolver();
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, "padding: value1 value2;");
 
-	const hints = resolver.resolveBlockEnd([createInstruction("padding", "block-end-right", 2)]);
+	const hints = resolver.resolveBlockEnd(document, [createInstruction("padding", "block-end-right", 2)]);
 
 	assert.deepEqual(hints, []);
 });

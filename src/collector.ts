@@ -3,7 +3,9 @@ import { createCssExtractor } from "./extractor";
 import { createCssHintClassifier, type CssHintClassification } from "./classifier";
 
 export type CssHintInstruction = CssHintClassification & {
+	valueText: string;
 	range: CssExtractorCandidate["range"];
+	valueRange: CssExtractorCandidate["valueRange"];
 };
 
 export type CssHintCollector = {
@@ -32,7 +34,9 @@ export function createCssHintCollector(options: CssHintCollectorOptions = {}): C
 
 				instructions.push({
 					...classification,
+					valueText: candidate.valueText,
 					range: candidate.range,
+					valueRange: candidate.valueRange,
 				});
 			}
 

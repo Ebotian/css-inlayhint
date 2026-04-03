@@ -59,3 +59,19 @@ test("mapper derives shorthand labels from standard family relations", () => {
 		assert.equal(mapped.label, expectedLabel);
 	}
 });
+
+test("mapper derives border-radius corner labels from token counts", () => {
+	const mapper = createCssHintMapper();
+
+	const expectedLabels = new Map([
+		[1, "all"],
+		[2, "top-left/bottom-right, top-right/bottom-left"],
+		[3, "top-left, top-right/bottom-left, bottom-right"],
+		[4, "top-left, top-right, bottom-right, bottom-left"],
+	]);
+
+	for (const [tokenCount, expectedLabel] of expectedLabels) {
+		const mapped = mapper.map([createInstruction("border-radius", tokenCount)])[0];
+		assert.equal(mapped.label, expectedLabel);
+	}
+});

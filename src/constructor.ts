@@ -1,9 +1,10 @@
 import type { InlayHint } from "vscode-languageserver";
+import type { Position } from "vscode-languageserver";
 
 import type { CssHintInstruction } from "./collector";
 
 export type CssHintResolvedInstruction = CssHintInstruction & {
-	position: CssHintInstruction["range"]["end"];
+	position: Position;
 };
 
 export type CssHintConstructor = {
@@ -26,9 +27,10 @@ function constructHint(instruction: CssHintResolvedInstruction): InlayHint[] {
 	return [
 		{
 			position: instruction.position,
-			label: instruction.label,
+			label: `${instruction.label}:`,
 			kind: 2,
 			paddingLeft: true,
+			paddingRight: true,
 		},
 	];
 }

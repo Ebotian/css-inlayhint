@@ -32,7 +32,12 @@ function createInstruction(
 		kind: "Parameter",
 		strategy,
 		tokenCount,
+		valueText: Array.from({ length: tokenCount }, (_, index) => `value${index + 1}`).join(" "),
 		range: {
+			start: { line: tokenCount, character: 0 },
+			end: { line: tokenCount, character: 1 },
+		},
+		valueRange: {
 			start: { line: tokenCount, character: 0 },
 			end: { line: tokenCount, character: 1 },
 		},

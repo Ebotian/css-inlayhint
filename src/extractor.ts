@@ -6,6 +6,7 @@ export type CssExtractorCandidate = {
 	propertyName: string;
 	valueText: string;
 	range: Range;
+	valueRange: Range;
 };
 
 export type CssExtractor = {
@@ -62,6 +63,7 @@ function collectDeclarationCandidate(document: TextDocument, node: CssNode): Css
 		propertyName,
 		valueText,
 		range: createRange(document, propertyNode.offset, valueNode.end),
+		valueRange: createRange(document, valueNode.offset, valueNode.end),
 	};
 }
 

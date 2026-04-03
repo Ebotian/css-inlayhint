@@ -15,6 +15,10 @@ type CssExtractorCandidate = {
 		start: { line: number; character: number };
 		end: { line: number; character: number };
 	};
+	valueRange: {
+		start: { line: number; character: number };
+		end: { line: number; character: number };
+	};
 };
 
 type CssExtractor = {

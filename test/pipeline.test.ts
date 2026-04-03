@@ -42,8 +42,13 @@ test("pipeline composes collector output with filter cleanup", () => {
 						kind: "Parameter",
 						strategy: "inline-right",
 						tokenCount: generatedCase.valueAtoms.length,
+						valueText: "1rem 2rem",
 						range: {
 							start: { line: 2, character: 4 },
+							end: { line: 2, character: 19 },
+						},
+						valueRange: {
+							start: { line: 2, character: 11 },
 							end: { line: 2, character: 19 },
 						},
 					},

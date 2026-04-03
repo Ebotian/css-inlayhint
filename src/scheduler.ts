@@ -1,4 +1,5 @@
 import type { InlayHint, Range } from "vscode-languageserver";
+import { TextDocument } from "vscode-css-languageservice";
 
 import { createCssHintConstructor } from "./constructor";
 import { createCssHintGovernance } from "./govern";
@@ -107,6 +108,8 @@ function defaultProduceHints(snapshot: ServiceSchedulerDocumentSnapshot, range: 
 		return [];
 	}
 
+	const document = TextDocument.create(snapshot.file, "css", snapshot.version, snapshot.contents);
+
 	const pipeline = createCssHintPipeline();
 	const router = createCssHintRouter();
 	const resolver = createCssHintResolver();
@@ -116,10 +119,10 @@ function defaultProduceHints(snapshot: ServiceSchedulerDocumentSnapshot, range: 
 
 	const hints = router.route(instructions, {
 		inline(items) {
-			return constructor.construct(resolver.resolveInline(items));
+			return constructor.construct(resolver.resolveInline(document, items));
 		},
 		blockEnd() {
-			return constructor.construct(resolver.resolveBlockEnd([]));
+			return constructor.construct(resolver.resolveBlockEnd(document, []));
 		},
 	});
 

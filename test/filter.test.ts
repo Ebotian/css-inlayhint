@@ -22,8 +22,13 @@ test("filter deduplicates and sorts collector output", () => {
 			kind: "Parameter",
 			strategy: "inline-right",
 			tokenCount: 4,
+			valueText: "1rem 2rem 3rem 4rem",
 			range: {
 				start: { line: 2, character: 4 },
+				end: { line: 2, character: 19 },
+			},
+			valueRange: {
+				start: { line: 2, character: 11 },
 				end: { line: 2, character: 19 },
 			},
 		},
@@ -33,8 +38,13 @@ test("filter deduplicates and sorts collector output", () => {
 			kind: "Parameter",
 			strategy: "inline-right",
 			tokenCount: 2,
+			valueText: "1rem 2rem",
 			range: {
 				start: { line: 1, character: 4 },
+				end: { line: 1, character: 16 },
+			},
+			valueRange: {
+				start: { line: 1, character: 11 },
 				end: { line: 1, character: 16 },
 			},
 		},
@@ -44,8 +54,13 @@ test("filter deduplicates and sorts collector output", () => {
 			kind: "Parameter",
 			strategy: "inline-right",
 			tokenCount: 4,
+			valueText: "1rem 2rem 3rem 4rem",
 			range: {
 				start: { line: 2, character: 4 },
+				end: { line: 2, character: 19 },
+			},
+			valueRange: {
+				start: { line: 2, character: 11 },
 				end: { line: 2, character: 19 },
 			},
 		},
@@ -69,7 +84,12 @@ test("filter preserves distinct instructions at the same position", () => {
 			kind: "Parameter",
 			strategy: "inline-right",
 			tokenCount: 4,
+			valueText: "1px 2px 3px 4px",
 			range: {
+				start: { line: 0, character: 8 },
+				end: { line: 0, character: 21 },
+			},
+			valueRange: {
 				start: { line: 0, character: 8 },
 				end: { line: 0, character: 21 },
 			},
@@ -80,7 +100,12 @@ test("filter preserves distinct instructions at the same position", () => {
 			kind: "Parameter",
 			strategy: "inline-right",
 			tokenCount: 4,
+			valueText: "solid dotted dashed double",
 			range: {
+				start: { line: 0, character: 8 },
+				end: { line: 0, character: 21 },
+			},
+			valueRange: {
 				start: { line: 0, character: 8 },
 				end: { line: 0, character: 21 },
 			},
