@@ -1,24 +1,35 @@
 {
-  "name": "css-inlayhint",
-  "version": "1.0.0",
-  "description": "LSP feature for CSS inlay hints",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.33.0",
-  "dependencies": {
-    "css-shorthand-properties": "^1.1.2",
-    "mdn-data": "^2.27.1",
-    "vscode-css-languageservice": "^6.3.10",
-    "vscode-languageserver": "^9.0.1"
-  },
-  "devDependencies": {
-    "@types/node": "^25.5.2",
-    "tsup": "^8.5.1",
-    "typescript": "^6.0.2"
-  }
+	"name": "css-inlayhint",
+	"version": "1.0.0",
+	"description": "LSP feature for CSS inlay hints",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"compile": "tsc -p tsconfig.json",
+		"build": "pnpm run compile",
+		"watch": "tsc -w -p tsconfig.json",
+		"test:build": "rm -rf dist-test && tsc -p tsconfig.test.json",
+		"test": "pnpm run test:build && find dist-test/test -name '*.test.js' -print | sort | xargs node --test"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.33.0",
+	"dependencies": {
+		"css-shorthand-properties": "^1.1.2",
+		"mdn-data": "^2.27.1",
+		"vscode-css-languageservice": "^6.3.10",
+		"vscode-languageserver": "^9.0.1"
+	},
+	"devDependencies": {
+		"@types/node": "^25.5.2",
+		"tsup": "^8.5.1",
+		"typescript": "^6.0.2"
+	}
 }
