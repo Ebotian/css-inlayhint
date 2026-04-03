@@ -24,6 +24,10 @@ function constructHint(instruction: CssHintResolvedInstruction): InlayHint[] {
 		return [];
 	}
 
+	if (!instruction.label.trim()) {
+		return [];
+	}
+
 	return [
 		{
 			position: instruction.position,

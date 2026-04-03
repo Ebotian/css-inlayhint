@@ -27,15 +27,17 @@ type CssExtractor = {
 };
 
 type CssHintClassification = {
+	state: "matched" | "suppressed" | "ignored";
 	propertyName: string;
 	label: string;
 	kind: "Parameter" | "BlockEnd";
 	strategy: "inline-right" | "block-end-right";
 	tokenCount: number;
+	suppressReason?: string;
 };
 
 type CssHintClassifier = {
-	classify(candidate: CssExtractorCandidate): CssHintClassification | null;
+	classify(candidate: CssExtractorCandidate): CssHintClassification;
 };
 
 function createCssHintCollector(options: { extractor: CssExtractor; classifier: CssHintClassifier }): CssHintCollector {
@@ -77,6 +79,7 @@ test("collector turns semantic candidates into classified instructions", () => {
 			classify(candidate) {
 				assert.equal(candidate.propertyName, "margin");
 				return {
+					state: "matched",
 					propertyName: candidate.propertyName,
 					label: "margin-2-values",
 					kind: "Parameter",
@@ -128,7 +131,15 @@ test("collector drops suppressed global declarations", () => {
 		},
 		classifier: {
 			classify() {
-				return null;
+				return {
+					state: "suppressed",
+					propertyName: "margin",
+					label: "margin-1-values",
+					kind: "Parameter",
+					strategy: "inline-right",
+					tokenCount: 1,
+					suppressReason: "global CSS keyword",
+				};
 			},
 		},
 	});

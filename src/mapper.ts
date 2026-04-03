@@ -29,6 +29,24 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 		return instruction;
 	}
 
+	if (instruction.shape?.family === "grid-area") {
+		return { ...instruction, label: mapGridAreaLabel(instruction.valueText) };
+	}
+
+	if (instruction.shape?.family === "box-sides") {
+		const mappedLabel = mapBoxSideLabel(instruction.propertyName, instruction.shape.tokenCount);
+		if (mappedLabel) {
+			return { ...instruction, label: mappedLabel };
+		}
+	}
+
+	if (instruction.shape?.family === "box-corners") {
+		const mappedLabel = mapCornerLabel(instruction.shape.tokenCount);
+		if (mappedLabel) {
+			return { ...instruction, label: mappedLabel };
+		}
+	}
+
 	const mappedLabel = mapShorthandLabel(instruction.propertyName, instruction.tokenCount);
 	if (!mappedLabel) {
 		return instruction;
@@ -50,6 +68,18 @@ function mapShorthandLabel(propertyName: string, tokenCount: number): string | n
 		return null;
 	}
 
+	return mapBoxSideLabel(propertyName, tokenCount, directions);
+}
+
+function mapBoxSideLabel(
+	propertyName: string,
+	tokenCount: number,
+	directions = getDirectionalFamily(propertyName),
+): string | null {
+	if (!directions) {
+		return null;
+	}
+
 	switch (tokenCount) {
 		case 1:
 			return "all";
@@ -62,6 +92,42 @@ function mapShorthandLabel(propertyName: string, tokenCount: number): string | n
 		default:
 			return null;
 	}
+}
+
+function mapGridAreaLabel(valueText: string): string {
+	const labels = [...valueText.matchAll(/[^\s/]+/g)].map((match) => mapGridAreaTokenLabel(match[0] ?? "") ?? "");
+
+	return labels.join(", ");
+}
+
+function mapGridAreaTokenLabel(token: string): string | null {
+	if (token === "auto") {
+		return null;
+	}
+
+	if (token === "span") {
+		return null;
+	}
+
+	if (
+		token === "inherit" ||
+		token === "initial" ||
+		token === "unset" ||
+		token === "revert" ||
+		token === "revert-layer"
+	) {
+		return null;
+	}
+
+	if (/^[+-]?\d+$/.test(token)) {
+		return "line";
+	}
+
+	if (/^[a-z_][a-z0-9_-]*$/i.test(token)) {
+		return "name";
+	}
+
+	return null;
 }
 
 function mapCornerLabel(tokenCount: number): string | null {
@@ -114,10 +180,11 @@ function getDirectionalFamily(propertyName: string): readonly string[] | null {
 	const orderedDirections = [...uniqueDirections].sort(
 		(left, right) => DIRECTION_ORDER.indexOf(left) - DIRECTION_ORDER.indexOf(right),
 	);
-	if (
-		orderedDirections.length !== 4 ||
-		orderedDirections.some((direction, index) => direction !== DIRECTION_ORDER[index])
-	) {
+	if (orderedDirections.length !== 4) {
+		return null;
+	}
+
+	if (orderedDirections.some((direction, index) => direction !== DIRECTION_ORDER[index])) {
 		return null;
 	}
 

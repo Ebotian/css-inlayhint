@@ -12,11 +12,20 @@ type CssHintFilter = {
 	filter(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
 };
 
+type CssHintShapeParser = {
+	parse(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
+};
+
 type CssHintMapper = {
 	map(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
 };
 
-function createCssHintPipeline(options: { collector: CssHintCollector; filter: CssHintFilter; mapper: CssHintMapper }) {
+function createCssHintPipeline(options: {
+	collector: CssHintCollector;
+	filter: CssHintFilter;
+	shapeParser: CssHintShapeParser;
+	mapper: CssHintMapper;
+}) {
 	const module = require("../src/pipeline.js") as any;
 
 	return module.createCssHintPipeline(options);
@@ -37,6 +46,7 @@ test("pipeline composes collector output with filter cleanup", () => {
 				capturedSourceText = sourceText;
 				capturedCollectorOutput = [
 					{
+						state: "matched",
 						propertyName: "padding",
 						label: "padding-4-values",
 						kind: "Parameter",
@@ -62,10 +72,20 @@ test("pipeline composes collector output with filter cleanup", () => {
 				return instructions;
 			},
 		},
+		shapeParser: {
+			parse(instructions) {
+				assert.strictEqual(instructions, capturedCollectorOutput);
+				return [...instructions].map((instruction) => ({
+					...instruction,
+					shape: { family: "box-sides", tokenCount: instruction.tokenCount },
+				}));
+			},
+		},
 		mapper: {
 			map(instructions) {
-				assert.strictEqual(instructions, capturedCollectorOutput);
-				return instructions.map((instruction) => ({
+				assert.equal(instructions.length, capturedCollectorOutput.length);
+				assert.deepEqual(instructions[0].shape, { family: "box-sides", tokenCount: 2 });
+				return [...instructions].map((instruction) => ({
 					...instruction,
 					label: "top/bottom, right/left",
 				}));
@@ -79,4 +99,60 @@ test("pipeline composes collector output with filter cleanup", () => {
 	assert.equal(instructions.length, 1);
 	assert.equal(instructions[0].propertyName, "padding");
 	assert.equal(instructions[0].label, "top/bottom, right/left");
+});
+
+test("pipeline forwards shape parsing output into mapper", () => {
+	const pipeline = createCssHintPipeline({
+		collector: {
+			collect() {
+				return [
+					{
+						state: "matched",
+						propertyName: "grid-area",
+						label: "grid-area-1-values",
+						kind: "Parameter",
+						strategy: "inline-right",
+						tokenCount: 1,
+						valueText: "span 3",
+						range: {
+							start: { line: 0, character: 0 },
+							end: { line: 0, character: 9 },
+						},
+						valueRange: {
+							start: { line: 0, character: 0 },
+							end: { line: 0, character: 9 },
+						},
+					},
+				];
+			},
+		},
+		filter: {
+			filter(instructions) {
+				return [...instructions];
+			},
+		},
+		shapeParser: {
+			parse(instructions) {
+				return [...instructions].map((instruction) => ({
+					...instruction,
+					shape: {
+						family: "grid-area",
+						lineKinds: ["span"],
+					},
+				}));
+			},
+		},
+		mapper: {
+			map(instructions) {
+				assert.equal(instructions[0].shape?.family, "grid-area");
+				assert.deepEqual(instructions[0].shape?.lineKinds, ["span"]);
+				return [...instructions];
+			},
+		},
+	});
+
+	const instructions = pipeline.collect(".probe { grid-area: span 3; }");
+
+	assert.equal(instructions.length, 1);
+	assert.equal(instructions[0].propertyName, "grid-area");
 });

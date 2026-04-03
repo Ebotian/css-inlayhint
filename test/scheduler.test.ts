@@ -3,6 +3,7 @@ import { describe, test } from "node:test";
 
 import type { InlayHint, Range } from "vscode-languageserver";
 import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
+import { assertGeneratedSchedulerE2E } from "./lib/generatedSchedulerE2E.js";
 
 type CssExtractorCandidate = {
 	kind: "declaration";
@@ -47,6 +48,8 @@ const fullRange = {
 
 const marginRule = createStandardPropertySamplingRule("margin");
 const marginCases = generateExactCases(marginRule);
+const gridAreaRule = createStandardPropertySamplingRule("grid-area");
+const gridAreaCases = generateExactCases(gridAreaRule);
 const schedulerMarginCases = marginCases.filter(
 	(candidateCase) =>
 		candidateCase.valueAtoms.length === 1 &&
@@ -55,7 +58,7 @@ const schedulerMarginCases = marginCases.filter(
 const firstMarginCase = schedulerMarginCases[0];
 const secondMarginCase = schedulerMarginCases[1];
 
-if (!firstMarginCase || !secondMarginCase) {
+if (!firstMarginCase || !secondMarginCase || gridAreaCases.length === 0) {
 	throw new Error("Expected generated margin cases for scheduler tests");
 }
 
@@ -74,6 +77,20 @@ describe("scheduler layer", () => {
 		assert.equal(hints.length, 1);
 		assert.equal(hints[0].label, "all:");
 		assert.deepEqual(hints[0].position, expectedRangeStart);
+	});
+
+	test("resolves grid-area end to end", async () => {
+		const scheduler = createServiceScheduler();
+		const extractor = createExtractor();
+
+		await assertGeneratedSchedulerE2E({
+			scheduler,
+			extractor,
+			cases: gridAreaCases,
+			filePrefix: "file:///workspace/grid-area",
+			range: fullRange,
+			labelForToken: mapGridAreaTokenLabel,
+		});
 	});
 
 	test("cancels stale request when a newer edit arrives", async () => {
@@ -104,3 +121,33 @@ describe("scheduler layer", () => {
 		await assert.rejects(scheduler.inlayHints(file, fullRange), /closed|missing|removed/i);
 	});
 });
+
+function mapGridAreaTokenLabel(token: string): string | null {
+	if (token === "auto") {
+		return null;
+	}
+
+	if (token === "span") {
+		return null;
+	}
+
+	if (
+		token === "inherit" ||
+		token === "initial" ||
+		token === "unset" ||
+		token === "revert" ||
+		token === "revert-layer"
+	) {
+		return null;
+	}
+
+	if (/^[+-]?\d+$/.test(token)) {
+		return "line";
+	}
+
+	if (/^[a-z_][a-z0-9_-]*$/i.test(token)) {
+		return "name";
+	}
+
+	return "line";
+}

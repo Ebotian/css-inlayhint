@@ -27,6 +27,7 @@ function createInstruction(
 	tokenCount: number,
 ): CssHintInstruction {
 	return {
+		state: "matched",
 		propertyName,
 		label: `${propertyName}-${tokenCount}-values`,
 		kind: "Parameter",

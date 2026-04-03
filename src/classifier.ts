@@ -6,18 +6,50 @@ export type CssHintStrategy = "inline-right" | "block-end-right";
 
 export type CssHintKind = "Parameter" | "BlockEnd";
 
-export type CssHintClassification = {
+export type CssHintMatchedClassification = {
+	state: "matched";
 	propertyName: string;
 	label: string;
 	kind: CssHintKind;
 	strategy: CssHintStrategy;
 	tokenCount: number;
-	suppressReason?: string;
 };
 
-export type CssHintClassifier = {
-	classify(candidate: CssExtractorCandidate): CssHintClassification | null;
+export type CssHintSuppressedClassification = {
+	state: "suppressed";
+	propertyName: string;
+	label: string;
+	kind: CssHintKind;
+	strategy: CssHintStrategy;
+	tokenCount: number;
+	suppressReason: string;
 };
+
+export type CssHintIgnoredClassification = {
+	state: "ignored";
+	propertyName: string;
+	reason: string;
+};
+
+export type CssHintClassification =
+	| CssHintMatchedClassification
+	| CssHintSuppressedClassification
+	| CssHintIgnoredClassification;
+
+export type CssHintClassifier = {
+	classify(candidate: CssExtractorCandidate): CssHintClassification;
+};
+
+export function formatCssHintClassification(classification: CssHintClassification): string {
+	switch (classification.state) {
+		case "matched":
+			return `matched ${classification.label}`;
+		case "suppressed":
+			return `suppressed ${classification.label} (${classification.suppressReason})`;
+		case "ignored":
+			return `ignored ${classification.propertyName} (${classification.reason})`;
+	}
+}
 
 export type CssHintClassifierOptions = {
 	suppressGlobalValues?: boolean;
@@ -47,26 +79,35 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 	const suppressVariableReferences = options.suppressVariableReferences !== false;
 
 	return {
-		classify(candidate: CssExtractorCandidate): CssHintClassification | null {
+		classify(candidate: CssExtractorCandidate): CssHintClassification {
 			const valueText = candidate.valueText.trim();
 			if (!valueText) {
-				return null;
+				return {
+					state: "ignored",
+					propertyName: candidate.propertyName,
+					reason: "empty value",
+				};
 			}
 
 			if (suppressGlobalValues && CSS_WIDE_KEYWORDS.has(valueText)) {
-				return null;
+				return buildSuppressedClassification(candidate, valueText, "global CSS keyword");
 			}
 
 			if (suppressVariableReferences && /\bvar\(/i.test(valueText)) {
-				return null;
+				return buildSuppressedClassification(candidate, valueText, "variable reference");
 			}
 
 			if (!isRuleBasedHintCandidate(candidate.propertyName)) {
-				return null;
+				return {
+					state: "ignored",
+					propertyName: candidate.propertyName,
+					reason: "unsupported shorthand syntax",
+				};
 			}
 
 			const tokenCount = countValueTokens(valueText);
 			return {
+				state: "matched",
 				propertyName: candidate.propertyName,
 				label: `${candidate.propertyName}-${tokenCount}-values`,
 				kind: "Parameter",
@@ -74,6 +115,23 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 				tokenCount,
 			};
 		},
+	};
+}
+
+function buildSuppressedClassification(
+	candidate: CssExtractorCandidate,
+	valueText: string,
+	suppressReason: string,
+): CssHintClassification {
+	const tokenCount = countValueTokens(valueText);
+	return {
+		state: "suppressed",
+		propertyName: candidate.propertyName,
+		label: `${candidate.propertyName}-${tokenCount}-values`,
+		kind: "Parameter",
+		strategy: "inline-right",
+		tokenCount,
+		suppressReason,
 	};
 }
 

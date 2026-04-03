@@ -26,18 +26,22 @@ function resolveInlineInstruction(
 	document: TextDocument,
 	instruction: CssHintInstruction,
 ): CssHintResolvedInstruction[] {
-	const tokenMatches = [...instruction.valueText.matchAll(/\S+/g)];
-	const labelParts = instruction.label
-		.split(",")
-		.map((part) => part.trim())
-		.filter(Boolean);
+	const tokenMatches = [...instruction.valueText.matchAll(/[^\s/]+/g)];
+	const labelParts = instruction.label.split(",").map((part) => part.trim());
 	const valueStartOffset = document.offsetAt(instruction.valueRange.start);
 
-	return tokenMatches.map((match, index) => {
-		return {
+	const resolvedInstructions: CssHintResolvedInstruction[] = [];
+	const hasExplicitLabelSlots = labelParts.length > 1;
+
+	for (const [index, match] of tokenMatches.entries()) {
+		const label = hasExplicitLabelSlots ? (labelParts[index] ?? "") : (labelParts[0] ?? instruction.label);
+
+		resolvedInstructions.push({
 			...instruction,
-			label: labelParts[index] ?? instruction.label,
+			label,
 			position: document.positionAt(valueStartOffset + (match.index ?? 0)),
-		};
-	});
+		});
+	}
+
+	return resolvedInstructions;
 }

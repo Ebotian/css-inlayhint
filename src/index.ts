@@ -4,6 +4,7 @@ export * from "./collector";
 export * from "./filter";
 export * from "./mapper";
 export * from "./router";
+export * from "./shapeParser";
 export * from "./constructor";
 export * from "./resolver";
 export * from "./govern";

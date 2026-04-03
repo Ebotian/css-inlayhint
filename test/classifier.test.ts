@@ -26,14 +26,23 @@ type CssExtractor = {
 };
 
 type CssHintClassification = {
+	state: "matched" | "suppressed" | "ignored";
 	propertyName: string;
 	label: string;
 	kind: "Parameter" | "BlockEnd";
 	strategy: "inline-right" | "block-end-right";
+	tokenCount?: number;
+	suppressReason?: string;
+	reason?: string;
 };
 
 type CssHintClassifier = {
-	classify(candidate: CssExtractorCandidate): CssHintClassification | null;
+	classify(candidate: CssExtractorCandidate): CssHintClassification;
+};
+
+type ClassifierModule = {
+	createCssHintClassifier: () => CssHintClassifier;
+	formatCssHintClassification: (classification: CssHintClassification) => string;
 };
 
 function createExtractor(): CssExtractor {
@@ -45,11 +54,15 @@ function createExtractor(): CssExtractor {
 }
 
 function createCssHintClassifier(): CssHintClassifier {
-	const module = require("../src/classifier.js") as {
-		createCssHintClassifier: () => CssHintClassifier;
-	};
+	const module = require("../src/classifier.js") as ClassifierModule;
 
 	return module.createCssHintClassifier();
+}
+
+function formatCssHintClassification(classification: CssHintClassification): string {
+	const module = require("../src/classifier.js") as ClassifierModule;
+
+	return module.formatCssHintClassification(classification);
 }
 
 test("classifier labels shorthand declarations that match the syntax rule", () => {
@@ -79,10 +92,19 @@ test("classifier suppresses shorthand syntax with alternation", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
 	const rule = createStandardPropertySamplingRule("border");
-	const generatedCase = generateExactCases(rule)[0];
+	const generatedCase = generateExactCases(rule).find(
+		(candidateCase) => !candidateCase.valueAtoms.some((atom) => atom.kind === "global" || atom.kind === "variable"),
+	);
+
+	assert.ok(generatedCase);
 	const candidate = collector.collectCandidates(generatedCase.code)[0];
 
-	assert.equal(classifier.classify(candidate), null);
+	const classification = classifier.classify(candidate);
+
+	assert.ok(classification);
+	assert.equal(classification.state, "ignored");
+	assert.equal(classification.reason, "unsupported shorthand syntax");
+	assert.equal(formatCssHintClassification(classification), "ignored border (unsupported shorthand syntax)");
 });
 
 test("classifier suppresses global CSS keywords", () => {
@@ -92,7 +114,13 @@ test("classifier suppresses global CSS keywords", () => {
 		renderCssDeclaration("margin", [{ kind: "global", text: "inherit" }]),
 	)[0];
 
-	assert.equal(classifier.classify(candidate), null);
+	const classification = classifier.classify(candidate);
+
+	assert.ok(classification);
+	assert.equal(classification.state, "suppressed");
+	assert.equal(classification.propertyName, "margin");
+	assert.equal(classification.suppressReason, "global CSS keyword");
+	assert.equal(formatCssHintClassification(classification), "suppressed margin-1-values (global CSS keyword)");
 });
 
 test("classifier suppresses variable references", () => {
@@ -102,5 +130,11 @@ test("classifier suppresses variable references", () => {
 		renderCssDeclaration("padding", [{ kind: "variable", text: "var(--gap)" }]),
 	)[0];
 
-	assert.equal(classifier.classify(candidate), null);
+	const classification = classifier.classify(candidate);
+
+	assert.ok(classification);
+	assert.equal(classification.state, "suppressed");
+	assert.equal(classification?.propertyName, "padding");
+	assert.equal(classification.suppressReason, "variable reference");
+	assert.equal(formatCssHintClassification(classification), "suppressed padding-1-values (variable reference)");
 });

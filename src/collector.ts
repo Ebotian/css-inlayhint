@@ -1,11 +1,13 @@
 import type { CssExtractor, CssExtractorCandidate } from "./extractor";
 import { createCssExtractor } from "./extractor";
-import { createCssHintClassifier, type CssHintClassification } from "./classifier";
+import { createCssHintClassifier, type CssHintMatchedClassification } from "./classifier";
+import type { CssHintShape } from "./shapeParser";
 
-export type CssHintInstruction = CssHintClassification & {
+export type CssHintInstruction = CssHintMatchedClassification & {
 	valueText: string;
 	range: CssExtractorCandidate["range"];
 	valueRange: CssExtractorCandidate["valueRange"];
+	shape?: CssHintShape;
 };
 
 export type CssHintCollector = {
@@ -28,7 +30,7 @@ export function createCssHintCollector(options: CssHintCollectorOptions = {}): C
 
 			for (const candidate of candidates) {
 				const classification = classifier.classify(candidate);
-				if (!classification) {
+				if (classification.state !== "matched") {
 					continue;
 				}
 

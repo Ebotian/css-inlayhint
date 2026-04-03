@@ -17,6 +17,7 @@ test("filter deduplicates and sorts collector output", () => {
 	const filter = createCssHintFilter();
 	const instructions: CssHintInstruction[] = [
 		{
+			state: "matched",
 			propertyName: "padding",
 			label: "padding-4-values",
 			kind: "Parameter",
@@ -33,6 +34,7 @@ test("filter deduplicates and sorts collector output", () => {
 			},
 		},
 		{
+			state: "matched",
 			propertyName: "margin",
 			label: "margin-2-values",
 			kind: "Parameter",
@@ -49,6 +51,7 @@ test("filter deduplicates and sorts collector output", () => {
 			},
 		},
 		{
+			state: "matched",
 			propertyName: "padding",
 			label: "padding-4-values",
 			kind: "Parameter",
@@ -79,6 +82,7 @@ test("filter preserves distinct instructions at the same position", () => {
 	const filter = createCssHintFilter();
 	const instructions: CssHintInstruction[] = [
 		{
+			state: "matched",
 			propertyName: "border-width",
 			label: "border-width-4-values",
 			kind: "Parameter",
@@ -95,6 +99,7 @@ test("filter preserves distinct instructions at the same position", () => {
 			},
 		},
 		{
+			state: "matched",
 			propertyName: "border-style",
 			label: "border-style-4-values",
 			kind: "Parameter",
