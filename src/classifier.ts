@@ -23,6 +23,15 @@ export type CssHintClassifierOptions = {
 };
 
 const CSS_WIDE_KEYWORDS = new Set(["initial", "inherit", "unset", "revert", "revert-layer"]);
+const SAFE_PROPERTIES = new Set([
+	"border-color",
+	"border-radius",
+	"border-style",
+	"border-width",
+	"grid-area",
+	"margin",
+	"padding",
+]);
 
 export function createCssHintClassifier(options: CssHintClassifierOptions = {}): CssHintClassifier {
 	const suppressGlobalValues = options.suppressGlobalValues !== false;
@@ -40,6 +49,10 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 			}
 
 			if (suppressVariableReferences && /\bvar\(/i.test(valueText)) {
+				return null;
+			}
+
+			if (!SAFE_PROPERTIES.has(candidate.propertyName)) {
 				return null;
 			}
 

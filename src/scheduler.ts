@@ -1,4 +1,6 @@
-import type { InlayHint, Position, Range } from "vscode-languageserver";
+import type { InlayHint, Range } from "vscode-languageserver";
+
+import { filterInlayHintsByRange } from "./protocol";
 
 export type ServiceSchedulerDocumentVersion = number;
 
@@ -39,37 +41,10 @@ type TrackedDocument = {
 
 type RequestState = "ok" | "missing" | "stale" | "cancelled";
 
-function comparePositions(left: Position, right: Position): number {
-	if (left.line < right.line) {
-		return -1;
-	}
-	if (left.line > right.line) {
-		return 1;
-	}
-	if (left.character < right.character) {
-		return -1;
-	}
-	if (left.character > right.character) {
-		return 1;
-	}
-	return 0;
-}
-
-function isPositionBefore(position: Position, other: Position): boolean {
-	return comparePositions(position, other) < 0;
-}
-
-function isPositionAfter(position: Position, other: Position): boolean {
-	return comparePositions(position, other) > 0;
-}
-
-function isPositionWithinRange(position: Position, range: Range): boolean {
-	return comparePositions(position, range.start) >= 0 && comparePositions(position, range.end) <= 0;
-}
-
 function isAbortError(error: unknown): boolean {
 	return error instanceof Error && /abort|cancel|stale/i.test(error.message);
 }
+import { createCssHintPipeline } from "./pipeline";
 
 function createRequestError(message: string): Error {
 	return new Error(message);
@@ -129,23 +104,18 @@ function defaultProduceHints(snapshot: ServiceSchedulerDocumentSnapshot, range: 
 		return [];
 	}
 
-	const position = range.start;
-	if (!isPositionWithinRange(position, range)) {
-		return [];
-	}
-
-	return [
-		{
-			position,
-			label: snapshot.contents,
-		} satisfies ServiceSchedulerHint,
-	];
+	const pipeline = createCssHintPipeline();
+	const instructions = pipeline.collect(snapshot.contents);
+	return instructions.map(
+		(instruction) =>
+			({
+				position: instruction.range.start,
+				label: instruction.label,
+				kind: instruction.kind === "Parameter" ? 2 : undefined,
+				paddingLeft: instruction.strategy === "inline-right",
+			}) satisfies ServiceSchedulerHint,
+	);
 }
-
-function filterHintsByRange(hints: readonly ServiceSchedulerHint[], range: Range): ServiceSchedulerHint[] {
-	return hints.filter((hint) => isPositionWithinRange(hint.position, range));
-}
-
 export function createServiceScheduler(options: ServiceSchedulerOptions = {}): ServiceScheduler {
 	const documents = new Map<string, TrackedDocument>();
 	const produceHints = options.produceHints ?? defaultProduceHints;
@@ -196,7 +166,7 @@ export function createServiceScheduler(options: ServiceSchedulerOptions = {}): S
 				throw createRequestStateError(file, requestState);
 			}
 			const hints = await produceHints(snapshot, range);
-			return filterHintsByRange(hints, range);
+			return filterInlayHintsByRange(hints, range);
 		},
 	};
 }
