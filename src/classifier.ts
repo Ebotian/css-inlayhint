@@ -1,3 +1,5 @@
+import { createRequire } from "node:module";
+
 import type { CssExtractorCandidate } from "./extractor";
 
 export type CssHintStrategy = "inline-right" | "block-end-right";
@@ -23,15 +25,22 @@ export type CssHintClassifierOptions = {
 };
 
 const CSS_WIDE_KEYWORDS = new Set(["initial", "inherit", "unset", "revert", "revert-layer"]);
-const SAFE_PROPERTIES = new Set([
-	"border-color",
-	"border-radius",
-	"border-style",
-	"border-width",
-	"grid-area",
-	"margin",
-	"padding",
-]);
+const nodeRequire = createRequire(__filename);
+const mdnData = nodeRequire("mdn-data") as {
+	css: {
+		properties: Record<string, { status?: string; syntax?: string }>;
+	};
+};
+const shorthandApi = nodeRequire("css-shorthand-properties") as {
+	default?: {
+		isShorthand?(propertyName: string): boolean;
+	};
+	isShorthand?(propertyName: string): boolean;
+	expand?(propertyName: string): string[];
+};
+const standardProperties = new Map<string, { status?: string; syntax?: string }>(
+	Object.entries(mdnData.css.properties as Record<string, { status?: string; syntax?: string }>),
+);
 
 export function createCssHintClassifier(options: CssHintClassifierOptions = {}): CssHintClassifier {
 	const suppressGlobalValues = options.suppressGlobalValues !== false;
@@ -52,7 +61,7 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 				return null;
 			}
 
-			if (!SAFE_PROPERTIES.has(candidate.propertyName)) {
+			if (!isRuleBasedHintCandidate(candidate.propertyName)) {
 				return null;
 			}
 
@@ -66,6 +75,30 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 			};
 		},
 	};
+}
+
+function isRuleBasedHintCandidate(propertyName: string): boolean {
+	const property = standardProperties.get(propertyName);
+	if (!property || property.status !== "standard") {
+		return false;
+	}
+
+	if (
+		!Boolean(shorthandApi && typeof shorthandApi.isShorthand === "function" && shorthandApi.isShorthand(propertyName))
+	) {
+		return false;
+	}
+
+	const syntax = typeof property.syntax === "string" ? property.syntax.trim() : "";
+	if (!syntax) {
+		return false;
+	}
+
+	return hasBoundedRepetition(syntax) && !syntax.includes("|");
+}
+
+function hasBoundedRepetition(syntax: string): boolean {
+	return /\{\s*\d+\s*(?:,\s*\d*)?\s*\}/.test(syntax);
 }
 
 function countValueTokens(valueText: string): number {

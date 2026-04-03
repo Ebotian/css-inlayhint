@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import type { CssHintInstruction } from "../src/collector.js";
+import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
 
 type CssHintCollector = {
 	collect(sourceText: string): CssHintInstruction[];
@@ -18,6 +19,11 @@ function createCssHintPipeline(options: { collector: CssHintCollector; filter: C
 }
 
 test("pipeline composes collector output with filter cleanup", () => {
+	const rule = createStandardPropertySamplingRule("padding");
+	const generatedCase = generateExactCases(rule).find((candidateCase) => candidateCase.valueAtoms.length === 2);
+
+	assert.ok(generatedCase);
+
 	let capturedSourceText = "";
 	let capturedCollectorOutput: CssHintInstruction[] = [];
 
@@ -49,9 +55,9 @@ test("pipeline composes collector output with filter cleanup", () => {
 		},
 	});
 
-	const instructions = pipeline.collect(".probe { padding: 1rem 2rem; }");
+	const instructions = pipeline.collect(generatedCase.code);
 
-	assert.equal(capturedSourceText, ".probe { padding: 1rem 2rem; }");
+	assert.equal(capturedSourceText, generatedCase.code);
 	assert.equal(instructions.length, 1);
 	assert.equal(instructions[0].propertyName, "padding");
 });

@@ -1,17 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { DEFAULT_PROPERTY_SAMPLING_RULES, renderCssDeclaration } from "./lib/exactCssCaseGenerator.js";
-
-const SAFE_PROPERTIES = new Set([
-	"border-color",
-	"border-radius",
-	"border-style",
-	"border-width",
-	"grid-area",
-	"margin",
-	"padding",
-]);
+import {
+	createStandardPropertySamplingRule,
+	generateExactCases,
+	renderCssDeclaration,
+} from "./lib/exactCssCaseGenerator.js";
 
 type CssExtractorCandidate = {
 	kind: "declaration";
@@ -54,30 +48,35 @@ function createCssHintClassifier(): CssHintClassifier {
 	return module.createCssHintClassifier();
 }
 
-test("classifier labels multi-token declarations from the generator samples", () => {
+test("classifier labels shorthand declarations that match the syntax rule", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
-	const rule = DEFAULT_PROPERTY_SAMPLING_RULES.find(
-		(candidateRule) => candidateRule.arities.includes(2) && SAFE_PROPERTIES.has(candidateRule.propertyName),
-	);
+	const rule = createStandardPropertySamplingRule("margin");
 
 	assert.ok(rule);
 
-	const sourceText = renderCssDeclaration(rule.propertyName, rule.valueAtoms.slice(0, 2));
-	const candidate = collector.collectCandidates(sourceText)[0];
+	const generatedCase = generateExactCases(rule).find(
+		(candidateCase) => !candidateCase.valueAtoms.some((atom) => atom.kind === "global" || atom.kind === "variable"),
+	);
+
+	assert.ok(generatedCase);
+
+	const candidate = collector.collectCandidates(generatedCase.code)[0];
 	const classification = classifier.classify(candidate);
 
 	assert.ok(classification);
 	assert.equal(classification?.propertyName, rule.propertyName);
 	assert.equal(classification?.kind, "Parameter");
 	assert.equal(classification?.strategy, "inline-right");
-	assert.equal(classification?.label, `${rule.propertyName}-2-values`);
+	assert.equal(classification?.label, `${rule.propertyName}-${generatedCase.valueAtoms.length}-values`);
 });
 
-test("classifier suppresses non-safe properties", () => {
+test("classifier suppresses shorthand syntax with alternation", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
-	const candidate = collector.collectCandidates(".probe { color: red; }")[0];
+	const rule = createStandardPropertySamplingRule("border");
+	const generatedCase = generateExactCases(rule)[0];
+	const candidate = collector.collectCandidates(generatedCase.code)[0];
 
 	assert.equal(classifier.classify(candidate), null);
 });
@@ -85,7 +84,9 @@ test("classifier suppresses non-safe properties", () => {
 test("classifier suppresses global CSS keywords", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
-	const candidate = collector.collectCandidates(".probe { margin: inherit; }")[0];
+	const candidate = collector.collectCandidates(
+		renderCssDeclaration("margin", [{ kind: "global", text: "inherit" }]),
+	)[0];
 
 	assert.equal(classifier.classify(candidate), null);
 });
@@ -93,7 +94,9 @@ test("classifier suppresses global CSS keywords", () => {
 test("classifier suppresses variable references", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
-	const candidate = collector.collectCandidates(".probe { padding: var(--gap); }")[0];
+	const candidate = collector.collectCandidates(
+		renderCssDeclaration("padding", [{ kind: "variable", text: "var(--gap)" }]),
+	)[0];
 
 	assert.equal(classifier.classify(candidate), null);
 });

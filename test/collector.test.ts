@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import type { CssHintInstruction } from "../src/collector.js";
+import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
 
 type CssHintCollector = {
 	collect(sourceText: string): CssHintInstruction[];
@@ -40,6 +41,14 @@ function createCssHintCollector(options: { extractor: CssExtractor; classifier: 
 }
 
 test("collector turns semantic candidates into classified instructions", () => {
+	const rule = createStandardPropertySamplingRule("margin");
+	const generatedCase = generateExactCases(rule).find(
+		(candidateCase) =>
+			candidateCase.valueAtoms.length === 2 && !candidateCase.valueAtoms.some((atom) => atom.kind === "global"),
+	);
+
+	assert.ok(generatedCase);
+
 	const collector = createCssHintCollector({
 		extractor: {
 			collectCandidates() {
@@ -70,7 +79,7 @@ test("collector turns semantic candidates into classified instructions", () => {
 		},
 	});
 
-	const instructions = collector.collect(".probe { margin: 1rem 2rem; }");
+	const instructions = collector.collect(generatedCase.code);
 
 	assert.equal(instructions.length, 1);
 	assert.equal(instructions[0].propertyName, "margin");
@@ -81,6 +90,13 @@ test("collector turns semantic candidates into classified instructions", () => {
 });
 
 test("collector drops suppressed global declarations", () => {
+	const rule = createStandardPropertySamplingRule("margin");
+	const generatedCase = generateExactCases(rule).find((candidateCase) =>
+		candidateCase.valueAtoms.some((atom) => atom.kind === "global"),
+	);
+
+	assert.ok(generatedCase);
+
 	const collector = createCssHintCollector({
 		extractor: {
 			collectCandidates() {
@@ -104,7 +120,7 @@ test("collector drops suppressed global declarations", () => {
 		},
 	});
 
-	const instructions = collector.collect(".probe { margin: inherit; }");
+	const instructions = collector.collect(generatedCase.code);
 
 	assert.equal(instructions.length, 0);
 });

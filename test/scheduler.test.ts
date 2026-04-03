@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
 import type { InlayHint, Range } from "vscode-languageserver";
+import { createStandardPropertySamplingRule, generateExactCases } from "./lib/exactCssCaseGenerator.js";
 
 type ServiceScheduler = {
 	addDocument(file: string, contents: string, version: number): void;
@@ -22,13 +23,27 @@ const fullRange = {
 	end: { line: 999, character: 999 },
 };
 
+const marginRule = createStandardPropertySamplingRule("margin");
+const marginCases = generateExactCases(marginRule);
+const schedulerMarginCases = marginCases.filter(
+	(candidateCase) =>
+		candidateCase.valueAtoms.length === 1 &&
+		!candidateCase.valueAtoms.some((atom) => atom.kind === "global" || atom.kind === "variable"),
+);
+const firstMarginCase = schedulerMarginCases[0];
+const secondMarginCase = schedulerMarginCases[1];
+
+if (!firstMarginCase || !secondMarginCase) {
+	throw new Error("Expected generated margin cases for scheduler tests");
+}
+
 describe("scheduler layer", () => {
 	test("uses the in-memory draft instead of the disk file", async () => {
 		const scheduler = createServiceScheduler();
 		const file = "file:///workspace/example.css";
 
-		scheduler.addDocument(file, ".probe { margin: 1px; }", 1);
-		scheduler.updateDocument(file, ".probe { margin: 2px; }", 2);
+		scheduler.addDocument(file, firstMarginCase.code, 1);
+		scheduler.updateDocument(file, secondMarginCase.code, 2);
 
 		const hints = await scheduler.inlayHints(file, fullRange);
 
@@ -41,9 +56,9 @@ describe("scheduler layer", () => {
 		const file = "file:///workspace/cancel.css";
 		const firstSignal = new AbortController();
 
-		scheduler.addDocument(file, ".probe { margin: 1px; }", 1);
+		scheduler.addDocument(file, firstMarginCase.code, 1);
 		const firstRequest = scheduler.inlayHints(file, fullRange, { signal: firstSignal.signal });
-		scheduler.updateDocument(file, ".probe { margin: 2px; }", 2);
+		scheduler.updateDocument(file, secondMarginCase.code, 2);
 		firstSignal.abort();
 		const secondRequest = scheduler.inlayHints(file, fullRange);
 
@@ -58,7 +73,7 @@ describe("scheduler layer", () => {
 		const scheduler = createServiceScheduler();
 		const file = "file:///workspace/closed.css";
 
-		scheduler.addDocument(file, ".probe { margin: 1px; }", 1);
+		scheduler.addDocument(file, firstMarginCase.code, 1);
 		scheduler.removeDocument(file);
 
 		await assert.rejects(scheduler.inlayHints(file, fullRange), /closed|missing|removed/i);
