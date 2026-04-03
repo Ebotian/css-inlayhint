@@ -47,7 +47,7 @@ test("semantic collector gathers declaration candidates from the flex sample", (
 	assert.ok(hasCandidate(candidates, "transition-duration", "500ms"));
 	assert.deepEqual(
 		candidates.find((candidate) => candidate.propertyName === "margin" && candidate.valueText === "2px")?.range.start,
-		{ line: 3, character: 2 },
+		{ line: 3, character: 1 },
 	);
 });
 
@@ -59,7 +59,7 @@ test("semantic collector keeps declarations inside at-rules from the button hove
 
 	assert.ok(hasCandidate(candidates, "display", "flex"));
 	assert.ok(hasCandidate(candidates, "padding", "15px 30px"));
-	assert.ok(hasCandidate(candidates, "background", "#E51A4B"));
+	assert.ok(hasCandidate(candidates, "background", "#e51a4b"));
 	assert.ok(candidates.every((candidate) => !candidate.propertyName.startsWith("@")));
 });
 

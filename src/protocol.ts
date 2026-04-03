@@ -1,142 +1,70 @@
-export type ProtocolUri = string;
+import { type InlayHint, type Position, type Range } from "vscode-languageserver";
 
-export type ProtocolPosition = {
-	line: number;
-	character: number;
-};
+export { InlayHintKind } from "vscode-languageserver";
+export type { InlayHint, InlayHintLabelPart, Position, Range } from "vscode-languageserver";
 
-export type ProtocolRange = {
-	start: ProtocolPosition;
-	end: ProtocolPosition;
-};
-
-export type ProtocolRangeLike = {
-	contains(position: ProtocolPosition): boolean;
-};
-
-export type ProtocolDocumentVersion = string | number | null;
-
-export interface ProtocolTextDocumentLike {
-	uri: ProtocolUri;
-	version?: ProtocolDocumentVersion;
-	languageId?: string;
-	getText(range?: ProtocolRange): string;
-	positionAt(offset: number): ProtocolPosition;
-	offsetAt(position: ProtocolPosition): number;
-}
-
-export type ProtocolRequestContext = {
+export type RequestContext = {
 	requestId?: string | number;
 	traceName?: string;
 	timeStarted?: number;
 	cancellationRequested?: boolean;
 };
 
-export type ProtocolInlayHintLabelPart = {
-	label: unknown;
-};
+export type MethodHandler<TParams, TResult> = (params: TParams, context: RequestContext) => TResult | Promise<TResult>;
 
-export type ProtocolInlayHintLabel = string | ProtocolInlayHintLabelPart[] | unknown;
+export type NotificationHandler<TParams> = (params: TParams, context: RequestContext) => void | Promise<void>;
 
-export type ProtocolInlayHint = {
-	position: ProtocolPosition;
-	label: ProtocolInlayHintLabel;
-	kind?: number;
-	paddingLeft?: boolean;
-	paddingRight?: boolean;
-};
-
-export enum ProtocolInlayHintKind {
-	Parameter = 1,
-	Type = 2,
-}
-
-export interface ProtocolFeatureEnvelope<TPayload> {
-	feature: string;
-	payload: TPayload;
-	source?: string;
-	revision?: ProtocolDocumentVersion;
-	confidence?: number;
-	tags?: string[];
-}
-
-export type ProtocolMethodHandler<TParams, TResult> = (
-	params: TParams,
-	context: ProtocolRequestContext,
-) => TResult | Promise<TResult>;
-
-export type ProtocolNotificationHandler<TParams> = (
-	params: TParams,
-	context: ProtocolRequestContext,
-) => void | Promise<void>;
-
-export function normalizeProtocolLabel(label: ProtocolInlayHintLabel): string {
+function normalizeInlayHintLabel(label: InlayHint["label"]): string {
 	if (typeof label === "string") {
 		return label;
 	}
 	if (Array.isArray(label)) {
-		return label
-			.map((part) => {
-				if (typeof part === "string") {
-					return part;
-				}
-				if (part && typeof part === "object" && "label" in part) {
-					return String((part as ProtocolInlayHintLabelPart).label);
-				}
-				return "";
-			})
-			.join("");
+		return label.map((part) => (typeof part === "string" ? part : String(part.value))).join("");
 	}
 	return String(label ?? "");
 }
 
-export function isProtocolPositionInsideRange(position: ProtocolPosition, range: ProtocolRangeLike): boolean {
-	return range.contains(position);
+function comparePositions(left: Position, right: Position): number {
+	if (left.line !== right.line) {
+		return left.line - right.line;
+	}
+	return left.character - right.character;
 }
 
-export function filterProtocolHintsByRange(
-	hints: readonly ProtocolInlayHint[],
-	range: ProtocolRangeLike,
-): ProtocolInlayHint[] {
-	return hints.filter((hint) => isProtocolPositionInsideRange(hint.position, range));
+export function isPositionInsideRange(position: Position, range: Range): boolean {
+	return comparePositions(position, range.start) >= 0 && comparePositions(position, range.end) <= 0;
 }
 
-export interface ProtocolMethodRegistry {
-	request<TParams, TResult>(method: string, handler: ProtocolMethodHandler<TParams, TResult>): ProtocolMethodRegistry;
-	notification<TParams>(method: string, handler: ProtocolNotificationHandler<TParams>): ProtocolMethodRegistry;
-	command<TParams, TResult>(method: string, handler: ProtocolMethodHandler<TParams, TResult>): ProtocolMethodRegistry;
+export function filterInlayHintsByRange(hints: readonly InlayHint[], range: Range): InlayHint[] {
+	return hints.filter((hint) => isPositionInsideRange(hint.position, range));
+}
+
+export interface MethodRegistry {
+	request<TParams, TResult>(method: string, handler: MethodHandler<TParams, TResult>): MethodRegistry;
+	notification<TParams>(method: string, handler: NotificationHandler<TParams>): MethodRegistry;
+	command<TParams, TResult>(method: string, handler: MethodHandler<TParams, TResult>): MethodRegistry;
 	has(method: string): boolean;
-	dispatchRequest<TParams, TResult>(
-		method: string,
-		params: TParams,
-		context?: ProtocolRequestContext,
-	): Promise<TResult>;
-	dispatchNotification<TParams>(method: string, params: TParams, context?: ProtocolRequestContext): Promise<void>;
+	dispatchRequest<TParams, TResult>(method: string, params: TParams, context?: RequestContext): Promise<TResult>;
+	dispatchNotification<TParams>(method: string, params: TParams, context?: RequestContext): Promise<void>;
 	listMethods(): string[];
 }
 
-export function createProtocolMethodRegistry(): ProtocolMethodRegistry {
-	const requestHandlers = new Map<string, ProtocolMethodHandler<unknown, unknown>>();
-	const notificationHandlers = new Map<string, ProtocolNotificationHandler<unknown>>();
-	const commandHandlers = new Map<string, ProtocolMethodHandler<unknown, unknown>>();
+export function createMethodRegistry(): MethodRegistry {
+	const requestHandlers = new Map<string, MethodHandler<unknown, unknown>>();
+	const notificationHandlers = new Map<string, NotificationHandler<unknown>>();
+	const commandHandlers = new Map<string, MethodHandler<unknown, unknown>>();
 
-	const registry: ProtocolMethodRegistry = {
-		request<TParams, TResult>(
-			method: string,
-			handler: ProtocolMethodHandler<TParams, TResult>,
-		): ProtocolMethodRegistry {
-			requestHandlers.set(method, handler as ProtocolMethodHandler<unknown, unknown>);
+	const registry: MethodRegistry = {
+		request<TParams, TResult>(method: string, handler: MethodHandler<TParams, TResult>): MethodRegistry {
+			requestHandlers.set(method, handler as MethodHandler<unknown, unknown>);
 			return registry;
 		},
-		notification<TParams>(method: string, handler: ProtocolNotificationHandler<TParams>): ProtocolMethodRegistry {
-			notificationHandlers.set(method, handler as ProtocolNotificationHandler<unknown>);
+		notification<TParams>(method: string, handler: NotificationHandler<TParams>): MethodRegistry {
+			notificationHandlers.set(method, handler as NotificationHandler<unknown>);
 			return registry;
 		},
-		command<TParams, TResult>(
-			method: string,
-			handler: ProtocolMethodHandler<TParams, TResult>,
-		): ProtocolMethodRegistry {
-			commandHandlers.set(method, handler as ProtocolMethodHandler<unknown, unknown>);
+		command<TParams, TResult>(method: string, handler: MethodHandler<TParams, TResult>): MethodRegistry {
+			commandHandlers.set(method, handler as MethodHandler<unknown, unknown>);
 			return registry;
 		},
 		has(method: string): boolean {
@@ -145,7 +73,7 @@ export function createProtocolMethodRegistry(): ProtocolMethodRegistry {
 		async dispatchRequest<TParams, TResult>(
 			method: string,
 			params: TParams,
-			context: ProtocolRequestContext = {},
+			context: RequestContext = {},
 		): Promise<TResult> {
 			const handler = requestHandlers.get(method) ?? commandHandlers.get(method);
 			if (!handler) {
@@ -153,11 +81,7 @@ export function createProtocolMethodRegistry(): ProtocolMethodRegistry {
 			}
 			return (await handler(params, context)) as TResult;
 		},
-		async dispatchNotification<TParams>(
-			method: string,
-			params: TParams,
-			context: ProtocolRequestContext = {},
-		): Promise<void> {
+		async dispatchNotification<TParams>(method: string, params: TParams, context: RequestContext = {}): Promise<void> {
 			const handler = notificationHandlers.get(method);
 			if (!handler) {
 				throw new Error(`No notification handler registered for ${method}`);
@@ -170,14 +94,4 @@ export function createProtocolMethodRegistry(): ProtocolMethodRegistry {
 	};
 
 	return registry;
-}
-
-export function toProtocolInlayHintKind(kind: number | undefined): ProtocolInlayHintKind | undefined {
-	switch (kind) {
-		case ProtocolInlayHintKind.Parameter:
-		case ProtocolInlayHintKind.Type:
-			return kind;
-		default:
-			return undefined;
-	}
 }

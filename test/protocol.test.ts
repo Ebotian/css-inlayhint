@@ -1,36 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-import {
-	ProtocolInlayHintKind,
-	createProtocolMethodRegistry,
-	filterProtocolHintsByRange,
-	normalizeProtocolLabel,
-	toProtocolInlayHintKind,
-} from "../src/index.js";
+import { InlayHintKind, createMethodRegistry, filterInlayHintsByRange } from "../src/index.js";
 
 describe("protocol layer", () => {
-	test("normalizeProtocolLabel keeps plain strings", () => {
-		assert.equal(normalizeProtocolLabel("compile-ok"), "compile-ok");
-	});
-
-	test("normalizeProtocolLabel flattens label parts", () => {
-		assert.equal(
-			normalizeProtocolLabel([
-				"margin:",
-				{ label: " top" },
-				"/",
-				{ label: "bottom" },
-			]),
-			"margin: top/bottom",
-		);
-	});
-
-	test("toProtocolInlayHintKind maps supported kinds only", () => {
-		assert.equal(toProtocolInlayHintKind(1), ProtocolInlayHintKind.Parameter);
-		assert.equal(toProtocolInlayHintKind(2), ProtocolInlayHintKind.Type);
-		assert.equal(toProtocolInlayHintKind(0), undefined);
-		assert.equal(toProtocolInlayHintKind(undefined), undefined);
+	test("standard inlay hint kinds keep their LSP values", () => {
+		assert.equal(InlayHintKind.Type, 1);
+		assert.equal(InlayHintKind.Parameter, 2);
 	});
 
 	test("filterProtocolHintsByRange keeps only in-range hints", () => {
@@ -39,16 +15,15 @@ describe("protocol layer", () => {
 			{ position: { line: 2, character: 0 }, label: "drop" },
 		];
 		const range = {
-			contains(position: { line: number; character: number }) {
-				return position.line === 1;
-			},
+			start: { line: 1, character: 0 },
+			end: { line: 1, character: 10 },
 		};
 
-		assert.deepEqual(filterProtocolHintsByRange(hints, range), [hints[0]]);
+		assert.deepEqual(filterInlayHintsByRange(hints, range), [hints[0]]);
 	});
 
 	test("createProtocolMethodRegistry dispatches requests notifications and commands", async () => {
-		const registry = createProtocolMethodRegistry();
+		const registry = createMethodRegistry();
 		const events: string[] = [];
 
 		registry.request("request/method", async (params: { value: number }, context) => {
@@ -80,10 +55,6 @@ describe("protocol layer", () => {
 		assert.equal(requestResult, 42);
 		assert.equal(commandResult, "CSS");
 		assert.deepEqual(events, ["notification:ping", "request:41:7", "command:css"]);
-		assert.deepEqual(registry.listMethods().sort(), [
-			"command/method",
-			"notification/method",
-			"request/method",
-		]);
+		assert.deepEqual(registry.listMethods().sort(), ["command/method", "notification/method", "request/method"]);
 	});
 });

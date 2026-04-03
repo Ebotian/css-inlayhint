@@ -1,22 +1,28 @@
 import * as vscode from "vscode";
-import {
-	filterProtocolHintsByRange,
-	normalizeProtocolLabel,
-	ProtocolInlayHint,
-	toProtocolInlayHintKind,
-} from "../../dist/index.js";
+import { filterInlayHintsByRange } from "../../dist/index.js";
+import type { InlayHint } from "../../dist/index.js";
 import { getCSSLanguageService } from "vscode-css-languageservice";
 import type { Stylesheet as CSSStylesheet, TextDocument as CSSTextDocument } from "vscode-css-languageservice";
 
 type CSSLanguageServiceWithOptionalInlayHints = ReturnType<typeof getCSSLanguageService> & {
-	doInlayHints?: (document: CSSTextDocument, stylesheet: CSSStylesheet) => ProtocolInlayHint[];
+	doInlayHints?: (document: CSSTextDocument, stylesheet: CSSStylesheet) => InlayHint[];
 };
 
-function toVsCodeHint(hint: ProtocolInlayHint): vscode.InlayHint {
+function normalizeInlayHintLabel(label: InlayHint["label"]): string {
+	if (typeof label === "string") {
+		return label;
+	}
+	if (Array.isArray(label)) {
+		return label.map((part) => (typeof part === "string" ? part : String(part.value))).join("");
+	}
+	return String(label ?? "");
+}
+
+function toVsCodeHint(hint: InlayHint): vscode.InlayHint {
 	const result = new vscode.InlayHint(
 		new vscode.Position(hint.position.line, hint.position.character),
-		normalizeProtocolLabel(hint.label),
-		toProtocolInlayHintKind(hint.kind) as vscode.InlayHintKind | undefined,
+		normalizeInlayHintLabel(hint.label),
+		hint.kind as vscode.InlayHintKind | undefined,
 	);
 	result.paddingLeft = Boolean(hint.paddingLeft);
 	result.paddingRight = Boolean(hint.paddingRight);
@@ -54,8 +60,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
 			const stylesheet = languageService.parseStylesheet(document as unknown as CSSTextDocument) as CSSStylesheet;
 			const hints = (languageService.doInlayHints?.(document as unknown as CSSTextDocument, stylesheet) ??
-				[]) as ProtocolInlayHint[];
-			return filterProtocolHintsByRange(hints, range).map(toVsCodeHint);
+				[]) as InlayHint[];
+			return filterInlayHintsByRange(hints, range).map(toVsCodeHint);
 		},
 	};
 

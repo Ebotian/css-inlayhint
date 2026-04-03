@@ -1,7 +1,2 @@
-export { createProtocolMethodRegistry } from "./protocol";
-export type {
-	ProtocolMethodHandler,
-	ProtocolMethodRegistry,
-	ProtocolNotificationHandler,
-	ProtocolRequestContext,
-} from "./protocol";
+export { createMethodRegistry } from "./protocol";
+export type { MethodHandler, MethodRegistry, NotificationHandler, RequestContext } from "./protocol";

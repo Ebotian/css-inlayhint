@@ -1,23 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-type Hint = {
-	position: { line: number; character: number };
-	label: string;
-	kind?: number;
-	paddingLeft?: boolean;
-	paddingRight?: boolean;
-};
+import type { InlayHint, Range } from "vscode-languageserver";
 
 type ServiceScheduler = {
-	addDocument(file: string, contents: string, version: number | string | null): void;
-	updateDocument(file: string, contents: string, version: number | string | null): void;
+	addDocument(file: string, contents: string, version: number): void;
+	updateDocument(file: string, contents: string, version: number): void;
 	removeDocument(file: string): void;
-	inlayHints(
-		file: string,
-		range: { start: { line: number; character: number }; end: { line: number; character: number } },
-		context?: { signal?: AbortSignal },
-	): Promise<Hint[]>;
+	inlayHints(file: string, range: Range, context?: { signal?: AbortSignal }): Promise<InlayHint[]>;
 };
 
 function createServiceScheduler(): ServiceScheduler {
