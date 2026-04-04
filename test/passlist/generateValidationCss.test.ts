@@ -4,20 +4,24 @@ import test from "node:test";
 import { renderValidationCss, sortPropertyNamesByCaseCount } from "./generateValidationCss.js";
 
 type PasslistStatistics = {
-	passedCount: number;
+	matchedCount: number;
 	totalCount: number;
-	passedProperties: Record<string, true>;
+	matchedProperties: Record<string, true>;
+	noHintCount: number;
+	noHintProperties: Record<string, true>;
 };
 
 test("validation css sorts properties by ascending generated case count", () => {
 	const statistics: PasslistStatistics = {
-		passedCount: 3,
+		matchedCount: 3,
 		totalCount: 3,
-		passedProperties: {
+		matchedProperties: {
 			medium: true,
 			small: true,
 			large: true,
 		},
+		noHintCount: 0,
+		noHintProperties: {},
 	};
 
 	const counts = new Map([
@@ -38,12 +42,35 @@ test("validation css sorts properties by ascending generated case count", () => 
 
 test("validation css throws when a property generates no cases", () => {
 	const statistics: PasslistStatistics = {
-		passedCount: 1,
+		matchedCount: 1,
 		totalCount: 1,
-		passedProperties: {
+		matchedProperties: {
 			broken: true,
 		},
+		noHintCount: 0,
+		noHintProperties: {},
 	};
 
 	assert.throws(() => renderValidationCss(statistics, () => []), /Generated no validation cases for property: broken/);
+});
+
+test("validation css ignores no-hint properties", () => {
+	const statistics: PasslistStatistics = {
+		matchedCount: 1,
+		totalCount: 2,
+		matchedProperties: {
+			visible: true,
+		},
+		noHintCount: 1,
+		noHintProperties: {
+			silent: true,
+		},
+	};
+
+	const rendered = renderValidationCss(statistics, (propertyName) =>
+		propertyName === "visible" ? [{ description: "visible/0", code: ".probe { visible: value; }" }] : [],
+	);
+
+	assert.ok(rendered.includes("visible"));
+	assert.ok(!rendered.includes("silent"));
 });

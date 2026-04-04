@@ -4,3 +4,4 @@ css生成没有对应上
 text-decoration
 后缀重复的都不要
 生成的css从cases少到多的属性顺序开始生成(在文件头)
+pass记录我们会生成hint的,也记录处理过的故意完全没有生成hint的

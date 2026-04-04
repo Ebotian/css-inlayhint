@@ -129,3 +129,15 @@ test("mapper derives logical-axis shorthand labels", () => {
 	assert.equal(mappedBlockPadding.label, "start, end");
 	assert.equal(mappedInlinePadding.label, "start, end");
 });
+
+test("mapper rejects forbidden global labels", () => {
+	const mapper = createCssHintMapper();
+
+	assert.throws(() => mapper.map([createInstruction("text-decoration", 1, "inherit")]), /Forbidden label "global"/);
+});
+
+test("mapper rejects labels that exactly match the value text", () => {
+	const mapper = createCssHintMapper();
+
+	assert.throws(() => mapper.map([createInstruction("text-box", 1, "normal")]), /Forbidden label echo of value/);
+});

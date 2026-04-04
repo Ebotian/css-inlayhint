@@ -4,9 +4,11 @@ import { resolve } from "node:path";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 
 type PasslistStatistics = {
-	passedCount: number;
+	matchedCount: number;
 	totalCount: number;
-	passedProperties: Record<string, true>;
+	matchedProperties: Record<string, true>;
+	noHintCount: number;
+	noHintProperties: Record<string, true>;
 };
 
 type ValidationCase = {
@@ -58,7 +60,7 @@ export function sortPropertyNamesByCaseCount(
 	statistics: PasslistStatistics,
 	generateCases: (propertyName: string) => readonly ValidationCase[] = generateValidationCases,
 ): string[] {
-	return Object.keys(statistics.passedProperties).sort((left, right) => {
+	return Object.keys(statistics.matchedProperties).sort((left, right) => {
 		const leftCount = generateCases(left).length;
 		const rightCount = generateCases(right).length;
 

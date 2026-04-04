@@ -10,6 +10,7 @@ type CssHintInstruction = {
 	strategy: "inline-right" | "block-end-right";
 	tokenCount: number;
 	valueText: string;
+	shape?: { family: "grid-line" };
 	range: {
 		start: { line: number; character: number };
 		end: { line: number; character: number };
@@ -88,4 +89,44 @@ test("resolver ignores block-end hints for now", () => {
 	const hints = resolver.resolveBlockEnd(document, [createInstruction("padding", "block-end-right", 2)]);
 
 	assert.deepEqual(hints, []);
+});
+
+test("resolver rejects duplicate labels on the same line", () => {
+	const resolver = createCssHintResolver();
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, "padding: value1 value2;");
+	const duplicateInstruction = {
+		...createInstruction("padding", "inline-right", 2),
+		label: "left, left",
+	};
+
+	assert.throws(() => resolver.resolveInline(document, [duplicateInstruction]), /Duplicate label detected/);
+});
+
+test("resolver allows duplicate labels for grid-line shapes", () => {
+	const resolver = createCssHintResolver();
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, "grid-column: 1 1;");
+	const gridLineInstruction = {
+		...createInstruction("grid-column", "inline-right", 2),
+		shape: { family: "grid-line" as const },
+		label: "line, line",
+	};
+
+	const hints = resolver.resolveInline(document, [gridLineInstruction]);
+
+	assert.equal(hints.length, 2);
+	assert.deepEqual(
+		hints.map((hint) => hint.label),
+		["line", "line"],
+	);
+});
+
+test("resolver rejects forbidden global labels", () => {
+	const resolver = createCssHintResolver();
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, "padding: value1;");
+	const globalInstruction = {
+		...createInstruction("margin", "inline-right", 1),
+		label: "global",
+	};
+
+	assert.throws(() => resolver.resolveInline(document, [globalInstruction]), /Forbidden label "global"/);
 });

@@ -1,0 +1,112 @@
+import { createRequire } from "node:module";
+
+import { usesUnorderedOptionalGroupSyntax } from "./judgment.js";
+import { inferUnorderedShorthandLabelParts, inferUnorderedSyntaxLabelParts } from "./parseInfer.js";
+import {
+	compactShorthandLabels,
+	normalizeShorthandMemberLabel,
+	shouldCompactShorthandLabels,
+} from "./classifyNormalize.js";
+
+const nodeRequire = createRequire(__filename);
+const shorthandApi = nodeRequire("css-shorthand-properties") as {
+	default?: {
+		expand?(propertyName: string): string[];
+	};
+	expand?(propertyName: string): string[];
+};
+
+export function getShorthandExpansion(propertyName: string): string[] {
+	const expanded = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];
+	if (!Array.isArray(expanded) || expanded.length === 0) {
+		return [];
+	}
+
+	if (expanded.length === 1 && expanded[0] === propertyName) {
+		return [];
+	}
+
+	return expanded;
+}
+
+export function getDirectionalFamily(propertyName: string): readonly string[] | null {
+	const expanded = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];
+	if (!Array.isArray(expanded) || expanded.length !== 4) {
+		return null;
+	}
+
+	const directions = expanded
+		.map(extractSingleDirection)
+		.filter((direction): direction is DirectionalName => Boolean(direction));
+	if (directions.length !== 4) {
+		return null;
+	}
+
+	const uniqueDirections = new Set(directions);
+	if (uniqueDirections.size !== 4) {
+		return null;
+	}
+
+	const orderedDirections = [...uniqueDirections].sort(
+		(left, right) => DIRECTION_ORDER.indexOf(left) - DIRECTION_ORDER.indexOf(right),
+	);
+	if (orderedDirections.length !== 4) {
+		return null;
+	}
+
+	if (orderedDirections.some((direction, index) => direction !== DIRECTION_ORDER[index])) {
+		return null;
+	}
+
+	return orderedDirections;
+}
+
+export function getShorthandLabelParts(propertyName: string, tokenCount: number, valueText?: string): string[] | null {
+	const expanded = getShorthandExpansion(propertyName);
+
+	if (usesUnorderedOptionalGroupSyntax(propertyName)) {
+		const unorderedLabelParts =
+			expanded.length > 0 ? inferUnorderedShorthandLabelParts(expanded, valueText, tokenCount) : null;
+		if (unorderedLabelParts) {
+			return unorderedLabelParts;
+		}
+
+		return inferUnorderedSyntaxLabelParts(propertyName, valueText, tokenCount);
+	}
+
+	if (!Array.isArray(expanded) || expanded.length === 0) {
+		return null;
+	}
+
+	const labels = expanded.map((member) => normalizeShorthandMemberLabel(member, expanded));
+	if (labels.some((label) => !label)) {
+		return null;
+	}
+
+	const normalizedLabels = shouldCompactShorthandLabels(labels as string[])
+		? compactShorthandLabels(labels as string[])
+		: [...expanded];
+	if (tokenCount === 1) {
+		return [normalizedLabels.join("/")];
+	}
+
+	if (tokenCount <= normalizedLabels.length) {
+		return normalizedLabels.slice(0, tokenCount);
+	}
+
+	return null;
+}
+
+function extractSingleDirection(name: string): DirectionalName | null {
+	const parts = name.split("-").filter(Boolean);
+	const directions = parts.filter((part): part is DirectionalName => DIRECTION_ORDER.includes(part as DirectionalName));
+	if (directions.length !== 1) {
+		return null;
+	}
+
+	return directions[0] ?? null;
+}
+
+const DIRECTION_ORDER = ["top", "right", "bottom", "left"] as const;
+
+type DirectionalName = (typeof DIRECTION_ORDER)[number];

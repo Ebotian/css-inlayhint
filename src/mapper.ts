@@ -1,6 +1,11 @@
 import { createRequire } from "node:module";
 
 import type { CssHintInstruction } from "./collector";
+import {
+	assertNoGlobalLabels,
+	assertNoPropertyNameEchoLabels,
+	assertNoValueEchoLabels,
+} from "./helper/labelValidation.js";
 import { getShorthandLabelParts } from "./propertySyntax";
 
 export type CssHintMapper = {
@@ -70,6 +75,10 @@ function mapShorthandLabel(propertyName: string, tokenCount: number, valueText?:
 		if (!shorthandLabelParts) {
 			return null;
 		}
+
+		assertNoGlobalLabels(propertyName, shorthandLabelParts);
+		assertNoPropertyNameEchoLabels(propertyName, shorthandLabelParts);
+		assertNoValueEchoLabels(propertyName, valueText, shorthandLabelParts);
 
 		return shorthandLabelParts.join(", ");
 	}

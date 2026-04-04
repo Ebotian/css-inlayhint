@@ -10,9 +10,11 @@ import { getPropertyStatus, getPropertySyntax, listPropertyNames } from "../../s
 import type { CssExtractorCandidate } from "../../src/extractor.js";
 
 type PasslistStatistics = {
-	passedCount: number;
+	matchedCount: number;
 	totalCount: number;
-	passedProperties: Record<string, true>;
+	matchedProperties: Record<string, true>;
+	noHintCount: number;
+	noHintProperties: Record<string, true>;
 };
 
 const FULL_RANGE = {
@@ -33,18 +35,17 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 		return Boolean(getPropertySyntax(propertyName).trim());
 	});
 
-	const passedPropertyNames: string[] = [];
+	const matchedPropertyNames: string[] = [];
+	const noHintPropertyNames: string[] = [];
 	for (const propertyName of candidatePropertyNames) {
 		const classifier = createCssHintClassifier();
 		const extractor = createCssExtractor();
 		const rule = createStandardPropertySamplingRule(propertyName);
 		const cases = generateExactCases(rule);
-		if (cases.length === 0) {
-			continue;
-		}
-
 		const matchedCases = cases.filter((generatedCase) => isMatchedHintCase(classifier, extractor, generatedCase.code));
+
 		if (matchedCases.length === 0) {
+			noHintPropertyNames.push(propertyName);
 			continue;
 		}
 
@@ -56,18 +57,23 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 				filePrefix: `file:///workspace/passlist/${propertyName}`,
 				range: FULL_RANGE,
 			});
-			passedPropertyNames.push(propertyName);
+			matchedPropertyNames.push(propertyName);
 		} catch {
-			continue;
+			noHintPropertyNames.push(propertyName);
 		}
 	}
 
-	const passedProperties = Object.fromEntries(passedPropertyNames.map((propertyName) => [propertyName, true] as const));
+	const matchedProperties = Object.fromEntries(
+		matchedPropertyNames.map((propertyName) => [propertyName, true] as const),
+	);
+	const noHintProperties = Object.fromEntries(noHintPropertyNames.map((propertyName) => [propertyName, true] as const));
 
 	return {
-		passedCount: passedPropertyNames.length,
+		matchedCount: matchedPropertyNames.length,
 		totalCount: candidatePropertyNames.length,
-		passedProperties,
+		matchedProperties,
+		noHintCount: noHintPropertyNames.length,
+		noHintProperties,
 	};
 }
 

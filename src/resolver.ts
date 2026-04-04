@@ -2,6 +2,7 @@ import type { TextDocument } from "vscode-css-languageservice";
 
 import type { CssHintInstruction } from "./collector";
 import type { CssHintResolvedInstruction } from "./constructor";
+import { assertNoGlobalLabels } from "./helper/labelValidation.js";
 
 export type CssHintResolver = {
 	resolveInline(document: TextDocument, instructions: readonly CssHintInstruction[]): CssHintResolvedInstruction[];
@@ -28,6 +29,7 @@ function resolveInlineInstruction(
 ): CssHintResolvedInstruction[] {
 	const tokenMatches = [...instruction.valueText.matchAll(/[^\s/]+/g)];
 	const labelParts = instruction.label.split(",").map((part) => part.trim());
+	validateLabelParts(instruction.propertyName, labelParts, instruction.shape?.family === "grid-line");
 	const valueStartOffset = document.offsetAt(instruction.valueRange.start);
 
 	const resolvedInstructions: CssHintResolvedInstruction[] = [];
@@ -44,4 +46,13 @@ function resolveInlineInstruction(
 	}
 
 	return resolvedInstructions;
+}
+
+function validateLabelParts(propertyName: string, labelParts: readonly string[], allowDuplicateLabels: boolean): void {
+	assertNoGlobalLabels(propertyName, labelParts);
+
+	const compactLabelParts = labelParts.filter((part) => part.length > 0);
+	if (!allowDuplicateLabels && new Set(compactLabelParts).size !== compactLabelParts.length) {
+		throw new Error(`Duplicate label detected for ${propertyName}: ${compactLabelParts.join(", ")}`);
+	}
 }

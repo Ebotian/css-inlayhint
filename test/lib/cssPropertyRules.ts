@@ -36,6 +36,7 @@ const shorthandApi = nodeRequire("css-shorthand-properties") as {
 const builtInCssData = nodeRequire("vscode-css-languageservice/lib/esm/data/webCustomData.js") as {
 	cssData: StandardCssData;
 };
+const builtInCssSyntaxes = nodeRequire("mdn-data/css/syntaxes.json") as Record<string, { syntax?: string }>;
 
 const PROPERTY_BY_NAME = new Map<string, StandardPropertyRecord>();
 
@@ -252,6 +253,10 @@ function collectStandardValueAtomsFromRecord(
 		appendAtom(atomsByKind, atom);
 	}
 
+	for (const atom of collectTypeSyntaxAtoms(syntaxAst, allowsColor)) {
+		appendAtom(atomsByKind, atom);
+	}
+
 	for (const value of property.values ?? []) {
 		const atom = classifyStandardCssText(value.name, { allowsColor });
 		if (atom) {
@@ -282,6 +287,66 @@ function collectStandardValueAtomsFromRecord(
 			return left.text.localeCompare(right.text);
 		});
 }
+
+function collectTypeSyntaxAtoms(
+	syntaxAst: ReturnType<typeof parseStandardCssSyntax>,
+	allowsColor: boolean,
+	visitedTypes = new Set<string>(),
+): CssValueAtom[] {
+	const atomsByKind = new Map<CssValueKind, CssValueAtom[]>();
+	visitCssSyntaxAst(syntaxAst, (node) => {
+		if (node.type !== "Type") {
+			return;
+		}
+
+		for (const atom of collectTypeAtoms(node.name, allowsColor, visitedTypes)) {
+			appendDistinctAtomWithoutCap(atomsByKind, atom);
+		}
+	});
+
+	return [...atomsByKind.values()].flat();
+}
+
+function collectTypeAtoms(typeName: string, allowsColor: boolean, visitedTypes: Set<string>): CssValueAtom[] {
+	const loweredTypeName = typeName.toLowerCase();
+	if (visitedTypes.has(loweredTypeName)) {
+		return [];
+	}
+
+	visitedTypes.add(loweredTypeName);
+
+	if (loweredTypeName === "angle") {
+		return [
+			{ kind: "length", text: "0deg" },
+			{ kind: "length", text: "90deg" },
+		];
+	}
+
+	if (loweredTypeName === "ratio") {
+		return [
+			{ kind: "keyword", text: "1/1" },
+			{ kind: "keyword", text: "16/9" },
+		];
+	}
+
+	const syntax = builtInCssSyntaxes[loweredTypeName]?.syntax;
+	if (!syntax) {
+		return [];
+	}
+
+	const typeSyntaxAst = parseStandardCssSyntax(syntax);
+	const atomsByKind = new Map<CssValueKind, CssValueAtom[]>();
+	for (const atom of extractStandardSyntaxAtoms(typeSyntaxAst, { allowsColor })) {
+		appendDistinctAtomWithoutCap(atomsByKind, atom);
+	}
+
+	for (const atom of collectTypeSyntaxAtoms(typeSyntaxAst, allowsColor, visitedTypes)) {
+		appendDistinctAtomWithoutCap(atomsByKind, atom);
+	}
+
+	return [...atomsByKind.values()].flat();
+}
+
 function parseUnorderedGroupArities(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): number[] {
 	const branches = findUnorderedGroupBranches(syntaxAst);
 	if (!branches || branches.length === 0) {
@@ -294,6 +359,34 @@ function parseUnorderedGroupArities(syntaxAst: ReturnType<typeof parseStandardCs
 export function usesSyntaxDrivenUnorderedGroupSyntax(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): boolean {
 	if (syntaxAst.type === "Group" && syntaxAst.combinator === "||") {
 		return syntaxAst.terms.every((term) => isSimpleSyntaxDrivenTerm(term));
+	}
+
+	if (syntaxAst.type === "Group" && syntaxAst.combinator === "|") {
+		let unorderedGroupCount = 0;
+		for (const term of syntaxAst.terms) {
+			if (isOptionalSlashMultiplier(term)) {
+				continue;
+			}
+
+			if (term.type === "Group" && term.combinator === "||") {
+				if (
+					!term.terms.every((child) => isSimpleSyntaxDrivenTerm(child as ReturnType<typeof parseStandardCssSyntax>))
+				) {
+					return false;
+				}
+
+				unorderedGroupCount += 1;
+				continue;
+			}
+
+			if (isSimpleSyntaxDrivenTerm(term)) {
+				continue;
+			}
+
+			return false;
+		}
+
+		return unorderedGroupCount === 1;
 	}
 
 	if (syntaxAst.type === "Group" && syntaxAst.combinator === " ") {
