@@ -1,3 +1,6 @@
 propertySyntax.ts没有对应的单测
 css生成没有对应上
 还没有人工检查css解析可用
+text-decoration
+后缀重复的都不要
+生成的css从cases少到多的属性顺序开始生成(在文件头)

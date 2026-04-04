@@ -1,17 +1,21 @@
 import { createRequire } from "node:module";
 import mdnProperties from "mdn-data/css/properties.json";
-import { isGridLineProperty, usesCommaSeparatedRepeatableListSyntax } from "../../src/propertySyntax.js";
+import {
+	getShorthandExpansion,
+	isGridLineProperty,
+	usesCommaSeparatedRepeatableListSyntax,
+} from "../../src/propertySyntax.js";
 import {
 	parseCssSyntax as parseStandardCssSyntax,
 	parseShorthandArities as parseStandardShorthandArities,
 	syntaxIncludesType as syntaxAstIncludesType,
 	visitCssSyntaxAst,
-} from "./cssSyntaxAst.js";
+} from "./old/cssSyntaxAst.js";
 import {
 	appendDistinctAtom as appendStandardDistinctAtom,
 	classifyStandardText as classifyStandardCssText,
 	extractSyntaxAtoms as extractStandardSyntaxAtoms,
-} from "./cssStandardAtoms.js";
+} from "./old/cssStandardAtoms.js";
 import { collectAtomsFromCompletions } from "./cssCompletionAtoms.js";
 import type {
 	CssPropertySamplingRule,
@@ -76,7 +80,9 @@ export function createStandardPropertySamplingRule(propertyName: string): CssPro
 	const syntaxAst = parseStandardCssSyntax(property.syntax ?? "");
 	const arities = isGridLineProperty(propertyName)
 		? parseGridLineArities(property.syntax ?? "", syntaxAst)
-		: parseStandardShorthandArities(syntaxAst);
+		: usesSyntaxDrivenUnorderedGroupSyntax(syntaxAst)
+			? parseUnorderedGroupArities(syntaxAst)
+			: parseStandardShorthandArities(syntaxAst);
 	const sampledArities =
 		usesCommaSeparatedRepeatableListSyntax(propertyName) && arities.length === 1 ? [1, 2] : arities;
 	const valueAtoms = isGridLineProperty(propertyName)
@@ -183,9 +189,6 @@ function collectStandardValueAtoms(
 ): CssValueAtom[] {
 	const property = getPropertyRecord(propertyName);
 	const atoms = collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst);
-	if (atoms.some((atom) => atom.kind !== "global")) {
-		return atoms;
-	}
 
 	const expandedMembers = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];
 	if (!Array.isArray(expandedMembers) || expandedMembers.length === 0) {
@@ -205,12 +208,12 @@ function collectStandardValueAtoms(
 
 		const memberSyntaxAst = parseStandardCssSyntax(memberProperty.syntax ?? "");
 		for (const atom of collectStandardValueAtomsFromRecord(memberName, memberProperty, memberSyntaxAst)) {
-			appendStandardDistinctAtom(memberAtomsByKind, atom);
+			appendDistinctAtomWithoutCap(memberAtomsByKind, atom);
 		}
 	}
 
 	const memberAtoms = [...memberAtomsByKind.values()]
-		.flatMap((memberAtoms) => memberAtoms.slice(0, 2))
+		.flatMap((memberAtoms) => memberAtoms)
 		.sort((left, right) => {
 			const kindDifference = left.kind.localeCompare(right.kind);
 			if (kindDifference !== 0) {
@@ -220,7 +223,19 @@ function collectStandardValueAtoms(
 			return left.text.localeCompare(right.text);
 		});
 
-	return memberAtoms.length > 0 ? memberAtoms : atoms;
+	if (memberAtoms.length === 0) {
+		return atoms;
+	}
+
+	const mergedAtomsByKind = new Map<CssValueKind, CssValueAtom[]>();
+	for (const atom of atoms) {
+		appendDistinctAtomWithoutCap(mergedAtomsByKind, atom);
+	}
+	for (const atom of memberAtoms) {
+		appendDistinctAtomWithoutCap(mergedAtomsByKind, atom);
+	}
+
+	return [...mergedAtomsByKind.values()].flat();
 }
 
 function collectStandardValueAtomsFromRecord(
@@ -248,6 +263,14 @@ function collectStandardValueAtomsFromRecord(
 		appendAtom(atomsByKind, atom);
 	}
 
+	for (const atom of collectAngleValueAtoms(syntaxAst)) {
+		appendAtom(atomsByKind, atom);
+	}
+
+	for (const atom of collectColorValueAtoms(syntaxAst)) {
+		appendAtom(atomsByKind, atom);
+	}
+
 	return [...atomsByKind.values()]
 		.flatMap((atoms) => (preserveAllAtoms ? atoms : atoms.slice(0, 2)))
 		.sort((left, right) => {
@@ -258,6 +281,120 @@ function collectStandardValueAtomsFromRecord(
 
 			return left.text.localeCompare(right.text);
 		});
+}
+function parseUnorderedGroupArities(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): number[] {
+	const branches = findUnorderedGroupBranches(syntaxAst);
+	if (!branches || branches.length === 0) {
+		return parseStandardShorthandArities(syntaxAst);
+	}
+
+	return Array.from({ length: branches.length }, (_, index) => index + 1);
+}
+
+export function usesSyntaxDrivenUnorderedGroupSyntax(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): boolean {
+	if (syntaxAst.type === "Group" && syntaxAst.combinator === "||") {
+		return syntaxAst.terms.every((term) => isSimpleSyntaxDrivenTerm(term));
+	}
+
+	if (syntaxAst.type === "Group" && syntaxAst.combinator === " ") {
+		let unorderedGroupCount = 0;
+		for (const term of syntaxAst.terms) {
+			if (isOptionalSlashMultiplier(term)) {
+				continue;
+			}
+
+			if (term.type === "Group" && term.combinator === "||") {
+				unorderedGroupCount += 1;
+				continue;
+			}
+
+			return false;
+		}
+
+		return unorderedGroupCount === 1;
+	}
+
+	return false;
+}
+
+function isSimpleSyntaxDrivenTerm(term: ReturnType<typeof parseStandardCssSyntax>): boolean {
+	if (term.type === "Keyword" || term.type === "Type" || term.type === "Property") {
+		return true;
+	}
+
+	if (term.type !== "Group" || term.combinator !== "|") {
+		return false;
+	}
+
+	return term.terms.every((child) => isSimpleSyntaxDrivenTerm(child as ReturnType<typeof parseStandardCssSyntax>));
+}
+
+function isOptionalSlashMultiplier(term: unknown): boolean {
+	if (!term || typeof term !== "object") {
+		return false;
+	}
+
+	const node = term as { type?: string; min?: number; max?: number; term?: unknown };
+	if (node.type !== "Multiplier" || node.min !== 0 || node.max !== 1) {
+		return false;
+	}
+
+	const inner = node.term as { type?: string; terms?: unknown[] } | undefined;
+	return Boolean(
+		inner &&
+		inner.type === "Group" &&
+		Array.isArray(inner.terms) &&
+		inner.terms.some(
+			(child) =>
+				child &&
+				typeof child === "object" &&
+				(child as { type?: string; value?: string }).type === "Token" &&
+				(child as { value?: string }).value === "/",
+		),
+	);
+}
+
+function findUnorderedGroupBranches(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): readonly unknown[] | null {
+	if (syntaxAst.type === "Group" && syntaxAst.combinator === "||") {
+		return syntaxAst.terms;
+	}
+
+	if (syntaxAst.type === "Group") {
+		for (const term of syntaxAst.terms) {
+			const branches = findUnorderedGroupBranches(term as ReturnType<typeof parseStandardCssSyntax>);
+			if (branches) {
+				return branches;
+			}
+		}
+	}
+
+	if (syntaxAst.type === "Multiplier") {
+		return findUnorderedGroupBranches(syntaxAst.term as ReturnType<typeof parseStandardCssSyntax>);
+	}
+
+	return null;
+}
+
+function collectAngleValueAtoms(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): CssValueAtom[] {
+	if (!syntaxAstIncludesType(syntaxAst, "angle")) {
+		return [];
+	}
+
+	return [
+		{ kind: "length", text: "0deg" },
+		{ kind: "length", text: "90deg" },
+	];
+}
+
+function collectColorValueAtoms(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): CssValueAtom[] {
+	if (!syntaxAstIncludesType(syntaxAst, "color")) {
+		return [];
+	}
+
+	return [
+		{ kind: "color", text: "red" },
+		{ kind: "color", text: "blue" },
+	];
 }
 
 function appendDistinctAtomWithoutCap(atomsByKind: Map<CssValueKind, CssValueAtom[]>, atom: CssValueAtom): void {

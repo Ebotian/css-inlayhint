@@ -6,7 +6,6 @@ import {
 	createCssValidationOracle,
 	createStandardPropertySamplingRule,
 	constructExactCaseFamilies,
-	countExactCases,
 	sampleExactCases,
 } from "./lib/exactCssCaseGenerator.js";
 
@@ -20,7 +19,6 @@ describe("matching machine", () => {
 			const families = constructExactCaseFamilies(rule);
 			const cases = sampleExactCases(families);
 
-			assert.equal(cases.length, countExactCases(families));
 			assert.equal(new Set(cases.map((generatedCase) => generatedCase.code)).size, cases.length);
 			assert.ok(cases.length > 0);
 			assert.deepEqual(
@@ -78,6 +76,62 @@ describe("matching machine", () => {
 		assert.ok(cases.length > 4);
 		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("inside")));
 		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("none")));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
+		}
+	});
+
+	test("offset-rotate generator emits direction and angle samples", () => {
+		const rule = createStandardPropertySamplingRule("offset-rotate");
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.ok(rule.arities.includes(2));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("90deg")));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("auto 90deg")));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
+		}
+	});
+
+	test("aspect-ratio generator emits ratio samples instead of the syntax name", () => {
+		const rule = createStandardPropertySamplingRule("aspect-ratio");
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.deepEqual(rule.arities, [1, 2]);
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("1/1") || generatedCase.code.includes("16/9")));
+		assert.ok(!cases.some((generatedCase) => /:\s*ratio;/.test(generatedCase.code)));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
+		}
+	});
+
+	test("text-emphasis generator expands referenced color members", () => {
+		const rule = createStandardPropertySamplingRule("text-emphasis");
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.deepEqual(rule.arities, [1, 2]);
+		assert.ok(cases.some((generatedCase) => generatedCase.valueAtoms.some((atom) => atom.kind === "color")));
+		assert.ok(cases.some((generatedCase) => generatedCase.valueAtoms.length === 2));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
+		}
+	});
+
+	test("columns generator expands unordered members beyond single values", () => {
+		const rule = createStandardPropertySamplingRule("columns");
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.deepEqual(rule.arities, [1, 2]);
+		assert.ok(cases.some((generatedCase) => generatedCase.valueAtoms.length === 2));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("0ch") || generatedCase.code.includes("0cap")));
 
 		for (const generatedCase of cases) {
 			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);

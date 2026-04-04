@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
-import type { CssSyntaxAst } from "./cssSyntaxAst.js";
+
+import type { CssSyntaxAst } from "./cssSyntax.js";
 
 type DefinitionSyntaxNode = {
 	type: string;
@@ -132,6 +133,8 @@ function classifySyntaxNode(
 			return classifyStandardText(node.value ?? "", options);
 		case "AtKeyword":
 			return classifyStandardText(`@${node.name ?? ""}`, options);
+		case "Type":
+			return undefined;
 		default:
 			return undefined;
 	}

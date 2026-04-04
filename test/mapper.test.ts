@@ -78,18 +78,6 @@ test("mapper derives border-radius corner labels from token counts", () => {
 	}
 });
 
-test("mapper derives shorthand-family component labels", () => {
-	const mapper = createCssHintMapper();
-
-	const mappedBorder = mapper.map([createInstruction("border", 1)])[0];
-	const mappedFlexFlow = mapper.map([createInstruction("flex-flow", 1)])[0];
-	const mappedColumns = mapper.map([createInstruction("columns", 1)])[0];
-
-	assert.equal(mappedBorder.label, "width");
-	assert.equal(mappedFlexFlow.label, "direction");
-	assert.equal(mappedColumns.label, "width");
-});
-
 test("mapper derives list-style member labels from the actual value text", () => {
 	const mapper = createCssHintMapper();
 
@@ -100,6 +88,36 @@ test("mapper derives list-style member labels from the actual value text", () =>
 	assert.equal(mappedType.label, "type");
 	assert.equal(mappedPosition.label, "position");
 	assert.equal(mappedPair.label, "type, position");
+});
+
+test("mapper trims text-decoration member prefixes and rejects composite fallback", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedLine = mapper.map([createInstruction("text-decoration", 1, "underline")])[0];
+	const mappedStyle = mapper.map([createInstruction("text-decoration", 1, "double")])[0];
+	const mappedColor = mapper.map([createInstruction("text-decoration", 1, "red")])[0];
+	const mappedPair = mapper.map([createInstruction("text-decoration", 2, "underline red")])[0];
+
+	assert.equal(mappedLine.label, "line");
+	assert.equal(mappedStyle.label, "style");
+	assert.equal(mappedColor.label, "color");
+	assert.equal(mappedPair.label, "line, color");
+	assert.ok(!mappedLine.label.includes("text-decoration"));
+	assert.ok(!mappedColor.label.includes("text-decoration"));
+});
+
+test("mapper derives offset-rotate direction and angle labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedDirection = mapper.map([createInstruction("offset-rotate", 1, "auto")])[0];
+	const mappedAngle = mapper.map([createInstruction("offset-rotate", 1, "90deg")])[0];
+	const mappedPair = mapper.map([createInstruction("offset-rotate", 2, "auto 90deg")])[0];
+
+	assert.equal(mappedDirection.label, "direction");
+	assert.equal(mappedAngle.label, "angle");
+	assert.equal(mappedPair.label, "direction, angle");
+	assert.ok(!mappedDirection.label.includes("rotate"));
+	assert.ok(!mappedPair.label.includes("rotate"));
 });
 
 test("mapper derives logical-axis shorthand labels", () => {

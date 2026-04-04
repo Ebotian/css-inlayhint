@@ -16,7 +16,8 @@
 		"watch": "tsc -w -p tsconfig.json",
 		"test:build": "rm -rf dist-test && tsc -p tsconfig.test.json",
 		"test": "pnpm run test:build && find dist-test/test -name '*.test.js' -print | sort | xargs node --test && node dist-test/test/passlist/generatePasslist.js",
-		"generate:validation-css": "pnpm run test:build && node dev_plan/generate-validation-css.mjs"
+		"generate:passlist": "pnpm run test:build && node dist-test/test/passlist/generatePasslist.js",
+		"generate:validation-css": "pnpm run test:build && node dist-test/test/passlist/generateValidationCss.js"
 	},
 	"keywords": [],
 	"author": "",

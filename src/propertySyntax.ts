@@ -1,5 +1,8 @@
 import { createRequire } from "node:module";
 
+import { parseCssSyntax, visitCssSyntaxAst } from "./share/cssSyntax.js";
+import { isCssWideKeyword } from "./share/cssValueAtoms.js";
+
 type StandardPropertyRecord = {
 	name: string;
 	syntax?: string;
@@ -24,7 +27,6 @@ const builtInCssData = nodeRequire("vscode-css-languageservice/lib/esm/data/webC
 	cssData: StandardCssData;
 };
 const mdnProperties = nodeRequire("mdn-data/css/properties.json") as Record<string, StandardPropertyWithoutName>;
-const CSS_WIDE_KEYWORDS = new Set(["initial", "inherit", "unset", "revert", "revert-layer"]);
 
 const PROPERTY_BY_NAME = new Map<string, StandardPropertyRecord>();
 
@@ -74,7 +76,15 @@ export function usesUnorderedOptionalGroupSyntax(propertyName: string): boolean 
 
 export function getShorthandExpansion(propertyName: string): string[] {
 	const expanded = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];
-	return Array.isArray(expanded) ? expanded : [];
+	if (!Array.isArray(expanded) || expanded.length === 0) {
+		return [];
+	}
+
+	if (expanded.length === 1 && expanded[0] === propertyName) {
+		return [];
+	}
+
+	return expanded;
 }
 
 export function getDirectionalFamily(propertyName: string): readonly string[] | null {
@@ -111,15 +121,19 @@ export function getDirectionalFamily(propertyName: string): readonly string[] | 
 
 export function getShorthandLabelParts(propertyName: string, tokenCount: number, valueText?: string): string[] | null {
 	const expanded = getShorthandExpansion(propertyName);
-	if (!Array.isArray(expanded) || expanded.length === 0) {
-		return null;
-	}
 
 	if (usesUnorderedOptionalGroupSyntax(propertyName)) {
-		const unorderedLabelParts = inferUnorderedShorthandLabelParts(expanded, valueText, tokenCount);
+		const unorderedLabelParts =
+			expanded.length > 0 ? inferUnorderedShorthandLabelParts(expanded, valueText, tokenCount) : null;
 		if (unorderedLabelParts) {
 			return unorderedLabelParts;
 		}
+
+		return inferUnorderedSyntaxLabelParts(propertyName, valueText, tokenCount);
+	}
+
+	if (!Array.isArray(expanded) || expanded.length === 0) {
+		return null;
 	}
 
 	const labels = expanded.map((member) => normalizeShorthandMemberLabel(member, expanded));
@@ -146,10 +160,8 @@ function inferUnorderedShorthandLabelParts(
 	valueText: string | undefined,
 	tokenCount: number,
 ): string[] | null {
-	if (!valueText) {
-		return tokenCount > 0
-			? expanded.slice(0, tokenCount).map((member) => normalizeShorthandMemberLabel(member, expanded))
-			: null;
+	if (!valueText || tokenCount <= 0) {
+		return null;
 	}
 
 	const tokens = tokenizeShorthandValueText(valueText);
@@ -159,7 +171,7 @@ function inferUnorderedShorthandLabelParts(
 
 	const labels: string[] = [];
 	for (const token of tokens) {
-		if (CSS_WIDE_KEYWORDS.has(token.toLowerCase())) {
+		if (isCssWideKeyword(token)) {
 			labels.push("global");
 			continue;
 		}
@@ -175,6 +187,163 @@ function inferUnorderedShorthandLabelParts(
 	return labels.length === tokenCount ? labels : null;
 }
 
+function inferUnorderedSyntaxLabelParts(
+	propertyName: string,
+	valueText: string | undefined,
+	tokenCount: number,
+): string[] | null {
+	if (!valueText || tokenCount <= 0) {
+		return null;
+	}
+
+	const syntaxAst = getPropertySyntaxAst(propertyName);
+	const branches = getTopLevelUnorderedSyntaxBranches(syntaxAst);
+	if (!branches || branches.length === 0) {
+		return null;
+	}
+
+	const tokens = tokenizeShorthandValueText(valueText);
+	if (tokens.length === 0) {
+		return null;
+	}
+
+	const labels: string[] = [];
+	for (const token of tokens) {
+		const branch = branches.find((candidate) => matchesSyntaxBranchToken(candidate, token));
+		if (!branch) {
+			return null;
+		}
+
+		const label = inferSyntaxBranchLabel(branch);
+		if (!label) {
+			return null;
+		}
+
+		labels.push(label);
+	}
+
+	return labels.length === tokenCount ? labels : null;
+}
+
+function getTopLevelUnorderedSyntaxBranches(syntaxAst: unknown): unknown[] | null {
+	if (!syntaxAst || typeof syntaxAst !== "object") {
+		return null;
+	}
+
+	const group = syntaxAst as { type?: string; combinator?: string; terms?: unknown[] };
+	if (group.type !== "Group" || group.combinator !== "||" || !Array.isArray(group.terms)) {
+		return null;
+	}
+
+	return group.terms;
+}
+
+function inferSyntaxBranchLabel(branch: unknown): string | null {
+	if (!branch || typeof branch !== "object") {
+		return null;
+	}
+
+	const node = branch as { type?: string; name?: string; terms?: Array<{ type?: string; name?: string }> };
+	if (node.type === "Type") {
+		return normalizeSyntaxTypeLabel(node.name ?? "");
+	}
+
+	if (node.type === "Group" && Array.isArray(node.terms)) {
+		const keywordNames = node.terms
+			.filter((term): term is { type: "Keyword"; name: string } => term.type === "Keyword" && Boolean(term.name))
+			.map((term) => term.name.toLowerCase());
+
+		if (keywordNames.length > 0 && keywordNames.every((keyword) => DIRECTION_KEYWORDS.has(keyword))) {
+			return "direction";
+		}
+
+		if (keywordNames.length === 1) {
+			return keywordNames[0] ?? null;
+		}
+	}
+
+	if (node.type === "Keyword") {
+		return normalizeSyntaxKeywordLabel(node.name ?? "");
+	}
+
+	return null;
+}
+
+function matchesSyntaxBranchToken(branch: unknown, token: string): boolean {
+	if (!branch || typeof branch !== "object") {
+		return false;
+	}
+
+	const node = branch as { type?: string; name?: string; terms?: Array<{ type?: string; name?: string }> };
+	if (node.type === "Type") {
+		return matchesSyntaxTypeToken(node.name ?? "", token);
+	}
+
+	if (node.type === "Group" && Array.isArray(node.terms)) {
+		return node.terms.some((term) => term.type === "Keyword" && term.name?.toLowerCase() === token.toLowerCase());
+	}
+
+	if (node.type === "Keyword") {
+		return node.name?.toLowerCase() === token.toLowerCase();
+	}
+
+	return false;
+}
+
+function matchesSyntaxTypeToken(typeName: string, token: string): boolean {
+	const loweredTypeName = typeName.toLowerCase();
+	if (loweredTypeName === "angle") {
+		return /^(?:[+-]?(?:\d*\.?\d+))(?:deg|grad|rad|turn)$/i.test(token) || /^calc\(/i.test(token);
+	}
+
+	if (loweredTypeName.includes("length") || loweredTypeName.includes("percentage")) {
+		return /^(?:[+-]?\d*\.?\d+(?:[a-z]+|%)|0(?:[a-z%]+)?)$/i.test(token);
+	}
+
+	if (loweredTypeName.includes("color")) {
+		return (
+			/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(token) ||
+			/^[a-z][a-z-]*$/i.test(token) ||
+			/^[a-z-]+\(/i.test(token)
+		);
+	}
+
+	return false;
+}
+
+function normalizeSyntaxTypeLabel(typeName: string): string | null {
+	const loweredTypeName = typeName.toLowerCase();
+	if (loweredTypeName === "angle") {
+		return "angle";
+	}
+
+	if (loweredTypeName.includes("length") || loweredTypeName.includes("percentage")) {
+		return "length";
+	}
+
+	if (loweredTypeName.includes("color")) {
+		return "color";
+	}
+
+	if (loweredTypeName.includes("image")) {
+		return "image";
+	}
+
+	if (loweredTypeName.includes("string")) {
+		return "string";
+	}
+
+	if (loweredTypeName.includes("ident")) {
+		return "ident";
+	}
+
+	return null;
+}
+
+function normalizeSyntaxKeywordLabel(name: string): string {
+	return name.toLowerCase();
+}
+
 function tokenizeShorthandValueText(valueText: string): string[] {
 	return valueText.match(/[^\s,]+/g) ?? [];
 }
@@ -185,18 +354,65 @@ function matchesShorthandMemberToken(memberName: string, token: string): boolean
 		return false;
 	}
 
-	const loweredToken = token.toLowerCase();
-	if (property.values?.some((value) => value.name.toLowerCase() === loweredToken)) {
-		return true;
-	}
-
 	const syntax = property.syntax ?? "";
-	if (syntax.includes("<image>") && (/^[a-z-]+\(/i.test(token) || loweredToken === "none")) {
-		return true;
+	if (!syntax) {
+		return false;
 	}
 
-	if (syntax.includes("<string>") && (/^['\"].*['\"]$/.test(token) || loweredToken === "none")) {
-		return true;
+	const syntaxAst = getPropertySyntaxAst(memberName);
+	let matched = false;
+	visitCssSyntaxAst(syntaxAst as ReturnType<typeof parseCssSyntax>, (node) => {
+		if (matched) {
+			return;
+		}
+
+		if (node.type === "Keyword" && node.name?.toLowerCase() === token.toLowerCase()) {
+			matched = true;
+			return;
+		}
+
+		if (node.type === "Type" && matchesTypeNodeToken(node.name ?? "", token)) {
+			matched = true;
+		}
+	});
+
+	return matched;
+}
+
+function getPropertySyntaxAst(propertyName: string): unknown {
+	let syntaxAst = SHORTHAND_SYNTAX_AST_CACHE.get(propertyName);
+	if (!syntaxAst) {
+		syntaxAst = parseCssSyntax(getPropertySyntax(propertyName));
+		SHORTHAND_SYNTAX_AST_CACHE.set(propertyName, syntaxAst);
+	}
+
+	return syntaxAst;
+}
+
+function matchesTypeNodeToken(typeName: string, token: string): boolean {
+	const loweredToken = token.toLowerCase();
+	if (typeName.toLowerCase().includes("color")) {
+		return (
+			/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(token) ||
+			/^[a-z][a-z-]*$/i.test(token) ||
+			/^[a-z-]+\(/i.test(token)
+		);
+	}
+
+	if (typeName.toLowerCase().includes("length") || typeName.toLowerCase().includes("percentage")) {
+		return /^(?:[+-]?\d*\.?\d+(?:[a-z]+|%)|0(?:[a-z%]+)?)$/i.test(token);
+	}
+
+	if (typeName.toLowerCase().includes("image")) {
+		return /^[a-z-]+\(/i.test(token) || loweredToken === "none";
+	}
+
+	if (typeName.toLowerCase().includes("string")) {
+		return /^['\"].*['\"]$/.test(token) || loweredToken === "none";
+	}
+
+	if (typeName.toLowerCase().includes("custom-ident") || typeName.toLowerCase().includes("ident")) {
+		return /^[a-z_][a-z0-9_-]*$/i.test(token);
 	}
 
 	return false;
@@ -267,3 +483,6 @@ function extractSingleDirection(name: string): DirectionalName | null {
 
 	return directions[0] ?? null;
 }
+
+const SHORTHAND_SYNTAX_AST_CACHE = new Map<string, unknown>();
+const DIRECTION_KEYWORDS = new Set(["auto", "reverse"]);

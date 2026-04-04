@@ -1,5 +1,5 @@
 import { getCSSLanguageService, TextDocument } from "vscode-css-languageservice";
-import { classifyStandardText as classifyStandardCssText } from "./cssStandardAtoms.js";
+import { classifyStandardText as classifyStandardCssText } from "./old/cssStandardAtoms.js";
 import type { CssValueAtom } from "./cssCaseModel.js";
 
 type DefinitionSyntaxNode = {
