@@ -2,6 +2,8 @@ import { parseCssSyntax, visitCssSyntaxAst } from "../share/cssSyntax.js";
 import { isCssWideKeyword } from "../share/cssValueAtoms.js";
 import { getPropertySyntax } from "./summary.js";
 import { matchesReferencedPropertyToken, normalizeReferencedPropertyLabel } from "./semanticMap.js";
+import { collectReferencedSyntaxLabels } from "./referenceSyntax.js";
+import { classifyPropertyStructure } from "./noHintDesign.js";
 import {
 	matchesTypeNodeToken,
 	normalizeShorthandMemberLabel,
@@ -50,6 +52,12 @@ export function inferUnorderedSyntaxLabelParts(
 ): string[] | null {
 	if (!valueText || tokenCount <= 0) {
 		return null;
+	}
+
+	const referenceLabels =
+		classifyPropertyStructure(propertyName) === "reference-only" ? collectReferencedSyntaxLabels(propertyName) : [];
+	if (referenceLabels.length >= 2) {
+		return referenceLabels.slice(0, Math.min(tokenCount, referenceLabels.length));
 	}
 
 	const syntaxAst = getPropertySyntaxAst(propertyName);

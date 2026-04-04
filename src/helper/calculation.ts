@@ -7,7 +7,9 @@ import {
 	normalizeShorthandMemberLabel,
 	shouldCompactShorthandLabels,
 } from "./classifyNormalize.js";
+import { isCornerRadiusProperty, isInsetProperty, isLogicalAxisRepeatProperty, isScrollMarginProperty } from "./judgment.js";
 import { normalizeReferencedPropertyLabel } from "./semanticMap.js";
+import { collectReferencedSyntaxLabels } from "./referenceSyntax.js";
 
 const nodeRequire = createRequire(__filename);
 const shorthandApi = nodeRequire("css-shorthand-properties") as {
@@ -75,7 +77,44 @@ export function getShorthandLabelParts(propertyName: string, tokenCount: number,
 		return inferUnorderedSyntaxLabelParts(propertyName, valueText, tokenCount);
 	}
 
+	if (isCornerRadiusProperty(propertyName)) {
+		if (tokenCount === 1) {
+			return ["all"];
+		}
+
+		if (tokenCount === 2) {
+			return ["horizontal", "vertical"];
+		}
+
+		return null;
+	}
+
+	if (isLogicalAxisRepeatProperty(propertyName)) {
+		if (tokenCount === 1) {
+			return ["all"];
+		}
+
+		if (tokenCount === 2) {
+			return ["start", "end"];
+		}
+
+		return null;
+	}
+
+	if (isInsetProperty(propertyName)) {
+		return inferInsetLabelParts(tokenCount);
+	}
+
+	if (isScrollMarginProperty(propertyName)) {
+		return inferInsetLabelParts(tokenCount);
+	}
+
 	if (!Array.isArray(expanded) || expanded.length === 0) {
+		const referenceLabels = collectReferencedSyntaxLabels(propertyName);
+		if (referenceLabels.length >= 2) {
+			return referenceLabels.slice(0, Math.min(tokenCount, referenceLabels.length));
+		}
+
 		const referenceLabel = normalizeReferencedPropertyLabel(propertyName);
 		if (referenceLabel) {
 			return Array.from({ length: tokenCount }, () => referenceLabel);
@@ -101,6 +140,21 @@ export function getShorthandLabelParts(propertyName: string, tokenCount: number,
 	}
 
 	return null;
+}
+
+function inferInsetLabelParts(tokenCount: number): string[] | null {
+	switch (tokenCount) {
+		case 1:
+			return ["all"];
+		case 2:
+			return ["top/bottom", "right/left"];
+		case 3:
+			return ["top", "right/left", "bottom"];
+		case 4:
+			return ["top", "right", "bottom", "left"];
+		default:
+			return null;
+	}
 }
 
 function extractSingleDirection(name: string): DirectionalName | null {

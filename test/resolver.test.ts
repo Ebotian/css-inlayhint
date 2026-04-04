@@ -47,7 +47,7 @@ function createInstruction(
 ): CssHintInstruction {
 	return {
 		propertyName,
-		label: `${propertyName}-${tokenCount}-values`,
+		label: `hint-${tokenCount}`,
 		kind: strategy === "inline-right" ? "Parameter" : "BlockEnd",
 		strategy,
 		tokenCount,
@@ -71,7 +71,7 @@ test("resolver uses each token start for inline hints", () => {
 	assert.equal(hints.length, 2);
 	assert.deepEqual(
 		hints.map((hint) => hint.label),
-		["padding-2-values", "padding-2-values"],
+		["hint-2", "hint-2"],
 	);
 	assert.deepEqual(
 		hints.map((hint) => hint.position),
@@ -129,4 +129,15 @@ test("resolver rejects forbidden global labels", () => {
 	};
 
 	assert.throws(() => resolver.resolveInline(document, [globalInstruction]), /Forbidden label "global"/);
+});
+
+test("resolver rejects property-name prefix labels for grid-column-end", () => {
+	const resolver = createCssHintResolver();
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, "grid-column-end: 1;");
+	const prefixInstruction = {
+		...createInstruction("grid-column-end", "inline-right", 1),
+		label: "grid-column-end-1-values",
+	};
+
+	assert.throws(() => resolver.resolveInline(document, [prefixInstruction]), /Forbidden label echo/);
 });

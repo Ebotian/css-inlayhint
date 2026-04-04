@@ -8,6 +8,7 @@ export type CssHintInstruction = CssHintMatchedClassification & {
 	range: CssExtractorCandidate["range"];
 	valueRange: CssExtractorCandidate["valueRange"];
 	shape?: CssHintShape;
+	labelSlots?: readonly string[];
 };
 
 export type CssHintCollector = {

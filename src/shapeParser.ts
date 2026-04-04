@@ -117,18 +117,35 @@ function parseShape(instruction: CssHintInstruction): CssHintShape | null {
 function parseGridLineKinds(valueText: string): readonly CssHintGridLineKind[] {
 	return valueText
 		.split("/")
-		.map((part) => classifyGridLine(part.trim()))
+		.flatMap((part) => classifyGridLinePart(part.trim()))
 		.filter((kind): kind is CssHintGridLineKind => kind !== "unknown");
 }
 
-function classifyGridLine(text: string): CssHintGridLineKind {
+function classifyGridLinePart(text: string): CssHintGridLineKind[] {
 	if (!text) {
+		return [];
+	}
+
+	const kinds: CssHintGridLineKind[] = [];
+	for (const token of text.split(/\s+/).filter(Boolean)) {
+		const kind = classifyGridLineToken(token);
+		if (kind === "unknown") {
+			return [];
+		}
+
+		kinds.push(kind);
+	}
+
+	return kinds;
+}
+
+function classifyGridLineToken(token: string): CssHintGridLineKind {
+	if (!token) {
 		return "unknown";
 	}
 
-	const tokens = text.split(/\s+/).filter(Boolean);
 	for (const rule of GRID_LINE_RULES) {
-		if (rule.matches(tokens)) {
+		if (rule.matches([token])) {
 			return rule.kind;
 		}
 	}

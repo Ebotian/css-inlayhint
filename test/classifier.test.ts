@@ -108,10 +108,10 @@ test("classifier labels shorthands with alternation syntax", () => {
 	assert.equal(formatCssHintClassification(classification), "matched border-1-values");
 });
 
-test("classifier matches phase-one reference-only properties", () => {
+test("classifier matches animation-range reference syntax", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
-	const rule = createStandardPropertySamplingRule("block-size");
+	const rule = createStandardPropertySamplingRule("animation-range");
 	const generatedCase = generateExactCases(rule).find(
 		(candidateCase) => !candidateCase.valueAtoms.some((atom) => atom.kind === "global" || atom.kind === "variable"),
 	);
@@ -122,7 +122,24 @@ test("classifier matches phase-one reference-only properties", () => {
 
 	assert.ok(classification);
 	assert.equal(classification.state, "matched");
-	assert.equal(classification.propertyName, "block-size");
+	assert.equal(classification.propertyName, "animation-range");
+});
+
+test("classifier matches animation-range and related reference syntax", () => {
+	const collector = createExtractor();
+	const classifier = createCssHintClassifier();
+	const rule = createStandardPropertySamplingRule("animation-range");
+	const generatedCase = generateExactCases(rule).find(
+		(candidateCase) => !candidateCase.valueAtoms.some((atom) => atom.kind === "global" || atom.kind === "variable"),
+	);
+
+	assert.ok(generatedCase);
+	const candidate = collector.collectCandidates(generatedCase.code)[0];
+	const classification = classifier.classify(candidate);
+
+	assert.ok(classification);
+	assert.equal(classification.state, "matched");
+	assert.equal(classification.propertyName, "animation-range");
 });
 
 test("classifier suppresses global CSS keywords", () => {

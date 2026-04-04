@@ -37,10 +37,23 @@ test("propertySyntax infers offset-rotate syntax labels from syntax branches", (
 	assert.deepEqual(getShorthandLabelParts("offset-rotate", 2, "90deg auto"), ["angle", "direction"]);
 });
 
-test("propertySyntax infers property-reference labels for single-value semantic branches", () => {
-	assert.deepEqual(getShorthandLabelParts("block-size", 1, "0px"), ["width"]);
-	assert.deepEqual(getShorthandLabelParts("flood-opacity", 1, "0.5"), ["opacity"]);
-	assert.deepEqual(getShorthandLabelParts("margin-block-end", 1, "1rem"), ["end"]);
+test("propertySyntax infers reference-syntax labels from ordered property refs", () => {
+	assert.deepEqual(getShorthandLabelParts("animation-range", 1, "cover"), ["start"]);
+	assert.deepEqual(getShorthandLabelParts("animation-range", 2, "cover 20%"), ["start", "end"]);
+	assert.deepEqual(getShorthandLabelParts("border-bottom-left-radius", 1, "20%"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("border-bottom-left-radius", 2, "20% 10%"), ["horizontal", "vertical"]);
+	assert.deepEqual(getShorthandLabelParts("padding-block", 1, "10px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("padding-block", 2, "10px 20px"), ["start", "end"]);
+	assert.deepEqual(getShorthandLabelParts("inset", 1, "10px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("inset", 2, "4px 8px"), ["top/bottom", "right/left"]);
+	assert.deepEqual(getShorthandLabelParts("inset-block", 1, "3px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("inset-block", 2, "3px 10px"), ["start", "end"]);
+	assert.deepEqual(getShorthandLabelParts("inset-inline", 2, "3px 10px"), ["start", "end"]);
+	assert.deepEqual(getShorthandLabelParts("scroll-margin", 1, "10px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("scroll-margin", 2, "4px 8px"), ["top/bottom", "right/left"]);
+	assert.deepEqual(getShorthandLabelParts("scroll-margin-block", 1, "3px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("scroll-margin-block", 2, "3px 10px"), ["start", "end"]);
+	assert.deepEqual(getShorthandLabelParts("scroll-margin-inline", 2, "3px 10px"), ["start", "end"]);
 	assert.deepEqual(getShorthandLabelParts("columns", 1, "12em"), ["width"]);
 	assert.deepEqual(getShorthandLabelParts("columns", 1, "2"), ["count"]);
 	assert.deepEqual(getShorthandLabelParts("text-emphasis", 1, "red"), ["color"]);

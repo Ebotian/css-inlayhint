@@ -4,6 +4,22 @@ export function isGridLineProperty(propertyName: string): boolean {
 	return getPropertySyntax(propertyName).includes("<grid-line>");
 }
 
+export function isCornerRadiusProperty(propertyName: string): boolean {
+	return propertyName !== "border-radius" && propertyName.endsWith("-radius");
+}
+
+export function isLogicalAxisRepeatProperty(propertyName: string): boolean {
+	return /^(?:padding|margin|inset|scroll-margin)-(?:block|inline)$/.test(propertyName);
+}
+
+export function isInsetProperty(propertyName: string): boolean {
+	return propertyName === "inset";
+}
+
+export function isScrollMarginProperty(propertyName: string): boolean {
+	return propertyName === "scroll-margin";
+}
+
 export function usesSlashSeparatedGridLineSyntax(propertyName: string): boolean {
 	const syntax = getPropertySyntax(propertyName);
 	return syntax.includes("<grid-line>") && syntax.includes("/");

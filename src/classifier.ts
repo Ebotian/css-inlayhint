@@ -1,7 +1,11 @@
 import { createRequire } from "node:module";
 
 import type { CssExtractorCandidate } from "./extractor";
+import { isCornerRadiusProperty, isInsetProperty, isLogicalAxisRepeatProperty, isScrollMarginProperty } from "./helper/judgment.js";
 import { isReferenceOnlyHintProperty } from "./helper/semanticMap.js";
+import { classifyPropertyStructure } from "./helper/noHintDesign.js";
+import { getShorthandExpansion } from "./helper/calculation.js";
+import { getPropertyStatus, getPropertySyntax } from "./helper/summary.js";
 
 export type CssHintStrategy = "inline-right" | "block-end-right";
 
@@ -59,11 +63,6 @@ export type CssHintClassifierOptions = {
 
 const CSS_WIDE_KEYWORDS = new Set(["initial", "inherit", "unset", "revert", "revert-layer"]);
 const nodeRequire = createRequire(__filename);
-const mdnData = nodeRequire("mdn-data") as {
-	css: {
-		properties: Record<string, { status?: string; syntax?: string }>;
-	};
-};
 const shorthandApi = nodeRequire("css-shorthand-properties") as {
 	default?: {
 		isShorthand?(propertyName: string): boolean;
@@ -71,9 +70,6 @@ const shorthandApi = nodeRequire("css-shorthand-properties") as {
 	isShorthand?(propertyName: string): boolean;
 	expand?(propertyName: string): string[];
 };
-const standardProperties = new Map<string, { status?: string; syntax?: string }>(
-	Object.entries(mdnData.css.properties as Record<string, { status?: string; syntax?: string }>),
-);
 
 export function createCssHintClassifier(options: CssHintClassifierOptions = {}): CssHintClassifier {
 	const suppressGlobalValues = options.suppressGlobalValues !== false;
@@ -106,7 +102,8 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 				};
 			}
 
-			const tokenCount = countValueTokens(valueText);
+			const tokenCount =
+				candidate.propertyName === "border-radius" ? countBorderRadiusTokens(valueText) : countValueTokens(valueText);
 			return {
 				state: "matched",
 				propertyName: candidate.propertyName,
@@ -137,17 +134,16 @@ function buildSuppressedClassification(
 }
 
 function isRuleBasedHintCandidate(propertyName: string): boolean {
-	const property = standardProperties.get(propertyName);
-	if (!property || property.status !== "standard") {
-		return false;
-	}
-
-	const syntax = typeof property.syntax === "string" ? property.syntax.trim() : "";
+	const syntax = getPropertySyntax(propertyName).trim();
 	if (!syntax) {
 		return false;
 	}
 
-	if (syntax.includes("<grid-line>") || syntax.includes("||") || syntax.includes("#") || hasBoundedRepetition(syntax)) {
+	if (getPropertyStatus(propertyName) !== "standard") {
+		return false;
+	}
+
+	if (syntax.includes("<grid-line>") || syntax.includes("||")) {
 		return true;
 	}
 
@@ -155,9 +151,98 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 		return true;
 	}
 
-	return Boolean(
-		shorthandApi && typeof shorthandApi.isShorthand === "function" && shorthandApi.isShorthand(propertyName),
-	);
+	if (isLogicalAxisRepeatProperty(propertyName)) {
+		return true;
+	}
+
+	if (isInsetProperty(propertyName)) {
+		return true;
+	}
+
+	if (isScrollMarginProperty(propertyName)) {
+		return true;
+	}
+
+	if (isCornerRadiusProperty(propertyName)) {
+		return true;
+	}
+
+	const shorthandExpansion = getShorthandExpansion(propertyName);
+	if (syntax.includes("#") || hasBoundedRepetition(syntax)) {
+		return shorthandExpansion.length > 1;
+	}
+
+	return shorthandExpansion.length > 1;
+}
+
+function countBorderRadiusTokens(valueText: string): number {
+	let tokenCount = 0;
+	let maxTokenCount = 0;
+	let depth = 0;
+	let quote: string | null = null;
+	let inToken = false;
+
+	for (const character of valueText) {
+		if (quote) {
+			if (character === quote) {
+				quote = null;
+			}
+			inToken = true;
+			continue;
+		}
+
+		if (character === '"' || character === "'") {
+			quote = character;
+			inToken = true;
+			continue;
+		}
+
+		if (character === "(" || character === "[" || character === "{") {
+			depth += 1;
+			inToken = true;
+			continue;
+		}
+
+		if ((character === ")" || character === "]" || character === "}") && depth > 0) {
+			depth -= 1;
+			inToken = true;
+			continue;
+		}
+
+		if (depth === 0 && character === "/") {
+			if (inToken) {
+				tokenCount += 1;
+				inToken = false;
+			}
+
+			if (tokenCount > maxTokenCount) {
+				maxTokenCount = tokenCount;
+			}
+
+			tokenCount = 0;
+			continue;
+		}
+
+		if (depth === 0 && (character === "," || /\s/.test(character))) {
+			if (inToken) {
+				tokenCount += 1;
+				inToken = false;
+			}
+			continue;
+		}
+
+		inToken = true;
+	}
+
+	if (inToken) {
+		tokenCount += 1;
+	}
+
+	if (tokenCount > maxTokenCount) {
+		maxTokenCount = tokenCount;
+	}
+
+	return Math.max(1, maxTokenCount);
 }
 
 function hasBoundedRepetition(syntax: string): boolean {
@@ -165,10 +250,52 @@ function hasBoundedRepetition(syntax: string): boolean {
 }
 
 function countValueTokens(valueText: string): number {
-	const tokens = valueText
-		.split(/\s+/)
-		.map((token) => token.trim())
-		.filter(Boolean);
+	let tokenCount = 0;
+	let depth = 0;
+	let quote: string | null = null;
+	let inToken = false;
 
-	return Math.max(1, tokens.length);
+	for (const character of valueText) {
+		if (quote) {
+			if (character === quote) {
+				quote = null;
+			}
+			inToken = true;
+			continue;
+		}
+
+		if (character === '"' || character === "'") {
+			quote = character;
+			inToken = true;
+			continue;
+		}
+
+		if (character === "(" || character === "[" || character === "{") {
+			depth += 1;
+			inToken = true;
+			continue;
+		}
+
+		if ((character === ")" || character === "]" || character === "}") && depth > 0) {
+			depth -= 1;
+			inToken = true;
+			continue;
+		}
+
+		if (depth === 0 && (character === "/" || character === "," || /\s/.test(character))) {
+			if (inToken) {
+				tokenCount += 1;
+				inToken = false;
+			}
+			continue;
+		}
+
+		inToken = true;
+	}
+
+	if (inToken) {
+		tokenCount += 1;
+	}
+
+	return Math.max(1, tokenCount);
 }

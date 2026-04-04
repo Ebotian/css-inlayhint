@@ -107,6 +107,99 @@ describe("scheduler layer", () => {
 		});
 	});
 
+	test("resolves border-color rgb tokens without splitting the color value", async () => {
+		const scheduler = createServiceScheduler();
+		const file = "file:///workspace/border-color.css";
+		const css = "a { border-color: red rgb(240 30 50 / 70%) green; }";
+
+		scheduler.addDocument(file, css, 1);
+
+		const hints = await scheduler.inlayHints(file, fullRange);
+
+		assert.deepEqual(
+			hints.map((hint) => ({ label: hint.label, position: hint.position.character })),
+			[
+				{ label: "top:", position: 18 },
+				{ label: "right/left:", position: 22 },
+				{ label: "bottom:", position: 30 },
+			],
+		);
+	});
+
+	test("resolves border-bottom-left-radius two-value corner values end to end", async () => {
+		const scheduler = createServiceScheduler();
+		const file = "file:///workspace/border-bottom-left-radius.css";
+		const css = "a { border-bottom-left-radius: 20% 10%; }";
+
+		scheduler.addDocument(file, css, 1);
+
+		const hints = await scheduler.inlayHints(file, fullRange);
+
+		assert.deepEqual(
+			hints.map((hint) => ({ label: hint.label, position: hint.position.character })),
+			[
+				{ label: "horizontal:", position: 31 },
+				{ label: "vertical:", position: 35 },
+			],
+		);
+	});
+
+	test("resolves padding-block repeat values end to end", async () => {
+		const scheduler = createServiceScheduler();
+		const file = "file:///workspace/padding-block.css";
+		const css = "a { padding-block: 10px 20px; }";
+
+		scheduler.addDocument(file, css, 1);
+
+		const hints = await scheduler.inlayHints(file, fullRange);
+
+		assert.deepEqual(
+			hints.map((hint) => ({ label: hint.label, position: hint.position.character })),
+			[
+				{ label: "start:", position: 19 },
+				{ label: "end:", position: 24 },
+			],
+		);
+	});
+
+	test("resolves inset edge values end to end", async () => {
+		const scheduler = createServiceScheduler();
+		const file = "file:///workspace/inset.css";
+		const css = "a { inset: 5px 15px 10px; }";
+
+		scheduler.addDocument(file, css, 1);
+
+		const hints = await scheduler.inlayHints(file, fullRange);
+
+		assert.deepEqual(
+			hints.map((hint) => ({ label: hint.label, position: hint.position.character })),
+			[
+				{ label: "top:", position: 11 },
+				{ label: "right/left:", position: 15 },
+				{ label: "bottom:", position: 20 },
+			],
+		);
+	});
+
+	test("resolves scroll-margin edge values end to end", async () => {
+		const scheduler = createServiceScheduler();
+		const file = "file:///workspace/scroll-margin.css";
+		const css = "a { scroll-margin: 5px 15px 10px; }";
+
+		scheduler.addDocument(file, css, 1);
+
+		const hints = await scheduler.inlayHints(file, fullRange);
+
+		assert.deepEqual(
+			hints.map((hint) => ({ label: hint.label, position: hint.position.character })),
+			[
+				{ label: "top:", position: 19 },
+				{ label: "right/left:", position: 23 },
+				{ label: "bottom:", position: 28 },
+			],
+		);
+	});
+
 	test("cancels stale request when a newer edit arrives", async () => {
 		const scheduler = createServiceScheduler();
 		const file = "file:///workspace/cancel.css";

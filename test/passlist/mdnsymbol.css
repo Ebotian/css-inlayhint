@@ -1,0 +1,6787 @@
+/* Generated from MDN syntax pages for parser pipeline coverage */
+
+/* animation-range */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-range#syntax */
+/* examples: 21 */
+/* Range start value only */
+/* Single value syntax */
+.mdn-symbol-animation-range-001 {
+  animation-range: normal;
+}
+.mdn-symbol-animation-range-002 {
+  animation-range: 20%;
+}
+.mdn-symbol-animation-range-003 {
+  animation-range: 100px;
+}
+.mdn-symbol-animation-range-004 {
+  animation-range: cover;
+}
+.mdn-symbol-animation-range-005 {
+  animation-range: contain;
+}
+/* Range start value only */
+/* Single value syntax */
+/* Two value syntax */
+.mdn-symbol-animation-range-006 {
+  animation-range: cover 20%;
+}
+.mdn-symbol-animation-range-007 {
+  animation-range: contain 100px;
+}
+/* Range start value only */
+/* Single value syntax */
+/* Two value syntax */
+/* Range start and end values */
+/* Two value syntax */
+.mdn-symbol-animation-range-008 {
+  animation-range: normal 25%;
+}
+.mdn-symbol-animation-range-009 {
+  animation-range: 25% normal;
+}
+.mdn-symbol-animation-range-010 {
+  animation-range: 25% 50%;
+}
+.mdn-symbol-animation-range-011 {
+  animation-range: entry exit;
+}
+/* Range start value only */
+/* Single value syntax */
+/* Two value syntax */
+/* Range start and end values */
+/* Two value syntax */
+/* Three value syntax */
+.mdn-symbol-animation-range-012 {
+  animation-range: cover cover 200px;
+}
+.mdn-symbol-animation-range-013 {
+  animation-range: 10% exit 90%;
+}
+.mdn-symbol-animation-range-014 {
+  animation-range: entry 10% 90%;
+}
+/* Range start value only */
+/* Single value syntax */
+/* Two value syntax */
+/* Range start and end values */
+/* Two value syntax */
+/* Three value syntax */
+/* Four value syntax */
+.mdn-symbol-animation-range-015 {
+  animation-range: cover 0% cover 200px;
+}
+.mdn-symbol-animation-range-016 {
+  animation-range: entry 10% exit 100%;
+}
+/* Range start value only */
+/* Single value syntax */
+/* Two value syntax */
+/* Range start and end values */
+/* Two value syntax */
+/* Three value syntax */
+/* Four value syntax */
+/* Global values */
+.mdn-symbol-animation-range-017 {
+  animation-timeline: inherit;
+}
+.mdn-symbol-animation-range-018 {
+  animation-timeline: initial;
+}
+.mdn-symbol-animation-range-019 {
+  animation-timeline: revert;
+}
+.mdn-symbol-animation-range-020 {
+  animation-timeline: revert-layer;
+}
+.mdn-symbol-animation-range-021 {
+  animation-timeline: unset;
+}
+
+/* background-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background-color#syntax */
+/* examples: 19 */
+/* Keyword values */
+.mdn-symbol-background-color-001 {
+  background-color: red;
+}
+.mdn-symbol-background-color-002 {
+  background-color: indigo;
+}
+/* Keyword values */
+/* Hexadecimal value */
+.mdn-symbol-background-color-003 {
+  background-color: #bbff00; /* Fully opaque */
+}
+.mdn-symbol-background-color-004 {
+  background-color: #bf0; /* Fully opaque shorthand */
+}
+.mdn-symbol-background-color-005 {
+  background-color: #11ffee00; /* Fully transparent */
+}
+.mdn-symbol-background-color-006 {
+  background-color: #1fe0; /* Fully transparent shorthand */
+}
+.mdn-symbol-background-color-007 {
+  background-color: #11ffeeff; /* Fully opaque */
+}
+.mdn-symbol-background-color-008 {
+  background-color: #1fef; /* Fully opaque shorthand */
+}
+/* Keyword values */
+/* Hexadecimal value */
+/* RGB value */
+.mdn-symbol-background-color-009 {
+  background-color: rgb(255 255 128); /* Fully opaque */
+}
+.mdn-symbol-background-color-010 {
+  background-color: rgb(117 190 218 / 50%); /* 50% transparent */
+}
+/* Keyword values */
+/* Hexadecimal value */
+/* RGB value */
+/* HSL value */
+.mdn-symbol-background-color-011 {
+  background-color: hsl(50 33% 25%); /* Fully opaque */
+}
+.mdn-symbol-background-color-012 {
+  background-color: hsl(
+    50 33% 25% / 75%
+  ); /* 75% opaque, i.e. 25% transparent */
+}
+/* Keyword values */
+/* Hexadecimal value */
+/* RGB value */
+/* HSL value */
+/* Special keyword values */
+.mdn-symbol-background-color-013 {
+  background-color: currentColor;
+}
+.mdn-symbol-background-color-014 {
+  background-color: transparent;
+}
+/* Keyword values */
+/* Hexadecimal value */
+/* RGB value */
+/* HSL value */
+/* Special keyword values */
+/* Global values */
+.mdn-symbol-background-color-015 {
+  background-color: inherit;
+}
+.mdn-symbol-background-color-016 {
+  background-color: initial;
+}
+.mdn-symbol-background-color-017 {
+  background-color: revert;
+}
+.mdn-symbol-background-color-018 {
+  background-color: revert-layer;
+}
+.mdn-symbol-background-color-019 {
+  background-color: unset;
+}
+
+/* block-size */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/block-size#syntax */
+/* examples: 15 */
+/* <length> values */
+.mdn-symbol-block-size-001 {
+  block-size: 300px;
+}
+.mdn-symbol-block-size-002 {
+  block-size: 25em;
+}
+.mdn-symbol-block-size-003 {
+  block-size: anchor-size(height);
+}
+.mdn-symbol-block-size-004 {
+  block-size: calc(anchor-size(--my-anchor block) * 0.75);
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-block-size-005 {
+  block-size: 75%;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+.mdn-symbol-block-size-006 {
+  block-size: max-content;
+}
+.mdn-symbol-block-size-007 {
+  block-size: min-content;
+}
+.mdn-symbol-block-size-008 {
+  block-size: fit-content;
+}
+.mdn-symbol-block-size-009 {
+  block-size: fit-content(20em);
+}
+.mdn-symbol-block-size-010 {
+  block-size: auto;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-block-size-011 {
+  block-size: inherit;
+}
+.mdn-symbol-block-size-012 {
+  block-size: initial;
+}
+.mdn-symbol-block-size-013 {
+  block-size: revert;
+}
+.mdn-symbol-block-size-014 {
+  block-size: revert-layer;
+}
+.mdn-symbol-block-size-015 {
+  block-size: unset;
+}
+
+/* border-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block#syntax */
+/* examples: 8 */
+.mdn-symbol-border-block-001 {
+  border-block: 1px;
+}
+.mdn-symbol-border-block-002 {
+  border-block: 2px dotted;
+}
+.mdn-symbol-border-block-003 {
+  border-block: medium dashed blue;
+}
+/* Global values */
+.mdn-symbol-border-block-004 {
+  border-block: inherit;
+}
+.mdn-symbol-border-block-005 {
+  border-block: initial;
+}
+.mdn-symbol-border-block-006 {
+  border-block: revert;
+}
+.mdn-symbol-border-block-007 {
+  border-block: revert-layer;
+}
+.mdn-symbol-border-block-008 {
+  border-block: unset;
+}
+
+/* border-block-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-color#syntax */
+/* examples: 7 */
+.mdn-symbol-border-block-color-001 {
+  border-block-color: yellow;
+}
+.mdn-symbol-border-block-color-002 {
+  border-block-color: #f5f6f7;
+}
+/* Global values */
+.mdn-symbol-border-block-color-003 {
+  border-block-color: inherit;
+}
+.mdn-symbol-border-block-color-004 {
+  border-block-color: initial;
+}
+.mdn-symbol-border-block-color-005 {
+  border-block-color: revert;
+}
+.mdn-symbol-border-block-color-006 {
+  border-block-color: revert-layer;
+}
+.mdn-symbol-border-block-color-007 {
+  border-block-color: unset;
+}
+
+/* border-block-end-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-end-color#syntax */
+/* examples: 7 */
+.mdn-symbol-border-block-end-color-001 {
+  border-block-end-color: yellow;
+}
+.mdn-symbol-border-block-end-color-002 {
+  border-block-end-color: #f5f6f7;
+}
+/* Global values */
+.mdn-symbol-border-block-end-color-003 {
+  border-block-end-color: inherit;
+}
+.mdn-symbol-border-block-end-color-004 {
+  border-block-end-color: initial;
+}
+.mdn-symbol-border-block-end-color-005 {
+  border-block-end-color: revert;
+}
+.mdn-symbol-border-block-end-color-006 {
+  border-block-end-color: revert-layer;
+}
+.mdn-symbol-border-block-end-color-007 {
+  border-block-end-color: unset;
+}
+
+/* border-block-end-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-end-style#syntax */
+/* examples: 8 */
+/* <'border-style'> values */
+.mdn-symbol-border-block-end-style-001 {
+  border-block-end-style: dashed;
+}
+.mdn-symbol-border-block-end-style-002 {
+  border-block-end-style: dotted;
+}
+.mdn-symbol-border-block-end-style-003 {
+  border-block-end-style: groove;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-border-block-end-style-004 {
+  border-block-end-style: inherit;
+}
+.mdn-symbol-border-block-end-style-005 {
+  border-block-end-style: initial;
+}
+.mdn-symbol-border-block-end-style-006 {
+  border-block-end-style: revert;
+}
+.mdn-symbol-border-block-end-style-007 {
+  border-block-end-style: revert-layer;
+}
+.mdn-symbol-border-block-end-style-008 {
+  border-block-end-style: unset;
+}
+
+/* border-block-end-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-end-width#syntax */
+/* examples: 7 */
+/* <'border-width'> values */
+.mdn-symbol-border-block-end-width-001 {
+  border-block-end-width: 5px;
+}
+.mdn-symbol-border-block-end-width-002 {
+  border-block-end-width: thick;
+}
+/* <'border-width'> values */
+/* Global values */
+.mdn-symbol-border-block-end-width-003 {
+  border-block-end-width: inherit;
+}
+.mdn-symbol-border-block-end-width-004 {
+  border-block-end-width: initial;
+}
+.mdn-symbol-border-block-end-width-005 {
+  border-block-end-width: revert;
+}
+.mdn-symbol-border-block-end-width-006 {
+  border-block-end-width: revert-layer;
+}
+.mdn-symbol-border-block-end-width-007 {
+  border-block-end-width: unset;
+}
+
+/* border-block-start-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-start-color#syntax */
+/* examples: 7 */
+.mdn-symbol-border-block-start-color-001 {
+  border-block-start-color: blue;
+}
+.mdn-symbol-border-block-start-color-002 {
+  border-block-start-color: #4c5d21;
+}
+/* Global values */
+.mdn-symbol-border-block-start-color-003 {
+  border-block-start-color: inherit;
+}
+.mdn-symbol-border-block-start-color-004 {
+  border-block-start-color: initial;
+}
+.mdn-symbol-border-block-start-color-005 {
+  border-block-start-color: revert;
+}
+.mdn-symbol-border-block-start-color-006 {
+  border-block-start-color: revert-layer;
+}
+.mdn-symbol-border-block-start-color-007 {
+  border-block-start-color: unset;
+}
+
+/* border-block-start-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-start-style#syntax */
+/* examples: 8 */
+/* <'border-style'> values */
+.mdn-symbol-border-block-start-style-001 {
+  border-block-start-style: dashed;
+}
+.mdn-symbol-border-block-start-style-002 {
+  border-block-start-style: dotted;
+}
+.mdn-symbol-border-block-start-style-003 {
+  border-block-start-style: groove;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-border-block-start-style-004 {
+  border-block-start-style: inherit;
+}
+.mdn-symbol-border-block-start-style-005 {
+  border-block-start-style: initial;
+}
+.mdn-symbol-border-block-start-style-006 {
+  border-block-start-style: revert;
+}
+.mdn-symbol-border-block-start-style-007 {
+  border-block-start-style: revert-layer;
+}
+.mdn-symbol-border-block-start-style-008 {
+  border-block-start-style: unset;
+}
+
+/* border-block-start-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-start-width#syntax */
+/* examples: 7 */
+/* <'border-width'> values */
+.mdn-symbol-border-block-start-width-001 {
+  border-block-start-width: 5px;
+}
+.mdn-symbol-border-block-start-width-002 {
+  border-block-start-width: thick;
+}
+/* <'border-width'> values */
+/* Global values */
+.mdn-symbol-border-block-start-width-003 {
+  border-block-start-width: inherit;
+}
+.mdn-symbol-border-block-start-width-004 {
+  border-block-start-width: initial;
+}
+.mdn-symbol-border-block-start-width-005 {
+  border-block-start-width: revert;
+}
+.mdn-symbol-border-block-start-width-006 {
+  border-block-start-width: revert-layer;
+}
+.mdn-symbol-border-block-start-width-007 {
+  border-block-start-width: unset;
+}
+
+/* border-block-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-style#syntax */
+/* examples: 8 */
+/* <'border-style'> values */
+.mdn-symbol-border-block-style-001 {
+  border-block-style: dashed;
+}
+.mdn-symbol-border-block-style-002 {
+  border-block-style: dotted;
+}
+.mdn-symbol-border-block-style-003 {
+  border-block-style: groove;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-border-block-style-004 {
+  border-block-style: inherit;
+}
+.mdn-symbol-border-block-style-005 {
+  border-block-style: initial;
+}
+.mdn-symbol-border-block-style-006 {
+  border-block-style: revert;
+}
+.mdn-symbol-border-block-style-007 {
+  border-block-style: revert-layer;
+}
+.mdn-symbol-border-block-style-008 {
+  border-block-style: unset;
+}
+
+/* border-block-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-block-width#syntax */
+/* examples: 7 */
+/* <'border-width'> values */
+.mdn-symbol-border-block-width-001 {
+  border-block-width: 5px;
+}
+.mdn-symbol-border-block-width-002 {
+  border-block-width: thick;
+}
+/* <'border-width'> values */
+/* Global values */
+.mdn-symbol-border-block-width-003 {
+  border-block-width: inherit;
+}
+.mdn-symbol-border-block-width-004 {
+  border-block-width: initial;
+}
+.mdn-symbol-border-block-width-005 {
+  border-block-width: revert;
+}
+.mdn-symbol-border-block-width-006 {
+  border-block-width: revert-layer;
+}
+.mdn-symbol-border-block-width-007 {
+  border-block-width: unset;
+}
+
+/* border-bottom-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-bottom-color#syntax */
+/* examples: 11 */
+/* <color> values */
+.mdn-symbol-border-bottom-color-001 {
+  border-bottom-color: red;
+}
+.mdn-symbol-border-bottom-color-002 {
+  border-bottom-color: #ffbb00;
+}
+.mdn-symbol-border-bottom-color-003 {
+  border-bottom-color: rgb(255 0 0);
+}
+.mdn-symbol-border-bottom-color-004 {
+  border-bottom-color: hsl(100deg 50% 25% / 75%);
+}
+.mdn-symbol-border-bottom-color-005 {
+  border-bottom-color: currentColor;
+}
+.mdn-symbol-border-bottom-color-006 {
+  border-bottom-color: transparent;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-border-bottom-color-007 {
+  border-bottom-color: inherit;
+}
+.mdn-symbol-border-bottom-color-008 {
+  border-bottom-color: initial;
+}
+.mdn-symbol-border-bottom-color-009 {
+  border-bottom-color: revert;
+}
+.mdn-symbol-border-bottom-color-010 {
+  border-bottom-color: revert-layer;
+}
+.mdn-symbol-border-bottom-color-011 {
+  border-bottom-color: unset;
+}
+
+/* border-bottom-left-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-bottom-left-radius#syntax */
+/* examples: 10 */
+/* the corner is a circle */
+/* border-bottom-left-radius: radius */
+.mdn-symbol-border-bottom-left-radius-001 {
+  border-bottom-left-radius: 3px;
+}
+/* the corner is a circle */
+/* border-bottom-left-radius: radius */
+/* Percentage values */
+/* circle if box is a square or ellipse if box is a rectangle */
+.mdn-symbol-border-bottom-left-radius-002 {
+  border-bottom-left-radius: 20%;
+}
+/* the corner is a circle */
+/* border-bottom-left-radius: radius */
+/* Percentage values */
+/* circle if box is a square or ellipse if box is a rectangle */
+/* same as above: 20% of horizontal(width) and vertical(height) */
+.mdn-symbol-border-bottom-left-radius-003 {
+  border-bottom-left-radius: 20% 20%;
+}
+/* the corner is a circle */
+/* border-bottom-left-radius: radius */
+/* Percentage values */
+/* circle if box is a square or ellipse if box is a rectangle */
+/* same as above: 20% of horizontal(width) and vertical(height) */
+/* 20% of horizontal(width) and 10% of vertical(height) */
+.mdn-symbol-border-bottom-left-radius-004 {
+  border-bottom-left-radius: 20% 10%;
+}
+/* the corner is a circle */
+/* border-bottom-left-radius: radius */
+/* Percentage values */
+/* circle if box is a square or ellipse if box is a rectangle */
+/* same as above: 20% of horizontal(width) and vertical(height) */
+/* 20% of horizontal(width) and 10% of vertical(height) */
+/* the corner is an ellipse */
+/* border-bottom-left-radius: horizontal vertical */
+.mdn-symbol-border-bottom-left-radius-005 {
+  border-bottom-left-radius: 0.5em 1em;
+}
+/* the corner is a circle */
+/* border-bottom-left-radius: radius */
+/* Percentage values */
+/* circle if box is a square or ellipse if box is a rectangle */
+/* same as above: 20% of horizontal(width) and vertical(height) */
+/* 20% of horizontal(width) and 10% of vertical(height) */
+/* the corner is an ellipse */
+/* border-bottom-left-radius: horizontal vertical */
+/* Global values */
+.mdn-symbol-border-bottom-left-radius-006 {
+  border-bottom-left-radius: inherit;
+}
+.mdn-symbol-border-bottom-left-radius-007 {
+  border-bottom-left-radius: initial;
+}
+.mdn-symbol-border-bottom-left-radius-008 {
+  border-bottom-left-radius: revert;
+}
+.mdn-symbol-border-bottom-left-radius-009 {
+  border-bottom-left-radius: revert-layer;
+}
+.mdn-symbol-border-bottom-left-radius-010 {
+  border-bottom-left-radius: unset;
+}
+
+/* border-bottom-right-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-bottom-right-radius#syntax */
+/* examples: 10 */
+/* The corner is a circle */
+/* border-bottom-right-radius: radius */
+.mdn-symbol-border-bottom-right-radius-001 {
+  border-bottom-right-radius: 3px;
+}
+/* The corner is a circle */
+/* border-bottom-right-radius: radius */
+/* Percentage values */
+.mdn-symbol-border-bottom-right-radius-002 {
+  border-bottom-right-radius: 20%; /* corner of a circle if box is a square or else corner of a rectangle */
+}
+.mdn-symbol-border-bottom-right-radius-003 {
+  border-bottom-right-radius: 20% 20%; /* same as above */ /* 20% of horizontal(width) and vertical(height) */
+}
+.mdn-symbol-border-bottom-right-radius-004 {
+  border-bottom-right-radius: 20% 10%; /* 20% of horizontal(width) and 10% of vertical(height) */
+}
+/* The corner is a circle */
+/* border-bottom-right-radius: radius */
+/* Percentage values */
+/* The corner is an ellipse */
+/* border-bottom-right-radius: horizontal vertical */
+.mdn-symbol-border-bottom-right-radius-005 {
+  border-bottom-right-radius: 0.5em 1em;
+}
+/* The corner is a circle */
+/* border-bottom-right-radius: radius */
+/* Percentage values */
+/* The corner is an ellipse */
+/* border-bottom-right-radius: horizontal vertical */
+/* Global values */
+.mdn-symbol-border-bottom-right-radius-006 {
+  border-bottom-right-radius: inherit;
+}
+.mdn-symbol-border-bottom-right-radius-007 {
+  border-bottom-right-radius: initial;
+}
+.mdn-symbol-border-bottom-right-radius-008 {
+  border-bottom-right-radius: revert;
+}
+.mdn-symbol-border-bottom-right-radius-009 {
+  border-bottom-right-radius: revert-layer;
+}
+.mdn-symbol-border-bottom-right-radius-010 {
+  border-bottom-right-radius: unset;
+}
+
+/* border-bottom-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-bottom-style#syntax */
+/* examples: 15 */
+/* Keyword values */
+.mdn-symbol-border-bottom-style-001 {
+  border-bottom-style: none;
+}
+.mdn-symbol-border-bottom-style-002 {
+  border-bottom-style: hidden;
+}
+.mdn-symbol-border-bottom-style-003 {
+  border-bottom-style: dotted;
+}
+.mdn-symbol-border-bottom-style-004 {
+  border-bottom-style: dashed;
+}
+.mdn-symbol-border-bottom-style-005 {
+  border-bottom-style: solid;
+}
+.mdn-symbol-border-bottom-style-006 {
+  border-bottom-style: double;
+}
+.mdn-symbol-border-bottom-style-007 {
+  border-bottom-style: groove;
+}
+.mdn-symbol-border-bottom-style-008 {
+  border-bottom-style: ridge;
+}
+.mdn-symbol-border-bottom-style-009 {
+  border-bottom-style: inset;
+}
+.mdn-symbol-border-bottom-style-010 {
+  border-bottom-style: outset;
+}
+/* Keyword values */
+/* Global values */
+.mdn-symbol-border-bottom-style-011 {
+  border-bottom-style: inherit;
+}
+.mdn-symbol-border-bottom-style-012 {
+  border-bottom-style: initial;
+}
+.mdn-symbol-border-bottom-style-013 {
+  border-bottom-style: revert;
+}
+.mdn-symbol-border-bottom-style-014 {
+  border-bottom-style: revert-layer;
+}
+.mdn-symbol-border-bottom-style-015 {
+  border-bottom-style: unset;
+}
+
+/* border-bottom-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-bottom-width#syntax */
+/* examples: 11 */
+/* Keyword values */
+.mdn-symbol-border-bottom-width-001 {
+  border-bottom-width: thin;
+}
+.mdn-symbol-border-bottom-width-002 {
+  border-bottom-width: medium;
+}
+.mdn-symbol-border-bottom-width-003 {
+  border-bottom-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-border-bottom-width-004 {
+  border-bottom-width: 10em;
+}
+.mdn-symbol-border-bottom-width-005 {
+  border-bottom-width: 3vmax;
+}
+.mdn-symbol-border-bottom-width-006 {
+  border-bottom-width: 6px;
+}
+/* Keyword values */
+/* <length> values */
+/* Global keywords */
+.mdn-symbol-border-bottom-width-007 {
+  border-bottom-width: inherit;
+}
+.mdn-symbol-border-bottom-width-008 {
+  border-bottom-width: initial;
+}
+.mdn-symbol-border-bottom-width-009 {
+  border-bottom-width: revert;
+}
+.mdn-symbol-border-bottom-width-010 {
+  border-bottom-width: revert-layer;
+}
+.mdn-symbol-border-bottom-width-011 {
+  border-bottom-width: unset;
+}
+
+/* border-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-color#syntax */
+/* examples: 9 */
+/* <color> values */
+.mdn-symbol-border-color-001 {
+  border-color: red;
+}
+/* <color> values */
+/* top and bottom | left and right */
+.mdn-symbol-border-color-002 {
+  border-color: red #f015ca;
+}
+/* <color> values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+.mdn-symbol-border-color-003 {
+  border-color: red rgb(240 30 50 / 70%) green;
+}
+/* <color> values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+.mdn-symbol-border-color-004 {
+  border-color: red yellow green blue;
+}
+/* <color> values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* Global values */
+.mdn-symbol-border-color-005 {
+  border-color: inherit;
+}
+.mdn-symbol-border-color-006 {
+  border-color: initial;
+}
+.mdn-symbol-border-color-007 {
+  border-color: revert;
+}
+.mdn-symbol-border-color-008 {
+  border-color: revert-layer;
+}
+.mdn-symbol-border-color-009 {
+  border-color: unset;
+}
+
+/* border-end-end-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-end-end-radius#syntax */
+/* examples: 8 */
+/* <length> values */
+/* With one value the corner will be a circle */
+.mdn-symbol-border-end-end-radius-001 {
+  border-end-end-radius: 10px;
+}
+.mdn-symbol-border-end-end-radius-002 {
+  border-end-end-radius: 1em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+.mdn-symbol-border-end-end-radius-003 {
+  border-end-end-radius: 1em 2em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+/* Global values */
+.mdn-symbol-border-end-end-radius-004 {
+  border-end-end-radius: inherit;
+}
+.mdn-symbol-border-end-end-radius-005 {
+  border-end-end-radius: initial;
+}
+.mdn-symbol-border-end-end-radius-006 {
+  border-end-end-radius: revert;
+}
+.mdn-symbol-border-end-end-radius-007 {
+  border-end-end-radius: revert-layer;
+}
+.mdn-symbol-border-end-end-radius-008 {
+  border-end-end-radius: unset;
+}
+
+/* border-end-start-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-end-start-radius#syntax */
+/* examples: 8 */
+/* <length> values */
+/* With one value the corner will be a circle */
+.mdn-symbol-border-end-start-radius-001 {
+  border-end-start-radius: 10px;
+}
+.mdn-symbol-border-end-start-radius-002 {
+  border-end-start-radius: 1em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+.mdn-symbol-border-end-start-radius-003 {
+  border-end-start-radius: 1em 2em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+/* Global values */
+.mdn-symbol-border-end-start-radius-004 {
+  border-end-start-radius: inherit;
+}
+.mdn-symbol-border-end-start-radius-005 {
+  border-end-start-radius: initial;
+}
+.mdn-symbol-border-end-start-radius-006 {
+  border-end-start-radius: revert;
+}
+.mdn-symbol-border-end-start-radius-007 {
+  border-end-start-radius: revert-layer;
+}
+.mdn-symbol-border-end-start-radius-008 {
+  border-end-start-radius: unset;
+}
+
+/* border-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline#syntax */
+/* examples: 8 */
+.mdn-symbol-border-inline-001 {
+  border-inline: 1px;
+}
+.mdn-symbol-border-inline-002 {
+  border-inline: 2px dotted;
+}
+.mdn-symbol-border-inline-003 {
+  border-inline: medium dashed blue;
+}
+/* Global values */
+.mdn-symbol-border-inline-004 {
+  border-inline: inherit;
+}
+.mdn-symbol-border-inline-005 {
+  border-inline: initial;
+}
+.mdn-symbol-border-inline-006 {
+  border-inline: revert;
+}
+.mdn-symbol-border-inline-007 {
+  border-inline: revert-layer;
+}
+.mdn-symbol-border-inline-008 {
+  border-inline: unset;
+}
+
+/* border-inline-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-color#syntax */
+/* examples: 7 */
+.mdn-symbol-border-inline-color-001 {
+  border-inline-color: yellow;
+}
+.mdn-symbol-border-inline-color-002 {
+  border-inline-color: #f5f6f7;
+}
+/* Global values */
+.mdn-symbol-border-inline-color-003 {
+  border-inline-color: inherit;
+}
+.mdn-symbol-border-inline-color-004 {
+  border-inline-color: initial;
+}
+.mdn-symbol-border-inline-color-005 {
+  border-inline-color: revert;
+}
+.mdn-symbol-border-inline-color-006 {
+  border-inline-color: revert-layer;
+}
+.mdn-symbol-border-inline-color-007 {
+  border-inline-color: unset;
+}
+
+/* border-inline-end-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-end-color#syntax */
+/* examples: 7 */
+.mdn-symbol-border-inline-end-color-001 {
+  border-inline-end-color: rebeccapurple;
+}
+.mdn-symbol-border-inline-end-color-002 {
+  border-inline-end-color: #663399;
+}
+/* Global values */
+.mdn-symbol-border-inline-end-color-003 {
+  border-inline-end-color: inherit;
+}
+.mdn-symbol-border-inline-end-color-004 {
+  border-inline-end-color: initial;
+}
+.mdn-symbol-border-inline-end-color-005 {
+  border-inline-end-color: revert;
+}
+.mdn-symbol-border-inline-end-color-006 {
+  border-inline-end-color: revert-layer;
+}
+.mdn-symbol-border-inline-end-color-007 {
+  border-inline-end-color: unset;
+}
+
+/* border-inline-end-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-end-style#syntax */
+/* examples: 8 */
+/* <'border-style'> values */
+.mdn-symbol-border-inline-end-style-001 {
+  border-inline-end-style: dashed;
+}
+.mdn-symbol-border-inline-end-style-002 {
+  border-inline-end-style: dotted;
+}
+.mdn-symbol-border-inline-end-style-003 {
+  border-inline-end-style: groove;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-border-inline-end-style-004 {
+  border-inline-end-style: inherit;
+}
+.mdn-symbol-border-inline-end-style-005 {
+  border-inline-end-style: initial;
+}
+.mdn-symbol-border-inline-end-style-006 {
+  border-inline-end-style: revert;
+}
+.mdn-symbol-border-inline-end-style-007 {
+  border-inline-end-style: revert-layer;
+}
+.mdn-symbol-border-inline-end-style-008 {
+  border-inline-end-style: unset;
+}
+
+/* border-inline-end-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-end-width#syntax */
+/* examples: 7 */
+/* <'border-width'> values */
+.mdn-symbol-border-inline-end-width-001 {
+  border-inline-end-width: 2px;
+}
+.mdn-symbol-border-inline-end-width-002 {
+  border-inline-end-width: thick;
+}
+/* <'border-width'> values */
+/* Global values */
+.mdn-symbol-border-inline-end-width-003 {
+  border-inline-end-width: inherit;
+}
+.mdn-symbol-border-inline-end-width-004 {
+  border-inline-end-width: initial;
+}
+.mdn-symbol-border-inline-end-width-005 {
+  border-inline-end-width: revert;
+}
+.mdn-symbol-border-inline-end-width-006 {
+  border-inline-end-width: revert-layer;
+}
+.mdn-symbol-border-inline-end-width-007 {
+  border-inline-end-width: unset;
+}
+
+/* border-inline-start-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-color#syntax */
+/* examples: 7 */
+.mdn-symbol-border-inline-start-color-001 {
+  border-inline-start-color: red;
+}
+.mdn-symbol-border-inline-start-color-002 {
+  border-inline-start-color: #ee4141;
+}
+/* Global values */
+.mdn-symbol-border-inline-start-color-003 {
+  border-inline-start-color: inherit;
+}
+.mdn-symbol-border-inline-start-color-004 {
+  border-inline-start-color: initial;
+}
+.mdn-symbol-border-inline-start-color-005 {
+  border-inline-start-color: revert;
+}
+.mdn-symbol-border-inline-start-color-006 {
+  border-inline-start-color: revert-layer;
+}
+.mdn-symbol-border-inline-start-color-007 {
+  border-inline-start-color: unset;
+}
+
+/* border-inline-start-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-style#syntax */
+/* examples: 8 */
+/* <'border-style'> values */
+.mdn-symbol-border-inline-start-style-001 {
+  border-inline-start-style: dashed;
+}
+.mdn-symbol-border-inline-start-style-002 {
+  border-inline-start-style: dotted;
+}
+.mdn-symbol-border-inline-start-style-003 {
+  border-inline-start-style: groove;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-border-inline-start-style-004 {
+  border-inline-start-style: inherit;
+}
+.mdn-symbol-border-inline-start-style-005 {
+  border-inline-start-style: initial;
+}
+.mdn-symbol-border-inline-start-style-006 {
+  border-inline-start-style: revert;
+}
+.mdn-symbol-border-inline-start-style-007 {
+  border-inline-start-style: revert-layer;
+}
+.mdn-symbol-border-inline-start-style-008 {
+  border-inline-start-style: unset;
+}
+
+/* border-inline-start-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-width#syntax */
+/* examples: 7 */
+/* <'border-width'> values */
+.mdn-symbol-border-inline-start-width-001 {
+  border-inline-start-width: 5px;
+}
+.mdn-symbol-border-inline-start-width-002 {
+  border-inline-start-width: thick;
+}
+/* <'border-width'> values */
+/* Global values */
+.mdn-symbol-border-inline-start-width-003 {
+  border-inline-start-width: inherit;
+}
+.mdn-symbol-border-inline-start-width-004 {
+  border-inline-start-width: initial;
+}
+.mdn-symbol-border-inline-start-width-005 {
+  border-inline-start-width: revert;
+}
+.mdn-symbol-border-inline-start-width-006 {
+  border-inline-start-width: revert-layer;
+}
+.mdn-symbol-border-inline-start-width-007 {
+  border-inline-start-width: unset;
+}
+
+/* border-inline-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-style#syntax */
+/* examples: 8 */
+/* <'border-style'> values */
+.mdn-symbol-border-inline-style-001 {
+  border-inline-style: dashed;
+}
+.mdn-symbol-border-inline-style-002 {
+  border-inline-style: dotted;
+}
+.mdn-symbol-border-inline-style-003 {
+  border-inline-style: groove;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-border-inline-style-004 {
+  border-inline-style: inherit;
+}
+.mdn-symbol-border-inline-style-005 {
+  border-inline-style: initial;
+}
+.mdn-symbol-border-inline-style-006 {
+  border-inline-style: revert;
+}
+.mdn-symbol-border-inline-style-007 {
+  border-inline-style: revert-layer;
+}
+.mdn-symbol-border-inline-style-008 {
+  border-inline-style: unset;
+}
+
+/* border-inline-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-width#syntax */
+/* examples: 8 */
+/* <'border-width'> values */
+.mdn-symbol-border-inline-width-001 {
+  border-inline-width: 5px 10px;
+}
+.mdn-symbol-border-inline-width-002 {
+  border-inline-width: 5px;
+}
+.mdn-symbol-border-inline-width-003 {
+  border-inline-width: thick;
+}
+/* <'border-width'> values */
+/* Global values */
+.mdn-symbol-border-inline-width-004 {
+  border-inline-width: inherit;
+}
+.mdn-symbol-border-inline-width-005 {
+  border-inline-width: initial;
+}
+.mdn-symbol-border-inline-width-006 {
+  border-inline-width: revert;
+}
+.mdn-symbol-border-inline-width-007 {
+  border-inline-width: revert-layer;
+}
+.mdn-symbol-border-inline-width-008 {
+  border-inline-width: unset;
+}
+
+/* border-left-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-left-color#syntax */
+/* examples: 11 */
+/* <color> values */
+.mdn-symbol-border-left-color-001 {
+  border-left-color: red;
+}
+.mdn-symbol-border-left-color-002 {
+  border-left-color: #ffbb00;
+}
+.mdn-symbol-border-left-color-003 {
+  border-left-color: rgb(255 0 0);
+}
+.mdn-symbol-border-left-color-004 {
+  border-left-color: hsl(100deg 50% 25% / 75%);
+}
+.mdn-symbol-border-left-color-005 {
+  border-left-color: currentColor;
+}
+.mdn-symbol-border-left-color-006 {
+  border-left-color: transparent;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-border-left-color-007 {
+  border-left-color: inherit;
+}
+.mdn-symbol-border-left-color-008 {
+  border-left-color: initial;
+}
+.mdn-symbol-border-left-color-009 {
+  border-left-color: revert;
+}
+.mdn-symbol-border-left-color-010 {
+  border-left-color: revert-layer;
+}
+.mdn-symbol-border-left-color-011 {
+  border-left-color: unset;
+}
+
+/* border-left-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-left-style#syntax */
+/* examples: 15 */
+/* Keyword values */
+.mdn-symbol-border-left-style-001 {
+  border-left-style: none;
+}
+.mdn-symbol-border-left-style-002 {
+  border-left-style: hidden;
+}
+.mdn-symbol-border-left-style-003 {
+  border-left-style: dotted;
+}
+.mdn-symbol-border-left-style-004 {
+  border-left-style: dashed;
+}
+.mdn-symbol-border-left-style-005 {
+  border-left-style: solid;
+}
+.mdn-symbol-border-left-style-006 {
+  border-left-style: double;
+}
+.mdn-symbol-border-left-style-007 {
+  border-left-style: groove;
+}
+.mdn-symbol-border-left-style-008 {
+  border-left-style: ridge;
+}
+.mdn-symbol-border-left-style-009 {
+  border-left-style: inset;
+}
+.mdn-symbol-border-left-style-010 {
+  border-left-style: outset;
+}
+/* Keyword values */
+/* Global values */
+.mdn-symbol-border-left-style-011 {
+  border-left-style: inherit;
+}
+.mdn-symbol-border-left-style-012 {
+  border-left-style: initial;
+}
+.mdn-symbol-border-left-style-013 {
+  border-left-style: revert;
+}
+.mdn-symbol-border-left-style-014 {
+  border-left-style: revert-layer;
+}
+.mdn-symbol-border-left-style-015 {
+  border-left-style: unset;
+}
+
+/* border-left-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-left-width#syntax */
+/* examples: 11 */
+/* Keyword values */
+.mdn-symbol-border-left-width-001 {
+  border-left-width: thin;
+}
+.mdn-symbol-border-left-width-002 {
+  border-left-width: medium;
+}
+.mdn-symbol-border-left-width-003 {
+  border-left-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-border-left-width-004 {
+  border-left-width: 10em;
+}
+.mdn-symbol-border-left-width-005 {
+  border-left-width: 3vmax;
+}
+.mdn-symbol-border-left-width-006 {
+  border-left-width: 6px;
+}
+/* Keyword values */
+/* <length> values */
+/* Global keywords */
+.mdn-symbol-border-left-width-007 {
+  border-left-width: inherit;
+}
+.mdn-symbol-border-left-width-008 {
+  border-left-width: initial;
+}
+.mdn-symbol-border-left-width-009 {
+  border-left-width: revert;
+}
+.mdn-symbol-border-left-width-010 {
+  border-left-width: revert-layer;
+}
+.mdn-symbol-border-left-width-011 {
+  border-left-width: unset;
+}
+
+/* border-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-radius#syntax */
+/* examples: 13 */
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+.mdn-symbol-border-radius-001 {
+  border-radius: 10px;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+.mdn-symbol-border-radius-002 {
+  border-radius: 10px 5%;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+.mdn-symbol-border-radius-003 {
+  border-radius: 2px 4px 2px;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+/* top-left | top-right | bottom-right | bottom-left */
+.mdn-symbol-border-radius-004 {
+  border-radius: 1px 0 3px 4px;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+/* top-left | top-right | bottom-right | bottom-left */
+/* The syntax of the second radius allows one to four values */
+/* (first radius values) / radius */
+.mdn-symbol-border-radius-005 {
+  border-radius: 10px / 20px;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+/* top-left | top-right | bottom-right | bottom-left */
+/* The syntax of the second radius allows one to four values */
+/* (first radius values) / radius */
+/* (first radius values) / top-left-and-bottom-right | top-right-and-bottom-left */
+.mdn-symbol-border-radius-006 {
+  border-radius: 10px 5% / 20px 30px;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+/* top-left | top-right | bottom-right | bottom-left */
+/* The syntax of the second radius allows one to four values */
+/* (first radius values) / radius */
+/* (first radius values) / top-left-and-bottom-right | top-right-and-bottom-left */
+/* (first radius values) / top-left | top-right-and-bottom-left | bottom-right */
+.mdn-symbol-border-radius-007 {
+  border-radius: 10px 5px 2em / 20px 25px 30%;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+/* top-left | top-right | bottom-right | bottom-left */
+/* The syntax of the second radius allows one to four values */
+/* (first radius values) / radius */
+/* (first radius values) / top-left-and-bottom-right | top-right-and-bottom-left */
+/* (first radius values) / top-left | top-right-and-bottom-left | bottom-right */
+/* (first radius values) / top-left | top-right | bottom-right | bottom-left */
+.mdn-symbol-border-radius-008 {
+  border-radius: 10px 5% / 20px 25em 30px 35em;
+}
+/* The syntax of the first radius allows one to four values */
+/* Radius is set for all 4 sides */
+/* top-left-and-bottom-right | top-right-and-bottom-left */
+/* top-left | top-right-and-bottom-left | bottom-right */
+/* top-left | top-right | bottom-right | bottom-left */
+/* The syntax of the second radius allows one to four values */
+/* (first radius values) / radius */
+/* (first radius values) / top-left-and-bottom-right | top-right-and-bottom-left */
+/* (first radius values) / top-left | top-right-and-bottom-left | bottom-right */
+/* (first radius values) / top-left | top-right | bottom-right | bottom-left */
+/* Global values */
+.mdn-symbol-border-radius-009 {
+  border-radius: inherit;
+}
+.mdn-symbol-border-radius-010 {
+  border-radius: initial;
+}
+.mdn-symbol-border-radius-011 {
+  border-radius: revert;
+}
+.mdn-symbol-border-radius-012 {
+  border-radius: revert-layer;
+}
+.mdn-symbol-border-radius-013 {
+  border-radius: unset;
+}
+
+/* border-right-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-right-color#syntax */
+/* examples: 11 */
+/* <color> values */
+.mdn-symbol-border-right-color-001 {
+  border-right-color: red;
+}
+.mdn-symbol-border-right-color-002 {
+  border-right-color: #ffbb00;
+}
+.mdn-symbol-border-right-color-003 {
+  border-right-color: rgb(255 0 0);
+}
+.mdn-symbol-border-right-color-004 {
+  border-right-color: hsl(100deg 50% 25% / 75%);
+}
+.mdn-symbol-border-right-color-005 {
+  border-right-color: currentColor;
+}
+.mdn-symbol-border-right-color-006 {
+  border-right-color: transparent;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-border-right-color-007 {
+  border-right-color: inherit;
+}
+.mdn-symbol-border-right-color-008 {
+  border-right-color: initial;
+}
+.mdn-symbol-border-right-color-009 {
+  border-right-color: revert;
+}
+.mdn-symbol-border-right-color-010 {
+  border-right-color: revert-layer;
+}
+.mdn-symbol-border-right-color-011 {
+  border-right-color: unset;
+}
+
+/* border-right-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-right-style#syntax */
+/* examples: 15 */
+/* Keyword values */
+.mdn-symbol-border-right-style-001 {
+  border-right-style: none;
+}
+.mdn-symbol-border-right-style-002 {
+  border-right-style: hidden;
+}
+.mdn-symbol-border-right-style-003 {
+  border-right-style: dotted;
+}
+.mdn-symbol-border-right-style-004 {
+  border-right-style: dashed;
+}
+.mdn-symbol-border-right-style-005 {
+  border-right-style: solid;
+}
+.mdn-symbol-border-right-style-006 {
+  border-right-style: double;
+}
+.mdn-symbol-border-right-style-007 {
+  border-right-style: groove;
+}
+.mdn-symbol-border-right-style-008 {
+  border-right-style: ridge;
+}
+.mdn-symbol-border-right-style-009 {
+  border-right-style: inset;
+}
+.mdn-symbol-border-right-style-010 {
+  border-right-style: outset;
+}
+/* Keyword values */
+/* Global values */
+.mdn-symbol-border-right-style-011 {
+  border-right-style: inherit;
+}
+.mdn-symbol-border-right-style-012 {
+  border-right-style: initial;
+}
+.mdn-symbol-border-right-style-013 {
+  border-right-style: revert;
+}
+.mdn-symbol-border-right-style-014 {
+  border-right-style: revert-layer;
+}
+.mdn-symbol-border-right-style-015 {
+  border-right-style: unset;
+}
+
+/* border-right-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-right-width#syntax */
+/* examples: 11 */
+/* Keyword values */
+.mdn-symbol-border-right-width-001 {
+  border-right-width: thin;
+}
+.mdn-symbol-border-right-width-002 {
+  border-right-width: medium;
+}
+.mdn-symbol-border-right-width-003 {
+  border-right-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-border-right-width-004 {
+  border-right-width: 10em;
+}
+.mdn-symbol-border-right-width-005 {
+  border-right-width: 3vmax;
+}
+.mdn-symbol-border-right-width-006 {
+  border-right-width: 6px;
+}
+/* Keyword values */
+/* <length> values */
+/* Global keywords */
+.mdn-symbol-border-right-width-007 {
+  border-right-width: inherit;
+}
+.mdn-symbol-border-right-width-008 {
+  border-right-width: initial;
+}
+.mdn-symbol-border-right-width-009 {
+  border-right-width: revert;
+}
+.mdn-symbol-border-right-width-010 {
+  border-right-width: revert-layer;
+}
+.mdn-symbol-border-right-width-011 {
+  border-right-width: unset;
+}
+
+/* border-spacing */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-spacing#syntax */
+/* examples: 7 */
+/* <length> */
+.mdn-symbol-border-spacing-001 {
+  border-spacing: 2px;
+}
+/* <length> */
+/* horizontal <length> | vertical <length> */
+.mdn-symbol-border-spacing-002 {
+  border-spacing: 1cm 2em;
+}
+/* <length> */
+/* horizontal <length> | vertical <length> */
+/* Global values */
+.mdn-symbol-border-spacing-003 {
+  border-spacing: inherit;
+}
+.mdn-symbol-border-spacing-004 {
+  border-spacing: initial;
+}
+.mdn-symbol-border-spacing-005 {
+  border-spacing: revert;
+}
+.mdn-symbol-border-spacing-006 {
+  border-spacing: revert-layer;
+}
+.mdn-symbol-border-spacing-007 {
+  border-spacing: unset;
+}
+
+/* border-start-end-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-start-end-radius#syntax */
+/* examples: 8 */
+/* <length> values */
+/* With one value the corner will be a circle */
+.mdn-symbol-border-start-end-radius-001 {
+  border-start-end-radius: 10px;
+}
+.mdn-symbol-border-start-end-radius-002 {
+  border-start-end-radius: 1em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+.mdn-symbol-border-start-end-radius-003 {
+  border-start-end-radius: 1em 2em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+/* Global values */
+.mdn-symbol-border-start-end-radius-004 {
+  border-start-end-radius: inherit;
+}
+.mdn-symbol-border-start-end-radius-005 {
+  border-start-end-radius: initial;
+}
+.mdn-symbol-border-start-end-radius-006 {
+  border-start-end-radius: revert;
+}
+.mdn-symbol-border-start-end-radius-007 {
+  border-start-end-radius: revert-layer;
+}
+.mdn-symbol-border-start-end-radius-008 {
+  border-start-end-radius: unset;
+}
+
+/* border-start-start-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-start-start-radius#syntax */
+/* examples: 8 */
+/* <length> values */
+/* With one value the corner will be a circle */
+.mdn-symbol-border-start-start-radius-001 {
+  border-start-start-radius: 10px;
+}
+.mdn-symbol-border-start-start-radius-002 {
+  border-start-start-radius: 1em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+.mdn-symbol-border-start-start-radius-003 {
+  border-start-start-radius: 1em 2em;
+}
+/* <length> values */
+/* With one value the corner will be a circle */
+/* With two values the corner will be an ellipse */
+/* Global values */
+.mdn-symbol-border-start-start-radius-004 {
+  border-start-start-radius: inherit;
+}
+.mdn-symbol-border-start-start-radius-005 {
+  border-start-start-radius: initial;
+}
+.mdn-symbol-border-start-start-radius-006 {
+  border-start-start-radius: revert;
+}
+.mdn-symbol-border-start-start-radius-007 {
+  border-start-start-radius: revert-layer;
+}
+.mdn-symbol-border-start-start-radius-008 {
+  border-start-start-radius: unset;
+}
+
+/* border-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-style#syntax */
+/* examples: 18 */
+/* Keyword values */
+.mdn-symbol-border-style-001 {
+  border-style: none;
+}
+.mdn-symbol-border-style-002 {
+  border-style: hidden;
+}
+.mdn-symbol-border-style-003 {
+  border-style: dotted;
+}
+.mdn-symbol-border-style-004 {
+  border-style: dashed;
+}
+.mdn-symbol-border-style-005 {
+  border-style: solid;
+}
+.mdn-symbol-border-style-006 {
+  border-style: double;
+}
+.mdn-symbol-border-style-007 {
+  border-style: groove;
+}
+.mdn-symbol-border-style-008 {
+  border-style: ridge;
+}
+.mdn-symbol-border-style-009 {
+  border-style: inset;
+}
+.mdn-symbol-border-style-010 {
+  border-style: outset;
+}
+/* Keyword values */
+/* top and bottom | left and right */
+.mdn-symbol-border-style-011 {
+  border-style: dotted solid;
+}
+/* Keyword values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+.mdn-symbol-border-style-012 {
+  border-style: hidden double dashed;
+}
+/* Keyword values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+.mdn-symbol-border-style-013 {
+  border-style: none solid dotted dashed;
+}
+/* Keyword values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* Global values */
+.mdn-symbol-border-style-014 {
+  border-style: inherit;
+}
+.mdn-symbol-border-style-015 {
+  border-style: initial;
+}
+.mdn-symbol-border-style-016 {
+  border-style: revert;
+}
+.mdn-symbol-border-style-017 {
+  border-style: revert-layer;
+}
+.mdn-symbol-border-style-018 {
+  border-style: unset;
+}
+
+/* border-top-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-top-color#syntax */
+/* examples: 11 */
+/* <color> values */
+.mdn-symbol-border-top-color-001 {
+  border-top-color: red;
+}
+.mdn-symbol-border-top-color-002 {
+  border-top-color: #ffbb00;
+}
+.mdn-symbol-border-top-color-003 {
+  border-top-color: rgb(255 0 0);
+}
+.mdn-symbol-border-top-color-004 {
+  border-top-color: hsl(100deg 50% 25% / 75%);
+}
+.mdn-symbol-border-top-color-005 {
+  border-top-color: currentColor;
+}
+.mdn-symbol-border-top-color-006 {
+  border-top-color: transparent;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-border-top-color-007 {
+  border-top-color: inherit;
+}
+.mdn-symbol-border-top-color-008 {
+  border-top-color: initial;
+}
+.mdn-symbol-border-top-color-009 {
+  border-top-color: revert;
+}
+.mdn-symbol-border-top-color-010 {
+  border-top-color: revert-layer;
+}
+.mdn-symbol-border-top-color-011 {
+  border-top-color: unset;
+}
+
+/* border-top-left-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-top-left-radius#syntax */
+/* examples: 8 */
+/* the corner is a circle */
+/* border-top-left-radius: radius */
+.mdn-symbol-border-top-left-radius-001 {
+  border-top-left-radius: 3px;
+}
+/* the corner is a circle */
+/* border-top-left-radius: radius */
+/* the corner is an ellipse */
+/* border-top-left-radius: horizontal vertical */
+.mdn-symbol-border-top-left-radius-002 {
+  border-top-left-radius: 0.5em 1em;
+}
+.mdn-symbol-border-top-left-radius-003 {
+  border-top-left-radius: inherit;
+}
+/* the corner is a circle */
+/* border-top-left-radius: radius */
+/* the corner is an ellipse */
+/* border-top-left-radius: horizontal vertical */
+/* Global values */
+.mdn-symbol-border-top-left-radius-004 {
+  border-top-left-radius: inherit;
+}
+.mdn-symbol-border-top-left-radius-005 {
+  border-top-left-radius: initial;
+}
+.mdn-symbol-border-top-left-radius-006 {
+  border-top-left-radius: revert;
+}
+.mdn-symbol-border-top-left-radius-007 {
+  border-top-left-radius: revert-layer;
+}
+.mdn-symbol-border-top-left-radius-008 {
+  border-top-left-radius: unset;
+}
+
+/* border-top-right-radius */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-top-right-radius#syntax */
+/* examples: 8 */
+/* the corner is a circle */
+/* border-top-right-radius: radius */
+.mdn-symbol-border-top-right-radius-001 {
+  border-top-right-radius: 3px;
+}
+/* the corner is a circle */
+/* border-top-right-radius: radius */
+/* the corner is an ellipse */
+/* border-top-right-radius: horizontal vertical */
+.mdn-symbol-border-top-right-radius-002 {
+  border-top-right-radius: 0.5em 1em;
+}
+.mdn-symbol-border-top-right-radius-003 {
+  border-top-right-radius: inherit;
+}
+/* the corner is a circle */
+/* border-top-right-radius: radius */
+/* the corner is an ellipse */
+/* border-top-right-radius: horizontal vertical */
+/* Global values */
+.mdn-symbol-border-top-right-radius-004 {
+  border-top-right-radius: inherit;
+}
+.mdn-symbol-border-top-right-radius-005 {
+  border-top-right-radius: initial;
+}
+.mdn-symbol-border-top-right-radius-006 {
+  border-top-right-radius: revert;
+}
+.mdn-symbol-border-top-right-radius-007 {
+  border-top-right-radius: revert-layer;
+}
+.mdn-symbol-border-top-right-radius-008 {
+  border-top-right-radius: unset;
+}
+
+/* border-top-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-top-style#syntax */
+/* examples: 15 */
+/* Keyword values */
+.mdn-symbol-border-top-style-001 {
+  border-top-style: none;
+}
+.mdn-symbol-border-top-style-002 {
+  border-top-style: hidden;
+}
+.mdn-symbol-border-top-style-003 {
+  border-top-style: dotted;
+}
+.mdn-symbol-border-top-style-004 {
+  border-top-style: dashed;
+}
+.mdn-symbol-border-top-style-005 {
+  border-top-style: solid;
+}
+.mdn-symbol-border-top-style-006 {
+  border-top-style: double;
+}
+.mdn-symbol-border-top-style-007 {
+  border-top-style: groove;
+}
+.mdn-symbol-border-top-style-008 {
+  border-top-style: ridge;
+}
+.mdn-symbol-border-top-style-009 {
+  border-top-style: inset;
+}
+.mdn-symbol-border-top-style-010 {
+  border-top-style: outset;
+}
+/* Keyword values */
+/* Global values */
+.mdn-symbol-border-top-style-011 {
+  border-top-style: inherit;
+}
+.mdn-symbol-border-top-style-012 {
+  border-top-style: initial;
+}
+.mdn-symbol-border-top-style-013 {
+  border-top-style: revert;
+}
+.mdn-symbol-border-top-style-014 {
+  border-top-style: revert-layer;
+}
+.mdn-symbol-border-top-style-015 {
+  border-top-style: unset;
+}
+
+/* border-top-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-top-width#syntax */
+/* examples: 11 */
+/* Keyword values */
+.mdn-symbol-border-top-width-001 {
+  border-top-width: thin;
+}
+.mdn-symbol-border-top-width-002 {
+  border-top-width: medium;
+}
+.mdn-symbol-border-top-width-003 {
+  border-top-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-border-top-width-004 {
+  border-top-width: 10em;
+}
+.mdn-symbol-border-top-width-005 {
+  border-top-width: 3vmax;
+}
+.mdn-symbol-border-top-width-006 {
+  border-top-width: 6px;
+}
+/* Keyword values */
+/* <length> values */
+/* Global keywords */
+.mdn-symbol-border-top-width-007 {
+  border-top-width: inherit;
+}
+.mdn-symbol-border-top-width-008 {
+  border-top-width: initial;
+}
+.mdn-symbol-border-top-width-009 {
+  border-top-width: revert;
+}
+.mdn-symbol-border-top-width-010 {
+  border-top-width: revert-layer;
+}
+.mdn-symbol-border-top-width-011 {
+  border-top-width: unset;
+}
+
+/* border-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-width#syntax */
+/* examples: 13 */
+/* Keyword values */
+.mdn-symbol-border-width-001 {
+  border-width: thin;
+}
+.mdn-symbol-border-width-002 {
+  border-width: medium;
+}
+.mdn-symbol-border-width-003 {
+  border-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-border-width-004 {
+  border-width: 4px;
+}
+.mdn-symbol-border-width-005 {
+  border-width: 1.2rem;
+}
+/* Keyword values */
+/* <length> values */
+/* top and bottom | left and right */
+.mdn-symbol-border-width-006 {
+  border-width: 2px 1.5em;
+}
+/* Keyword values */
+/* <length> values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+.mdn-symbol-border-width-007 {
+  border-width: 1px 2em 1.5cm;
+}
+/* Keyword values */
+/* <length> values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+.mdn-symbol-border-width-008 {
+  border-width: 1px 2em 0 4rem;
+}
+/* Keyword values */
+/* <length> values */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* Global values */
+.mdn-symbol-border-width-009 {
+  border-width: inherit;
+}
+.mdn-symbol-border-width-010 {
+  border-width: initial;
+}
+.mdn-symbol-border-width-011 {
+  border-width: revert;
+}
+.mdn-symbol-border-width-012 {
+  border-width: revert-layer;
+}
+.mdn-symbol-border-width-013 {
+  border-width: unset;
+}
+
+/* color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color#syntax */
+/* examples: 33 */
+/* Keyword values */
+.mdn-symbol-color-001 {
+  color: currentColor;
+}
+/* Keyword values */
+/* <named-color> values */
+.mdn-symbol-color-002 {
+  color: red;
+}
+.mdn-symbol-color-003 {
+  color: orange;
+}
+.mdn-symbol-color-004 {
+  color: tan;
+}
+.mdn-symbol-color-005 {
+  color: rebeccapurple;
+}
+/* Keyword values */
+/* <named-color> values */
+/* <hex-color> values */
+.mdn-symbol-color-006 {
+  color: #090;
+}
+.mdn-symbol-color-007 {
+  color: #009900;
+}
+.mdn-symbol-color-008 {
+  color: #090a;
+}
+.mdn-symbol-color-009 {
+  color: #009900aa;
+}
+/* Keyword values */
+/* <named-color> values */
+/* <hex-color> values */
+/* <rgb()> values and legacy <rgba()> values */
+.mdn-symbol-color-010 {
+  color: rgb(34, 12, 64);
+}
+.mdn-symbol-color-011 {
+  color: rgb(34, 12, 64, 0.6);
+}
+.mdn-symbol-color-012 {
+  color: rgba(34, 12, 64, 0.6);
+}
+.mdn-symbol-color-013 {
+  color: rgb(34 12 64 / 0.6);
+}
+.mdn-symbol-color-014 {
+  color: rgba(34 12 64 / 0.6);
+}
+.mdn-symbol-color-015 {
+  color: rgb(34.6 12 64 / 60%);
+}
+.mdn-symbol-color-016 {
+  color: rgba(34.6 12 64 / 60%);
+}
+/* Keyword values */
+/* <named-color> values */
+/* <hex-color> values */
+/* <rgb()> values and legacy <rgba()> values */
+/* <hsl()> values and legacy <hsla()> values */
+.mdn-symbol-color-017 {
+  color: hsl(30, 100%, 50%);
+}
+.mdn-symbol-color-018 {
+  color: hsl(30, 100%, 50%, 0.6);
+}
+.mdn-symbol-color-019 {
+  color: hsla(30, 100%, 50%, 0.6);
+}
+.mdn-symbol-color-020 {
+  color: hsl(30 100% 50% / 0.6);
+}
+.mdn-symbol-color-021 {
+  color: hsla(30 100% 50% / 0.6);
+}
+.mdn-symbol-color-022 {
+  color: hsl(30.2 100% 50% / 60%);
+}
+.mdn-symbol-color-023 {
+  color: hsla(30.2 100% 50% / 60%);
+}
+/* Keyword values */
+/* <named-color> values */
+/* <hex-color> values */
+/* <rgb()> values and legacy <rgba()> values */
+/* <hsl()> values and legacy <hsla()> values */
+/* <hwb()> values */
+.mdn-symbol-color-024 {
+  color: hwb(90 10% 10%);
+}
+.mdn-symbol-color-025 {
+  color: hwb(90 10% 10% / 0.5);
+}
+.mdn-symbol-color-026 {
+  color: hwb(90deg 10% 10%);
+}
+.mdn-symbol-color-027 {
+  color: hwb(1.5708rad 60% 0%);
+}
+.mdn-symbol-color-028 {
+  color: hwb(0.25turn 0% 40% / 50%);
+}
+/* Keyword values */
+/* <named-color> values */
+/* <hex-color> values */
+/* <rgb()> values and legacy <rgba()> values */
+/* <hsl()> values and legacy <hsla()> values */
+/* <hwb()> values */
+/* Global values */
+.mdn-symbol-color-029 {
+  color: inherit;
+}
+.mdn-symbol-color-030 {
+  color: initial;
+}
+.mdn-symbol-color-031 {
+  color: revert;
+}
+.mdn-symbol-color-032 {
+  color: revert-layer;
+}
+.mdn-symbol-color-033 {
+  color: unset;
+}
+
+/* column-rule-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/column-rule-color#syntax */
+/* examples: 9 */
+/* <color> values */
+.mdn-symbol-column-rule-color-001 {
+  column-rule-color: red;
+}
+.mdn-symbol-column-rule-color-002 {
+  column-rule-color: rgb(192 56 78);
+}
+.mdn-symbol-column-rule-color-003 {
+  column-rule-color: transparent;
+}
+.mdn-symbol-column-rule-color-004 {
+  column-rule-color: hsl(0 100% 50% / 60%);
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-column-rule-color-005 {
+  column-rule-color: inherit;
+}
+.mdn-symbol-column-rule-color-006 {
+  column-rule-color: initial;
+}
+.mdn-symbol-column-rule-color-007 {
+  column-rule-color: revert;
+}
+.mdn-symbol-column-rule-color-008 {
+  column-rule-color: revert-layer;
+}
+.mdn-symbol-column-rule-color-009 {
+  column-rule-color: unset;
+}
+
+/* column-rule-style */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/column-rule-style#syntax */
+/* examples: 15 */
+/* <'border-style'> values */
+.mdn-symbol-column-rule-style-001 {
+  column-rule-style: none;
+}
+.mdn-symbol-column-rule-style-002 {
+  column-rule-style: hidden;
+}
+.mdn-symbol-column-rule-style-003 {
+  column-rule-style: dotted;
+}
+.mdn-symbol-column-rule-style-004 {
+  column-rule-style: dashed;
+}
+.mdn-symbol-column-rule-style-005 {
+  column-rule-style: solid;
+}
+.mdn-symbol-column-rule-style-006 {
+  column-rule-style: double;
+}
+.mdn-symbol-column-rule-style-007 {
+  column-rule-style: groove;
+}
+.mdn-symbol-column-rule-style-008 {
+  column-rule-style: ridge;
+}
+.mdn-symbol-column-rule-style-009 {
+  column-rule-style: inset;
+}
+.mdn-symbol-column-rule-style-010 {
+  column-rule-style: outset;
+}
+/* <'border-style'> values */
+/* Global values */
+.mdn-symbol-column-rule-style-011 {
+  column-rule-style: inherit;
+}
+.mdn-symbol-column-rule-style-012 {
+  column-rule-style: initial;
+}
+.mdn-symbol-column-rule-style-013 {
+  column-rule-style: revert;
+}
+.mdn-symbol-column-rule-style-014 {
+  column-rule-style: revert-layer;
+}
+.mdn-symbol-column-rule-style-015 {
+  column-rule-style: unset;
+}
+
+/* column-rule-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/column-rule-width#syntax */
+/* examples: 10 */
+/* Keyword values */
+.mdn-symbol-column-rule-width-001 {
+  column-rule-width: thin;
+}
+.mdn-symbol-column-rule-width-002 {
+  column-rule-width: medium;
+}
+.mdn-symbol-column-rule-width-003 {
+  column-rule-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-column-rule-width-004 {
+  column-rule-width: 1px;
+}
+.mdn-symbol-column-rule-width-005 {
+  column-rule-width: 2.5em;
+}
+/* Keyword values */
+/* <length> values */
+/* Global values */
+.mdn-symbol-column-rule-width-006 {
+  column-rule-width: inherit;
+}
+.mdn-symbol-column-rule-width-007 {
+  column-rule-width: initial;
+}
+.mdn-symbol-column-rule-width-008 {
+  column-rule-width: revert;
+}
+.mdn-symbol-column-rule-width-009 {
+  column-rule-width: revert-layer;
+}
+.mdn-symbol-column-rule-width-010 {
+  column-rule-width: unset;
+}
+
+/* container */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container#syntax */
+/* examples: 7 */
+/* <container-name> */
+.mdn-symbol-container-001 {
+  container: my-layout;
+}
+/* <container-name> */
+/* <container-name> / <container-type> */
+.mdn-symbol-container-002 {
+  container: my-layout / size;
+}
+/* <container-name> */
+/* <container-name> / <container-type> */
+/* Global Values */
+.mdn-symbol-container-003 {
+  container: inherit;
+}
+.mdn-symbol-container-004 {
+  container: initial;
+}
+.mdn-symbol-container-005 {
+  container: revert;
+}
+.mdn-symbol-container-006 {
+  container: revert-layer;
+}
+.mdn-symbol-container-007 {
+  container: unset;
+}
+
+/* corner-block-end-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-block-end-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-block-end-shape-001 {
+  corner-block-end-shape: square;
+}
+.mdn-symbol-corner-block-end-shape-002 {
+  corner-block-end-shape: scoop;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-block-end-shape-003 {
+  corner-block-end-shape: superellipse(3.5);
+}
+.mdn-symbol-corner-block-end-shape-004 {
+  corner-block-end-shape: superellipse(-1.9);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-end/inline-start corner, block-end/inline-end corner */
+.mdn-symbol-corner-block-end-shape-005 {
+  corner-block-end-shape: square scoop;
+}
+.mdn-symbol-corner-block-end-shape-006 {
+  corner-block-end-shape: square superellipse(-1.9);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-end/inline-start corner, block-end/inline-end corner */
+/* Global values */
+.mdn-symbol-corner-block-end-shape-007 {
+  corner-block-end-shape: inherit;
+}
+.mdn-symbol-corner-block-end-shape-008 {
+  corner-block-end-shape: initial;
+}
+.mdn-symbol-corner-block-end-shape-009 {
+  corner-block-end-shape: revert;
+}
+.mdn-symbol-corner-block-end-shape-010 {
+  corner-block-end-shape: revert-layer;
+}
+.mdn-symbol-corner-block-end-shape-011 {
+  corner-block-end-shape: unset;
+}
+
+/* corner-block-start-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-block-start-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-block-start-shape-001 {
+  corner-block-start-shape: notch;
+}
+.mdn-symbol-corner-block-start-shape-002 {
+  corner-block-start-shape: squircle;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-block-start-shape-003 {
+  corner-block-start-shape: superellipse(2.7);
+}
+.mdn-symbol-corner-block-start-shape-004 {
+  corner-block-start-shape: superellipse(-2.5);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-start/inline-start corner, block-start/inline-end corner */
+.mdn-symbol-corner-block-start-shape-005 {
+  corner-block-start-shape: notch squircle;
+}
+.mdn-symbol-corner-block-start-shape-006 {
+  corner-block-start-shape: notch superellipse(-2.5);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-start/inline-start corner, block-start/inline-end corner */
+/* Global values */
+.mdn-symbol-corner-block-start-shape-007 {
+  corner-block-start-shape: inherit;
+}
+.mdn-symbol-corner-block-start-shape-008 {
+  corner-block-start-shape: initial;
+}
+.mdn-symbol-corner-block-start-shape-009 {
+  corner-block-start-shape: revert;
+}
+.mdn-symbol-corner-block-start-shape-010 {
+  corner-block-start-shape: revert-layer;
+}
+.mdn-symbol-corner-block-start-shape-011 {
+  corner-block-start-shape: unset;
+}
+
+/* corner-bottom-left-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-bottom-left-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-bottom-left-shape-001 {
+  corner-bottom-left-shape: bevel;
+}
+.mdn-symbol-corner-bottom-left-shape-002 {
+  corner-bottom-left-shape: round;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-bottom-left-shape-003 {
+  corner-bottom-left-shape: superellipse(0.7);
+}
+.mdn-symbol-corner-bottom-left-shape-004 {
+  corner-bottom-left-shape: superellipse(-1.9);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-bottom-left-shape-005 {
+  corner-bottom-left-shape: inherit;
+}
+.mdn-symbol-corner-bottom-left-shape-006 {
+  corner-bottom-left-shape: initial;
+}
+.mdn-symbol-corner-bottom-left-shape-007 {
+  corner-bottom-left-shape: revert;
+}
+.mdn-symbol-corner-bottom-left-shape-008 {
+  corner-bottom-left-shape: revert-layer;
+}
+.mdn-symbol-corner-bottom-left-shape-009 {
+  corner-bottom-left-shape: unset;
+}
+
+/* corner-bottom-right-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-bottom-right-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-bottom-right-shape-001 {
+  corner-bottom-right-shape: notch;
+}
+.mdn-symbol-corner-bottom-right-shape-002 {
+  corner-bottom-right-shape: scoop;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-bottom-right-shape-003 {
+  corner-bottom-right-shape: superellipse(1.7);
+}
+.mdn-symbol-corner-bottom-right-shape-004 {
+  corner-bottom-right-shape: superellipse(-3);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-bottom-right-shape-005 {
+  corner-bottom-right-shape: inherit;
+}
+.mdn-symbol-corner-bottom-right-shape-006 {
+  corner-bottom-right-shape: initial;
+}
+.mdn-symbol-corner-bottom-right-shape-007 {
+  corner-bottom-right-shape: revert;
+}
+.mdn-symbol-corner-bottom-right-shape-008 {
+  corner-bottom-right-shape: revert-layer;
+}
+.mdn-symbol-corner-bottom-right-shape-009 {
+  corner-bottom-right-shape: unset;
+}
+
+/* corner-bottom-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-bottom-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-bottom-shape-001 {
+  corner-bottom-shape: scoop;
+}
+.mdn-symbol-corner-bottom-shape-002 {
+  corner-bottom-shape: square;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-bottom-shape-003 {
+  corner-bottom-shape: superellipse(0.7);
+}
+.mdn-symbol-corner-bottom-shape-004 {
+  corner-bottom-shape: superellipse(-2.8);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Left-hand corner, right-hand corner */
+.mdn-symbol-corner-bottom-shape-005 {
+  corner-bottom-shape: scoop square;
+}
+.mdn-symbol-corner-bottom-shape-006 {
+  corner-bottom-shape: scoop superellipse(0.7);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Left-hand corner, right-hand corner */
+/* Global values */
+.mdn-symbol-corner-bottom-shape-007 {
+  corner-bottom-shape: inherit;
+}
+.mdn-symbol-corner-bottom-shape-008 {
+  corner-bottom-shape: initial;
+}
+.mdn-symbol-corner-bottom-shape-009 {
+  corner-bottom-shape: revert;
+}
+.mdn-symbol-corner-bottom-shape-010 {
+  corner-bottom-shape: revert-layer;
+}
+.mdn-symbol-corner-bottom-shape-011 {
+  corner-bottom-shape: unset;
+}
+
+/* corner-end-end-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-end-end-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-end-end-shape-001 {
+  corner-end-end-shape: scoop;
+}
+.mdn-symbol-corner-end-end-shape-002 {
+  corner-end-end-shape: notch;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-end-end-shape-003 {
+  corner-end-end-shape: superellipse(4);
+}
+.mdn-symbol-corner-end-end-shape-004 {
+  corner-end-end-shape: superellipse(-0.5);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-end-end-shape-005 {
+  corner-end-end-shape: inherit;
+}
+.mdn-symbol-corner-end-end-shape-006 {
+  corner-end-end-shape: initial;
+}
+.mdn-symbol-corner-end-end-shape-007 {
+  corner-end-end-shape: revert;
+}
+.mdn-symbol-corner-end-end-shape-008 {
+  corner-end-end-shape: revert-layer;
+}
+.mdn-symbol-corner-end-end-shape-009 {
+  corner-end-end-shape: unset;
+}
+
+/* corner-end-start-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-end-start-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-end-start-shape-001 {
+  corner-end-start-shape: round;
+}
+.mdn-symbol-corner-end-start-shape-002 {
+  corner-end-start-shape: scoop;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-end-start-shape-003 {
+  corner-end-start-shape: superellipse(0.2);
+}
+.mdn-symbol-corner-end-start-shape-004 {
+  corner-end-start-shape: superellipse(-5);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-end-start-shape-005 {
+  corner-end-start-shape: inherit;
+}
+.mdn-symbol-corner-end-start-shape-006 {
+  corner-end-start-shape: initial;
+}
+.mdn-symbol-corner-end-start-shape-007 {
+  corner-end-start-shape: revert;
+}
+.mdn-symbol-corner-end-start-shape-008 {
+  corner-end-start-shape: revert-layer;
+}
+.mdn-symbol-corner-end-start-shape-009 {
+  corner-end-start-shape: unset;
+}
+
+/* corner-inline-end-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-inline-end-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-inline-end-shape-001 {
+  corner-inline-end-shape: squircle;
+}
+.mdn-symbol-corner-inline-end-shape-002 {
+  corner-inline-end-shape: scoop;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-inline-end-shape-003 {
+  corner-inline-end-shape: superellipse(1.5);
+}
+.mdn-symbol-corner-inline-end-shape-004 {
+  corner-inline-end-shape: superellipse(-0.8);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-start/inline-end corner, block-end/inline-end corner */
+.mdn-symbol-corner-inline-end-shape-005 {
+  corner-inline-end-shape: squircle scoop;
+}
+.mdn-symbol-corner-inline-end-shape-006 {
+  corner-inline-end-shape: squircle superellipse(-0.8);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-start/inline-end corner, block-end/inline-end corner */
+/* Global values */
+.mdn-symbol-corner-inline-end-shape-007 {
+  corner-inline-end-shape: inherit;
+}
+.mdn-symbol-corner-inline-end-shape-008 {
+  corner-inline-end-shape: initial;
+}
+.mdn-symbol-corner-inline-end-shape-009 {
+  corner-inline-end-shape: revert;
+}
+.mdn-symbol-corner-inline-end-shape-010 {
+  corner-inline-end-shape: revert-layer;
+}
+.mdn-symbol-corner-inline-end-shape-011 {
+  corner-inline-end-shape: unset;
+}
+
+/* corner-inline-start-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-inline-start-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-inline-start-shape-001 {
+  corner-inline-start-shape: round;
+}
+.mdn-symbol-corner-inline-start-shape-002 {
+  corner-inline-start-shape: bevel;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-inline-start-shape-003 {
+  corner-inline-start-shape: superellipse(0.5);
+}
+.mdn-symbol-corner-inline-start-shape-004 {
+  corner-inline-start-shape: superellipse(-3);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-start/inline-start corner, block-end/inline-start corner */
+.mdn-symbol-corner-inline-start-shape-005 {
+  corner-inline-start-shape: round bevel;
+}
+.mdn-symbol-corner-inline-start-shape-006 {
+  corner-inline-start-shape: round superellipse(0.5);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Block-start/inline-start corner, block-end/inline-start corner */
+/* Global values */
+.mdn-symbol-corner-inline-start-shape-007 {
+  corner-inline-start-shape: inherit;
+}
+.mdn-symbol-corner-inline-start-shape-008 {
+  corner-inline-start-shape: initial;
+}
+.mdn-symbol-corner-inline-start-shape-009 {
+  corner-inline-start-shape: revert;
+}
+.mdn-symbol-corner-inline-start-shape-010 {
+  corner-inline-start-shape: revert-layer;
+}
+.mdn-symbol-corner-inline-start-shape-011 {
+  corner-inline-start-shape: unset;
+}
+
+/* corner-left-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-left-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-left-shape-001 {
+  corner-left-shape: round;
+}
+.mdn-symbol-corner-left-shape-002 {
+  corner-left-shape: bevel;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-left-shape-003 {
+  corner-left-shape: superellipse(1.2);
+}
+.mdn-symbol-corner-left-shape-004 {
+  corner-left-shape: superellipse(-2.5);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Top corner, bottom corner */
+.mdn-symbol-corner-left-shape-005 {
+  corner-left-shape: round bevel;
+}
+.mdn-symbol-corner-left-shape-006 {
+  corner-left-shape: bevel superellipse(1.2);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Top corner, bottom corner */
+/* Global values */
+.mdn-symbol-corner-left-shape-007 {
+  corner-left-shape: inherit;
+}
+.mdn-symbol-corner-left-shape-008 {
+  corner-left-shape: initial;
+}
+.mdn-symbol-corner-left-shape-009 {
+  corner-left-shape: revert;
+}
+.mdn-symbol-corner-left-shape-010 {
+  corner-left-shape: revert-layer;
+}
+.mdn-symbol-corner-left-shape-011 {
+  corner-left-shape: unset;
+}
+
+/* corner-right-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-right-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-right-shape-001 {
+  corner-right-shape: bevel;
+}
+.mdn-symbol-corner-right-shape-002 {
+  corner-right-shape: notch;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-right-shape-003 {
+  corner-right-shape: superellipse(4);
+}
+.mdn-symbol-corner-right-shape-004 {
+  corner-right-shape: superellipse(-0.9);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Top corner, bottom corner */
+.mdn-symbol-corner-right-shape-005 {
+  corner-right-shape: bevel notch;
+}
+.mdn-symbol-corner-right-shape-006 {
+  corner-right-shape: notch superellipse(-0.9);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Top corner, bottom corner */
+/* Global values */
+.mdn-symbol-corner-right-shape-007 {
+  corner-right-shape: inherit;
+}
+.mdn-symbol-corner-right-shape-008 {
+  corner-right-shape: initial;
+}
+.mdn-symbol-corner-right-shape-009 {
+  corner-right-shape: revert;
+}
+.mdn-symbol-corner-right-shape-010 {
+  corner-right-shape: revert-layer;
+}
+.mdn-symbol-corner-right-shape-011 {
+  corner-right-shape: unset;
+}
+
+/* corner-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape#syntax */
+/* examples: 9 */
+/* Single value set for all four corners */
+.mdn-symbol-corner-shape-001 {
+  corner-shape: bevel;
+}
+/* Single value set for all four corners */
+/* top-left and bottom-right, top-right and bottom-left */
+.mdn-symbol-corner-shape-002 {
+  corner-shape: notch superellipse(0.6);
+}
+/* Single value set for all four corners */
+/* top-left and bottom-right, top-right and bottom-left */
+/* top-left, top-right and bottom-left, bottom-right */
+.mdn-symbol-corner-shape-003 {
+  corner-shape: superellipse(-1.2) square squircle;
+}
+/* Single value set for all four corners */
+/* top-left and bottom-right, top-right and bottom-left */
+/* top-left, top-right and bottom-left, bottom-right */
+/* top-left, top-right, bottom-right, bottom-left */
+.mdn-symbol-corner-shape-004 {
+  corner-shape: scoop superellipse(-1.6) superellipse(-2.2) round;
+}
+/* Single value set for all four corners */
+/* top-left and bottom-right, top-right and bottom-left */
+/* top-left, top-right and bottom-left, bottom-right */
+/* top-left, top-right, bottom-right, bottom-left */
+/* Global values */
+.mdn-symbol-corner-shape-005 {
+  corner-shape: inherit;
+}
+.mdn-symbol-corner-shape-006 {
+  corner-shape: initial;
+}
+.mdn-symbol-corner-shape-007 {
+  corner-shape: revert;
+}
+.mdn-symbol-corner-shape-008 {
+  corner-shape: revert-layer;
+}
+.mdn-symbol-corner-shape-009 {
+  corner-shape: unset;
+}
+
+/* corner-start-end-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-start-end-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-start-end-shape-001 {
+  corner-start-end-shape: square;
+}
+.mdn-symbol-corner-start-end-shape-002 {
+  corner-start-end-shape: bevel;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-start-end-shape-003 {
+  corner-start-end-shape: superellipse(1.5);
+}
+.mdn-symbol-corner-start-end-shape-004 {
+  corner-start-end-shape: superellipse(-2.2);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-start-end-shape-005 {
+  corner-start-end-shape: inherit;
+}
+.mdn-symbol-corner-start-end-shape-006 {
+  corner-start-end-shape: initial;
+}
+.mdn-symbol-corner-start-end-shape-007 {
+  corner-start-end-shape: revert;
+}
+.mdn-symbol-corner-start-end-shape-008 {
+  corner-start-end-shape: revert-layer;
+}
+.mdn-symbol-corner-start-end-shape-009 {
+  corner-start-end-shape: unset;
+}
+
+/* corner-start-start-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-start-start-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-start-start-shape-001 {
+  corner-start-start-shape: notch;
+}
+.mdn-symbol-corner-start-start-shape-002 {
+  corner-start-start-shape: squircle;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-start-start-shape-003 {
+  corner-start-start-shape: superellipse(3);
+}
+.mdn-symbol-corner-start-start-shape-004 {
+  corner-start-start-shape: superellipse(-1.5);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-start-start-shape-005 {
+  corner-start-start-shape: inherit;
+}
+.mdn-symbol-corner-start-start-shape-006 {
+  corner-start-start-shape: initial;
+}
+.mdn-symbol-corner-start-start-shape-007 {
+  corner-start-start-shape: revert;
+}
+.mdn-symbol-corner-start-start-shape-008 {
+  corner-start-start-shape: revert-layer;
+}
+.mdn-symbol-corner-start-start-shape-009 {
+  corner-start-start-shape: unset;
+}
+
+/* corner-top-left-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-top-left-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-top-left-shape-001 {
+  corner-top-left-shape: notch;
+}
+.mdn-symbol-corner-top-left-shape-002 {
+  corner-top-left-shape: squircle;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-top-left-shape-003 {
+  corner-top-left-shape: superellipse(3);
+}
+.mdn-symbol-corner-top-left-shape-004 {
+  corner-top-left-shape: superellipse(-1.5);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-top-left-shape-005 {
+  corner-top-left-shape: inherit;
+}
+.mdn-symbol-corner-top-left-shape-006 {
+  corner-top-left-shape: initial;
+}
+.mdn-symbol-corner-top-left-shape-007 {
+  corner-top-left-shape: revert;
+}
+.mdn-symbol-corner-top-left-shape-008 {
+  corner-top-left-shape: revert-layer;
+}
+.mdn-symbol-corner-top-left-shape-009 {
+  corner-top-left-shape: unset;
+}
+
+/* corner-top-right-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-top-right-shape#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-corner-top-right-shape-001 {
+  corner-top-right-shape: scoop;
+}
+.mdn-symbol-corner-top-right-shape-002 {
+  corner-top-right-shape: square;
+}
+/* Keyword values */
+/* superellipse() function values */
+.mdn-symbol-corner-top-right-shape-003 {
+  corner-top-right-shape: superellipse(2.2);
+}
+.mdn-symbol-corner-top-right-shape-004 {
+  corner-top-right-shape: superellipse(-2.5);
+}
+/* Keyword values */
+/* superellipse() function values */
+/* Global values */
+.mdn-symbol-corner-top-right-shape-005 {
+  corner-top-right-shape: inherit;
+}
+.mdn-symbol-corner-top-right-shape-006 {
+  corner-top-right-shape: initial;
+}
+.mdn-symbol-corner-top-right-shape-007 {
+  corner-top-right-shape: revert;
+}
+.mdn-symbol-corner-top-right-shape-008 {
+  corner-top-right-shape: revert-layer;
+}
+.mdn-symbol-corner-top-right-shape-009 {
+  corner-top-right-shape: unset;
+}
+
+/* corner-top-shape */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-top-shape#syntax */
+/* examples: 11 */
+/* Single keyword value set for both corners */
+.mdn-symbol-corner-top-shape-001 {
+  corner-top-shape: notch;
+}
+.mdn-symbol-corner-top-shape-002 {
+  corner-top-shape: squircle;
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+.mdn-symbol-corner-top-shape-003 {
+  corner-top-shape: superellipse(3);
+}
+.mdn-symbol-corner-top-shape-004 {
+  corner-top-shape: superellipse(-1.5);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Left-hand corner, right-hand corner */
+.mdn-symbol-corner-top-shape-005 {
+  corner-top-shape: notch squircle;
+}
+.mdn-symbol-corner-top-shape-006 {
+  corner-top-shape: notch superellipse(-1.5);
+}
+/* Single keyword value set for both corners */
+/* Single superellipse() value set for both corners */
+/* Left-hand corner, right-hand corner */
+/* Global values */
+.mdn-symbol-corner-top-shape-007 {
+  corner-top-shape: inherit;
+}
+.mdn-symbol-corner-top-shape-008 {
+  corner-top-shape: initial;
+}
+.mdn-symbol-corner-top-shape-009 {
+  corner-top-shape: revert;
+}
+.mdn-symbol-corner-top-shape-010 {
+  corner-top-shape: revert-layer;
+}
+.mdn-symbol-corner-top-shape-011 {
+  corner-top-shape: unset;
+}
+
+/* cursor */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/cursor#syntax */
+/* examples: 9 */
+/* Keyword value */
+.mdn-symbol-cursor-001 {
+  cursor: auto;
+}
+.mdn-symbol-cursor-002 {
+  cursor: pointer;
+}
+/* Keyword value */
+/* … */
+.mdn-symbol-cursor-003 {
+  cursor: zoom-out;
+}
+/* Keyword value */
+/* … */
+/* URL with mandatory keyword fallback */
+.mdn-symbol-cursor-004 {
+  cursor: url("hand.cur"), pointer;
+}
+/* Global values */
+.mdn-symbol-cursor-005 {
+  cursor: inherit;
+}
+.mdn-symbol-cursor-006 {
+  cursor: initial;
+}
+.mdn-symbol-cursor-007 {
+  cursor: revert;
+}
+.mdn-symbol-cursor-008 {
+  cursor: revert-layer;
+}
+.mdn-symbol-cursor-009 {
+  cursor: unset;
+}
+
+/* fallback */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/fallback#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-fallback-001 {
+  fallback: inherit;
+}
+
+/* fill */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/fill#syntax */
+/* examples: 14 */
+/* keywords */
+.mdn-symbol-fill-001 {
+  fill: none;
+}
+.mdn-symbol-fill-002 {
+  fill: context-fill;
+}
+.mdn-symbol-fill-003 {
+  fill: context-stroke;
+}
+/* keywords */
+/* <color> values */
+.mdn-symbol-fill-004 {
+  fill: red;
+}
+.mdn-symbol-fill-005 {
+  fill: hsl(120deg 75% 25% / 60%);
+}
+/* keywords */
+/* <color> values */
+/* <url> values */
+.mdn-symbol-fill-006 {
+  fill: url("#gradientElementID");
+}
+.mdn-symbol-fill-007 {
+  fill: url("star.png");
+}
+/* keywords */
+/* <color> values */
+/* <url> values */
+/* <url> with fallback */
+.mdn-symbol-fill-008 {
+  fill: url("#gradientElementID") blue;
+}
+.mdn-symbol-fill-009 {
+  fill: url("star.png") none;
+}
+/* keywords */
+/* <color> values */
+/* <url> values */
+/* <url> with fallback */
+/* Global values */
+.mdn-symbol-fill-010 {
+  fill: inherit;
+}
+.mdn-symbol-fill-011 {
+  fill: initial;
+}
+.mdn-symbol-fill-012 {
+  fill: revert;
+}
+.mdn-symbol-fill-013 {
+  fill: revert-layer;
+}
+.mdn-symbol-fill-014 {
+  fill: unset;
+}
+
+/* fill-opacity */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/fill-opacity#syntax */
+/* examples: 7 */
+/* numeric and percentage values */
+.mdn-symbol-fill-opacity-001 {
+  fill-opacity: 0.2;
+}
+.mdn-symbol-fill-opacity-002 {
+  fill-opacity: 20%;
+}
+/* numeric and percentage values */
+/* Global values */
+.mdn-symbol-fill-opacity-003 {
+  fill-opacity: inherit;
+}
+.mdn-symbol-fill-opacity-004 {
+  fill-opacity: initial;
+}
+.mdn-symbol-fill-opacity-005 {
+  fill-opacity: revert;
+}
+.mdn-symbol-fill-opacity-006 {
+  fill-opacity: revert-layer;
+}
+.mdn-symbol-fill-opacity-007 {
+  fill-opacity: unset;
+}
+
+/* flex-grow */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flex-grow#syntax */
+/* examples: 7 */
+/* <number> values */
+.mdn-symbol-flex-grow-001 {
+  flex-grow: 3;
+}
+.mdn-symbol-flex-grow-002 {
+  flex-grow: 0.6;
+}
+/* <number> values */
+/* Global values */
+.mdn-symbol-flex-grow-003 {
+  flex-grow: inherit;
+}
+.mdn-symbol-flex-grow-004 {
+  flex-grow: initial;
+}
+.mdn-symbol-flex-grow-005 {
+  flex-grow: revert;
+}
+.mdn-symbol-flex-grow-006 {
+  flex-grow: revert-layer;
+}
+.mdn-symbol-flex-grow-007 {
+  flex-grow: unset;
+}
+
+/* flex-shrink */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flex-shrink#syntax */
+/* examples: 7 */
+/* <number> values */
+.mdn-symbol-flex-shrink-001 {
+  flex-shrink: 2;
+}
+.mdn-symbol-flex-shrink-002 {
+  flex-shrink: 0.6;
+}
+/* <number> values */
+/* Global values */
+.mdn-symbol-flex-shrink-003 {
+  flex-shrink: inherit;
+}
+.mdn-symbol-flex-shrink-004 {
+  flex-shrink: initial;
+}
+.mdn-symbol-flex-shrink-005 {
+  flex-shrink: revert;
+}
+.mdn-symbol-flex-shrink-006 {
+  flex-shrink: revert-layer;
+}
+.mdn-symbol-flex-shrink-007 {
+  flex-shrink: unset;
+}
+
+/* flood-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flood-color#syntax */
+/* examples: 8 */
+/* <color> values */
+.mdn-symbol-flood-color-001 {
+  flood-color: red;
+}
+.mdn-symbol-flood-color-002 {
+  flood-color: hsl(120deg 75% 25% / 60%);
+}
+.mdn-symbol-flood-color-003 {
+  flood-color: currentColor;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-flood-color-004 {
+  flood-color: inherit;
+}
+.mdn-symbol-flood-color-005 {
+  flood-color: initial;
+}
+.mdn-symbol-flood-color-006 {
+  flood-color: revert;
+}
+.mdn-symbol-flood-color-007 {
+  flood-color: revert-layer;
+}
+.mdn-symbol-flood-color-008 {
+  flood-color: unset;
+}
+
+/* flood-opacity */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flood-opacity#syntax */
+/* examples: 7 */
+/* numeric and percentage values */
+.mdn-symbol-flood-opacity-001 {
+  flood-opacity: 0.2;
+}
+.mdn-symbol-flood-opacity-002 {
+  flood-opacity: 20%;
+}
+/* numeric and percentage values */
+/* Global values */
+.mdn-symbol-flood-opacity-003 {
+  flood-opacity: inherit;
+}
+.mdn-symbol-flood-opacity-004 {
+  flood-opacity: initial;
+}
+.mdn-symbol-flood-opacity-005 {
+  flood-opacity: revert;
+}
+.mdn-symbol-flood-opacity-006 {
+  flood-opacity: revert-layer;
+}
+.mdn-symbol-flood-opacity-007 {
+  flood-opacity: unset;
+}
+
+/* font-weight */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-weight#syntax */
+/* examples: 18 */
+/* <font-weight-absolute> keyword values */
+.mdn-symbol-font-weight-001 {
+  font-weight: normal;
+}
+.mdn-symbol-font-weight-002 {
+  font-weight: bold;
+}
+/* <font-weight-absolute> keyword values */
+/* <font-weight-absolute> numeric values [1,1000] */
+.mdn-symbol-font-weight-003 {
+  font-weight: 100;
+}
+.mdn-symbol-font-weight-004 {
+  font-weight: 200;
+}
+.mdn-symbol-font-weight-005 {
+  font-weight: 300;
+}
+.mdn-symbol-font-weight-006 {
+  font-weight: 400; /* normal */
+}
+.mdn-symbol-font-weight-007 {
+  font-weight: 500;
+}
+.mdn-symbol-font-weight-008 {
+  font-weight: 600;
+}
+.mdn-symbol-font-weight-009 {
+  font-weight: 700; /* bold */
+}
+.mdn-symbol-font-weight-010 {
+  font-weight: 800;
+}
+.mdn-symbol-font-weight-011 {
+  font-weight: 900;
+}
+/* <font-weight-absolute> keyword values */
+/* <font-weight-absolute> numeric values [1,1000] */
+/* Keyword values relative to the parent */
+.mdn-symbol-font-weight-012 {
+  font-weight: lighter;
+}
+.mdn-symbol-font-weight-013 {
+  font-weight: bolder;
+}
+/* <font-weight-absolute> keyword values */
+/* <font-weight-absolute> numeric values [1,1000] */
+/* Keyword values relative to the parent */
+/* Global values */
+.mdn-symbol-font-weight-014 {
+  font-weight: inherit;
+}
+.mdn-symbol-font-weight-015 {
+  font-weight: initial;
+}
+.mdn-symbol-font-weight-016 {
+  font-weight: revert;
+}
+.mdn-symbol-font-weight-017 {
+  font-weight: revert-layer;
+}
+.mdn-symbol-font-weight-018 {
+  font-weight: unset;
+}
+
+/* grid-area */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-area#syntax */
+/* examples: 16 */
+/* Keyword values */
+.mdn-symbol-grid-area-001 {
+  grid-area: auto;
+}
+.mdn-symbol-grid-area-002 {
+  grid-area: auto / auto;
+}
+.mdn-symbol-grid-area-003 {
+  grid-area: auto / auto / auto;
+}
+.mdn-symbol-grid-area-004 {
+  grid-area: auto / auto / auto / auto;
+}
+/* Keyword values */
+/* <custom-ident> values */
+.mdn-symbol-grid-area-005 {
+  grid-area: some-grid-area;
+}
+.mdn-symbol-grid-area-006 {
+  grid-area: some-grid-area / another-grid-area;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> && <custom-ident>? values */
+.mdn-symbol-grid-area-007 {
+  grid-area: 4 some-grid-area;
+}
+.mdn-symbol-grid-area-008 {
+  grid-area: 4 some-grid-area / 2 another-grid-area;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> && <custom-ident>? values */
+/* span && [ <integer> || <custom-ident> ] values */
+.mdn-symbol-grid-area-009 {
+  grid-area: span 3;
+}
+.mdn-symbol-grid-area-010 {
+  grid-area: span 3 / span some-grid-area;
+}
+.mdn-symbol-grid-area-011 {
+  grid-area: 2 span / another-grid-area span;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> && <custom-ident>? values */
+/* span && [ <integer> || <custom-ident> ] values */
+/* Global values */
+.mdn-symbol-grid-area-012 {
+  grid-area: inherit;
+}
+.mdn-symbol-grid-area-013 {
+  grid-area: initial;
+}
+.mdn-symbol-grid-area-014 {
+  grid-area: revert;
+}
+.mdn-symbol-grid-area-015 {
+  grid-area: revert-layer;
+}
+.mdn-symbol-grid-area-016 {
+  grid-area: unset;
+}
+
+/* grid-auto-columns */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-auto-columns#syntax */
+/* examples: 26 */
+/* Keyword values */
+.mdn-symbol-grid-auto-columns-001 {
+  grid-auto-columns: min-content;
+}
+.mdn-symbol-grid-auto-columns-002 {
+  grid-auto-columns: max-content;
+}
+.mdn-symbol-grid-auto-columns-003 {
+  grid-auto-columns: auto;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-grid-auto-columns-004 {
+  grid-auto-columns: 100px;
+}
+.mdn-symbol-grid-auto-columns-005 {
+  grid-auto-columns: 20cm;
+}
+.mdn-symbol-grid-auto-columns-006 {
+  grid-auto-columns: 50vmax;
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-grid-auto-columns-007 {
+  grid-auto-columns: 10%;
+}
+.mdn-symbol-grid-auto-columns-008 {
+  grid-auto-columns: 33.3%;
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+.mdn-symbol-grid-auto-columns-009 {
+  grid-auto-columns: 0.5fr;
+}
+.mdn-symbol-grid-auto-columns-010 {
+  grid-auto-columns: 3fr;
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+.mdn-symbol-grid-auto-columns-011 {
+  grid-auto-columns: minmax(100px, auto);
+}
+.mdn-symbol-grid-auto-columns-012 {
+  grid-auto-columns: minmax(max-content, 2fr);
+}
+.mdn-symbol-grid-auto-columns-013 {
+  grid-auto-columns: minmax(20%, 80vmax);
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+/* fit-content() values */
+.mdn-symbol-grid-auto-columns-014 {
+  grid-auto-columns: fit-content(400px);
+}
+.mdn-symbol-grid-auto-columns-015 {
+  grid-auto-columns: fit-content(5cm);
+}
+.mdn-symbol-grid-auto-columns-016 {
+  grid-auto-columns: fit-content(20%);
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+/* fit-content() values */
+/* multiple track-size values */
+.mdn-symbol-grid-auto-columns-017 {
+  grid-auto-columns: min-content max-content auto;
+}
+.mdn-symbol-grid-auto-columns-018 {
+  grid-auto-columns: 100px 150px 390px;
+}
+.mdn-symbol-grid-auto-columns-019 {
+  grid-auto-columns: 10% 33.3%;
+}
+.mdn-symbol-grid-auto-columns-020 {
+  grid-auto-columns: 0.5fr 3fr 1fr;
+}
+.mdn-symbol-grid-auto-columns-021 {
+  grid-auto-columns: 100px minmax(100px, auto) 10% 0.5fr fit-content(400px);
+}
+/* Global values */
+.mdn-symbol-grid-auto-columns-022 {
+  grid-auto-columns: inherit;
+}
+.mdn-symbol-grid-auto-columns-023 {
+  grid-auto-columns: initial;
+}
+.mdn-symbol-grid-auto-columns-024 {
+  grid-auto-columns: revert;
+}
+.mdn-symbol-grid-auto-columns-025 {
+  grid-auto-columns: revert-layer;
+}
+.mdn-symbol-grid-auto-columns-026 {
+  grid-auto-columns: unset;
+}
+
+/* grid-auto-rows */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-auto-rows#syntax */
+/* examples: 27 */
+/* Keyword values */
+.mdn-symbol-grid-auto-rows-001 {
+  grid-auto-rows: min-content;
+}
+.mdn-symbol-grid-auto-rows-002 {
+  grid-auto-rows: max-content;
+}
+.mdn-symbol-grid-auto-rows-003 {
+  grid-auto-rows: auto;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-grid-auto-rows-004 {
+  grid-auto-rows: 100px;
+}
+.mdn-symbol-grid-auto-rows-005 {
+  grid-auto-rows: 20cm;
+}
+.mdn-symbol-grid-auto-rows-006 {
+  grid-auto-rows: 50vmax;
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-grid-auto-rows-007 {
+  grid-auto-rows: 10%;
+}
+.mdn-symbol-grid-auto-rows-008 {
+  grid-auto-rows: 33.3%;
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+.mdn-symbol-grid-auto-rows-009 {
+  grid-auto-rows: 0.5fr;
+}
+.mdn-symbol-grid-auto-rows-010 {
+  grid-auto-rows: 3fr;
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+.mdn-symbol-grid-auto-rows-011 {
+  grid-auto-rows: minmax(100px, auto);
+}
+.mdn-symbol-grid-auto-rows-012 {
+  grid-auto-rows: minmax(max-content, 2fr);
+}
+.mdn-symbol-grid-auto-rows-013 {
+  grid-auto-rows: minmax(20%, 80vmax);
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+/* fit-content() values */
+.mdn-symbol-grid-auto-rows-014 {
+  grid-auto-rows: fit-content(400px);
+}
+.mdn-symbol-grid-auto-rows-015 {
+  grid-auto-rows: fit-content(5cm);
+}
+.mdn-symbol-grid-auto-rows-016 {
+  grid-auto-rows: fit-content(20%);
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+/* fit-content() values */
+/* multiple track-size values */
+.mdn-symbol-grid-auto-rows-017 {
+  grid-auto-rows: min-content max-content auto;
+}
+.mdn-symbol-grid-auto-rows-018 {
+  grid-auto-rows: 100px 150px 390px;
+}
+.mdn-symbol-grid-auto-rows-019 {
+  grid-auto-rows: 10% 33.3%;
+}
+.mdn-symbol-grid-auto-rows-020 {
+  grid-auto-rows: 0.5fr 3fr 1fr;
+}
+.mdn-symbol-grid-auto-rows-021 {
+  grid-auto-rows: minmax(100px, auto) minmax(max-content, 2fr)
+    minmax(20%, 80vmax);
+}
+.mdn-symbol-grid-auto-rows-022 {
+  grid-auto-rows: 100px minmax(100px, auto) 10% 0.5fr fit-content(400px);
+}
+/* Keyword values */
+/* <length> values */
+/* <percentage> values */
+/* <flex> values */
+/* minmax() values */
+/* fit-content() values */
+/* multiple track-size values */
+/* Global values */
+.mdn-symbol-grid-auto-rows-023 {
+  grid-auto-rows: inherit;
+}
+.mdn-symbol-grid-auto-rows-024 {
+  grid-auto-rows: initial;
+}
+.mdn-symbol-grid-auto-rows-025 {
+  grid-auto-rows: revert;
+}
+.mdn-symbol-grid-auto-rows-026 {
+  grid-auto-rows: revert-layer;
+}
+.mdn-symbol-grid-auto-rows-027 {
+  grid-auto-rows: unset;
+}
+
+/* grid-column */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-column#syntax */
+/* examples: 17 */
+/* Keyword values */
+.mdn-symbol-grid-column-001 {
+  grid-column: auto;
+}
+.mdn-symbol-grid-column-002 {
+  grid-column: auto / auto;
+}
+/* Keyword values */
+/* <custom-ident> values */
+.mdn-symbol-grid-column-003 {
+  grid-column: some-grid-area;
+}
+.mdn-symbol-grid-column-004 {
+  grid-column: some-grid-area / some-other-grid-area;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+.mdn-symbol-grid-column-005 {
+  grid-column: some-grid-area 4;
+}
+.mdn-symbol-grid-column-006 {
+  grid-column: 4 some-grid-area / 6;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+.mdn-symbol-grid-column-007 {
+  grid-column: span 3;
+}
+.mdn-symbol-grid-column-008 {
+  grid-column: span some-grid-area;
+}
+.mdn-symbol-grid-column-009 {
+  grid-column: 5 some-grid-area span;
+}
+.mdn-symbol-grid-column-010 {
+  grid-column: span 3 / 6;
+}
+.mdn-symbol-grid-column-011 {
+  grid-column: span some-grid-area / span some-other-grid-area;
+}
+.mdn-symbol-grid-column-012 {
+  grid-column: 5 some-grid-area span / 2 span;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+/* Global values */
+.mdn-symbol-grid-column-013 {
+  grid-column: inherit;
+}
+.mdn-symbol-grid-column-014 {
+  grid-column: initial;
+}
+.mdn-symbol-grid-column-015 {
+  grid-column: revert;
+}
+.mdn-symbol-grid-column-016 {
+  grid-column: revert-layer;
+}
+.mdn-symbol-grid-column-017 {
+  grid-column: unset;
+}
+
+/* grid-column-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-column-end#syntax */
+/* examples: 12 */
+/* Keyword value */
+.mdn-symbol-grid-column-end-001 {
+  grid-column-end: auto;
+}
+/* Keyword value */
+/* <custom-ident> values */
+.mdn-symbol-grid-column-end-002 {
+  grid-column-end: some-grid-area;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+.mdn-symbol-grid-column-end-003 {
+  grid-column-end: 2;
+}
+.mdn-symbol-grid-column-end-004 {
+  grid-column-end: some-grid-area 4;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+.mdn-symbol-grid-column-end-005 {
+  grid-column-end: span 3;
+}
+.mdn-symbol-grid-column-end-006 {
+  grid-column-end: span some-grid-area;
+}
+.mdn-symbol-grid-column-end-007 {
+  grid-column-end: 5 some-grid-area span;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+/* Global values */
+.mdn-symbol-grid-column-end-008 {
+  grid-column-end: inherit;
+}
+.mdn-symbol-grid-column-end-009 {
+  grid-column-end: initial;
+}
+.mdn-symbol-grid-column-end-010 {
+  grid-column-end: revert;
+}
+.mdn-symbol-grid-column-end-011 {
+  grid-column-end: revert-layer;
+}
+.mdn-symbol-grid-column-end-012 {
+  grid-column-end: unset;
+}
+
+/* grid-column-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-column-start#syntax */
+/* examples: 12 */
+/* Keyword value */
+.mdn-symbol-grid-column-start-001 {
+  grid-column-start: auto;
+}
+/* Keyword value */
+/* <custom-ident> value */
+.mdn-symbol-grid-column-start-002 {
+  grid-column-start: some-grid-area;
+}
+/* Keyword value */
+/* <custom-ident> value */
+/* <integer> + <custom-ident> values */
+.mdn-symbol-grid-column-start-003 {
+  grid-column-start: 2;
+}
+.mdn-symbol-grid-column-start-004 {
+  grid-column-start: some-grid-area 4;
+}
+/* Keyword value */
+/* <custom-ident> value */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+.mdn-symbol-grid-column-start-005 {
+  grid-column-start: span 3;
+}
+.mdn-symbol-grid-column-start-006 {
+  grid-column-start: span some-grid-area;
+}
+.mdn-symbol-grid-column-start-007 {
+  grid-column-start: span some-grid-area 5;
+}
+/* Keyword value */
+/* <custom-ident> value */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+/* Global values */
+.mdn-symbol-grid-column-start-008 {
+  grid-column-start: inherit;
+}
+.mdn-symbol-grid-column-start-009 {
+  grid-column-start: initial;
+}
+.mdn-symbol-grid-column-start-010 {
+  grid-column-start: revert;
+}
+.mdn-symbol-grid-column-start-011 {
+  grid-column-start: revert-layer;
+}
+.mdn-symbol-grid-column-start-012 {
+  grid-column-start: unset;
+}
+
+/* grid-row */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-row#syntax */
+/* examples: 17 */
+/* Keyword values */
+.mdn-symbol-grid-row-001 {
+  grid-row: auto;
+}
+.mdn-symbol-grid-row-002 {
+  grid-row: auto / auto;
+}
+/* Keyword values */
+/* <custom-ident> values */
+.mdn-symbol-grid-row-003 {
+  grid-row: some-grid-area;
+}
+.mdn-symbol-grid-row-004 {
+  grid-row: some-grid-area / some-other-grid-area;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+.mdn-symbol-grid-row-005 {
+  grid-row: some-grid-area 4;
+}
+.mdn-symbol-grid-row-006 {
+  grid-row: 4 some-grid-area / 6;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+.mdn-symbol-grid-row-007 {
+  grid-row: span 3;
+}
+.mdn-symbol-grid-row-008 {
+  grid-row: span some-grid-area;
+}
+.mdn-symbol-grid-row-009 {
+  grid-row: 5 some-grid-area span;
+}
+.mdn-symbol-grid-row-010 {
+  grid-row: span 3 / 6;
+}
+.mdn-symbol-grid-row-011 {
+  grid-row: span some-grid-area / span some-other-grid-area;
+}
+.mdn-symbol-grid-row-012 {
+  grid-row: 5 some-grid-area span / 2 span;
+}
+/* Keyword values */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+/* Global values */
+.mdn-symbol-grid-row-013 {
+  grid-row: inherit;
+}
+.mdn-symbol-grid-row-014 {
+  grid-row: initial;
+}
+.mdn-symbol-grid-row-015 {
+  grid-row: revert;
+}
+.mdn-symbol-grid-row-016 {
+  grid-row: revert-layer;
+}
+.mdn-symbol-grid-row-017 {
+  grid-row: unset;
+}
+
+/* grid-row-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-row-end#syntax */
+/* examples: 12 */
+/* Keyword value */
+.mdn-symbol-grid-row-end-001 {
+  grid-row-end: auto;
+}
+/* Keyword value */
+/* <custom-ident> values */
+.mdn-symbol-grid-row-end-002 {
+  grid-row-end: some-grid-area;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+.mdn-symbol-grid-row-end-003 {
+  grid-row-end: 2;
+}
+.mdn-symbol-grid-row-end-004 {
+  grid-row-end: some-grid-area 4;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+.mdn-symbol-grid-row-end-005 {
+  grid-row-end: span 3;
+}
+.mdn-symbol-grid-row-end-006 {
+  grid-row-end: span some-grid-area;
+}
+.mdn-symbol-grid-row-end-007 {
+  grid-row-end: 5 some-grid-area span;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+/* Global values */
+.mdn-symbol-grid-row-end-008 {
+  grid-row-end: inherit;
+}
+.mdn-symbol-grid-row-end-009 {
+  grid-row-end: initial;
+}
+.mdn-symbol-grid-row-end-010 {
+  grid-row-end: revert;
+}
+.mdn-symbol-grid-row-end-011 {
+  grid-row-end: revert-layer;
+}
+.mdn-symbol-grid-row-end-012 {
+  grid-row-end: unset;
+}
+
+/* grid-row-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-row-start#syntax */
+/* examples: 12 */
+/* Keyword value */
+.mdn-symbol-grid-row-start-001 {
+  grid-row-start: auto;
+}
+/* Keyword value */
+/* <custom-ident> values */
+.mdn-symbol-grid-row-start-002 {
+  grid-row-start: some-grid-area;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+.mdn-symbol-grid-row-start-003 {
+  grid-row-start: 2;
+}
+.mdn-symbol-grid-row-start-004 {
+  grid-row-start: some-grid-area 4;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+.mdn-symbol-grid-row-start-005 {
+  grid-row-start: span 3;
+}
+.mdn-symbol-grid-row-start-006 {
+  grid-row-start: span some-grid-area;
+}
+.mdn-symbol-grid-row-start-007 {
+  grid-row-start: 5 some-grid-area span;
+}
+/* Keyword value */
+/* <custom-ident> values */
+/* <integer> + <custom-ident> values */
+/* span + <integer> + <custom-ident> values */
+/* Global values */
+.mdn-symbol-grid-row-start-008 {
+  grid-row-start: inherit;
+}
+.mdn-symbol-grid-row-start-009 {
+  grid-row-start: initial;
+}
+.mdn-symbol-grid-row-start-010 {
+  grid-row-start: revert;
+}
+.mdn-symbol-grid-row-start-011 {
+  grid-row-start: revert-layer;
+}
+.mdn-symbol-grid-row-start-012 {
+  grid-row-start: unset;
+}
+
+/* initial-value */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/initial-value#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-initial-value-001 {
+  initial-value: inherit;
+}
+
+/* inline-size */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inline-size#syntax */
+/* examples: 15 */
+/* <length> values */
+.mdn-symbol-inline-size-001 {
+  inline-size: 300px;
+}
+.mdn-symbol-inline-size-002 {
+  inline-size: 25em;
+}
+.mdn-symbol-inline-size-003 {
+  inline-size: anchor-size(width);
+}
+.mdn-symbol-inline-size-004 {
+  inline-size: anchor-size(--my-anchor inline);
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-inline-size-005 {
+  inline-size: 75%;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+.mdn-symbol-inline-size-006 {
+  inline-size: max-content;
+}
+.mdn-symbol-inline-size-007 {
+  inline-size: min-content;
+}
+.mdn-symbol-inline-size-008 {
+  inline-size: fit-content;
+}
+.mdn-symbol-inline-size-009 {
+  inline-size: fit-content(20em);
+}
+.mdn-symbol-inline-size-010 {
+  inline-size: auto;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-inline-size-011 {
+  inline-size: inherit;
+}
+.mdn-symbol-inline-size-012 {
+  inline-size: initial;
+}
+.mdn-symbol-inline-size-013 {
+  inline-size: revert;
+}
+.mdn-symbol-inline-size-014 {
+  inline-size: revert-layer;
+}
+.mdn-symbol-inline-size-015 {
+  inline-size: unset;
+}
+
+/* inset */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset#syntax */
+/* examples: 12 */
+/* <length> values */
+.mdn-symbol-inset-001 {
+  inset: 10px; /* value applied to all edges */
+}
+.mdn-symbol-inset-002 {
+  inset: 4px 8px; /* top/bottom left/right */
+}
+.mdn-symbol-inset-003 {
+  inset: 5px 15px 10px; /* top left/right bottom */
+}
+.mdn-symbol-inset-004 {
+  inset: 2.4em 3em 3em 3em; /* top right bottom left */
+}
+.mdn-symbol-inset-005 {
+  inset: calc(anchor(50%) + 10px) anchor(self-start) auto auto;
+}
+/* <percentage>s of the width (left/right) or height (top/bottom) of the containing block */
+.mdn-symbol-inset-006 {
+  inset: 10% 5% 5% 5%;
+}
+/* <percentage>s of the width (left/right) or height (top/bottom) of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-007 {
+  inset: auto;
+}
+/* <percentage>s of the width (left/right) or height (top/bottom) of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-008 {
+  inset: inherit;
+}
+.mdn-symbol-inset-009 {
+  inset: initial;
+}
+.mdn-symbol-inset-010 {
+  inset: revert;
+}
+.mdn-symbol-inset-011 {
+  inset: revert-layer;
+}
+.mdn-symbol-inset-012 {
+  inset: unset;
+}
+
+/* inset-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset-block#syntax */
+/* examples: 12 */
+/* <length> values */
+.mdn-symbol-inset-block-001 {
+  inset-block: 3px 10px;
+}
+.mdn-symbol-inset-block-002 {
+  inset-block: 2.4em 3em;
+}
+.mdn-symbol-inset-block-003 {
+  inset-block: 10px; /* value applied to start and end */
+}
+.mdn-symbol-inset-block-004 {
+  inset-block: auto anchor(start);
+}
+.mdn-symbol-inset-block-005 {
+  inset-block: 10em anchor-size(--my-anchor height, 10%);
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+.mdn-symbol-inset-block-006 {
+  inset-block: 10% 5%;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-block-007 {
+  inset-block: auto;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-block-008 {
+  inset-block: inherit;
+}
+.mdn-symbol-inset-block-009 {
+  inset-block: initial;
+}
+.mdn-symbol-inset-block-010 {
+  inset-block: revert;
+}
+.mdn-symbol-inset-block-011 {
+  inset-block: revert-layer;
+}
+.mdn-symbol-inset-block-012 {
+  inset-block: unset;
+}
+
+/* inset-block-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset-block-end#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-inset-block-end-001 {
+  inset-block-end: 3px;
+}
+.mdn-symbol-inset-block-end-002 {
+  inset-block-end: 2.4em;
+}
+.mdn-symbol-inset-block-end-003 {
+  inset-block-end: calc(anchor(start) + 20px);
+}
+.mdn-symbol-inset-block-end-004 {
+  inset-block-end: anchor-size(--my-anchor width, 10%);
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+.mdn-symbol-inset-block-end-005 {
+  inset-block-end: 10%;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-block-end-006 {
+  inset-block-end: auto;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-block-end-007 {
+  inset-block-end: inherit;
+}
+.mdn-symbol-inset-block-end-008 {
+  inset-block-end: initial;
+}
+.mdn-symbol-inset-block-end-009 {
+  inset-block-end: revert;
+}
+.mdn-symbol-inset-block-end-010 {
+  inset-block-end: revert-layer;
+}
+.mdn-symbol-inset-block-end-011 {
+  inset-block-end: unset;
+}
+
+/* inset-block-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset-block-start#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-inset-block-start-001 {
+  inset-block-start: 3px;
+}
+.mdn-symbol-inset-block-start-002 {
+  inset-block-start: 2.4em;
+}
+.mdn-symbol-inset-block-start-003 {
+  inset-block-start: anchor(end);
+}
+.mdn-symbol-inset-block-start-004 {
+  inset-block-start: calc(anchor-size(--my-anchor height, 70px) * 2);
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+.mdn-symbol-inset-block-start-005 {
+  inset-block-start: 10%;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-block-start-006 {
+  inset-block-start: auto;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-block-start-007 {
+  inset-block-start: inherit;
+}
+.mdn-symbol-inset-block-start-008 {
+  inset-block-start: initial;
+}
+.mdn-symbol-inset-block-start-009 {
+  inset-block-start: revert;
+}
+.mdn-symbol-inset-block-start-010 {
+  inset-block-start: revert-layer;
+}
+.mdn-symbol-inset-block-start-011 {
+  inset-block-start: unset;
+}
+
+/* inset-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset-inline#syntax */
+/* examples: 12 */
+/* <length> values */
+.mdn-symbol-inset-inline-001 {
+  inset-inline: 3px 10px;
+}
+.mdn-symbol-inset-inline-002 {
+  inset-inline: 2.4em 3em;
+}
+.mdn-symbol-inset-inline-003 {
+  inset-inline: 10px; /* value applied to start and end */
+}
+.mdn-symbol-inset-inline-004 {
+  inset-inline: auto calc(anchor(self-start) + 20px);
+}
+.mdn-symbol-inset-inline-005 {
+  inset-inline: 400px anchor-size(--my-anchor height, 100px);
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+.mdn-symbol-inset-inline-006 {
+  inset-inline: 10% 5%;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-inline-007 {
+  inset-inline: auto;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-inline-008 {
+  inset-inline: inherit;
+}
+.mdn-symbol-inset-inline-009 {
+  inset-inline: initial;
+}
+.mdn-symbol-inset-inline-010 {
+  inset-inline: revert;
+}
+.mdn-symbol-inset-inline-011 {
+  inset-inline: revert-layer;
+}
+.mdn-symbol-inset-inline-012 {
+  inset-inline: unset;
+}
+
+/* inset-inline-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset-inline-end#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-inset-inline-end-001 {
+  inset-inline-end: 3px;
+}
+.mdn-symbol-inset-inline-end-002 {
+  inset-inline-end: 2.4em;
+}
+.mdn-symbol-inset-inline-end-003 {
+  inset-inline-end: calc(anchor(self-start) + 5px);
+}
+.mdn-symbol-inset-inline-end-004 {
+  inset-inline-end: anchor-size(height);
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+.mdn-symbol-inset-inline-end-005 {
+  inset-inline-end: 10%;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-inline-end-006 {
+  inset-inline-end: auto;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-inline-end-007 {
+  inset-inline-end: inherit;
+}
+.mdn-symbol-inset-inline-end-008 {
+  inset-inline-end: initial;
+}
+.mdn-symbol-inset-inline-end-009 {
+  inset-inline-end: revert;
+}
+.mdn-symbol-inset-inline-end-010 {
+  inset-inline-end: revert-layer;
+}
+.mdn-symbol-inset-inline-end-011 {
+  inset-inline-end: unset;
+}
+
+/* inset-inline-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/inset-inline-start#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-inset-inline-start-001 {
+  inset-inline-start: 3px;
+}
+.mdn-symbol-inset-inline-start-002 {
+  inset-inline-start: 2.4em;
+}
+.mdn-symbol-inset-inline-start-003 {
+  inset-inline-start: calc(anchor(--my-anchor 50%) + 10px);
+}
+.mdn-symbol-inset-inline-start-004 {
+  inset-inline-start: anchor-size(width);
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+.mdn-symbol-inset-inline-start-005 {
+  inset-inline-start: 10%;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+.mdn-symbol-inset-inline-start-006 {
+  inset-inline-start: auto;
+}
+/* <length> values */
+/* <percentage>s of the width or height of the containing block */
+/* Keyword value */
+/* Global values */
+.mdn-symbol-inset-inline-start-007 {
+  inset-inline-start: inherit;
+}
+.mdn-symbol-inset-inline-start-008 {
+  inset-inline-start: initial;
+}
+.mdn-symbol-inset-inline-start-009 {
+  inset-inline-start: revert;
+}
+.mdn-symbol-inset-inline-start-010 {
+  inset-inline-start: revert-layer;
+}
+.mdn-symbol-inset-inline-start-011 {
+  inset-inline-start: unset;
+}
+
+/* interest-delay */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/interest-delay#syntax */
+/* examples: 10 */
+/* Single value */
+.mdn-symbol-interest-delay-001 {
+  interest-delay: normal;
+}
+.mdn-symbol-interest-delay-002 {
+  interest-delay: 2s;
+}
+.mdn-symbol-interest-delay-003 {
+  interest-delay: 250ms;
+}
+/* Single value */
+/* Two values */
+.mdn-symbol-interest-delay-004 {
+  interest-delay: 1s normal;
+}
+.mdn-symbol-interest-delay-005 {
+  interest-delay: 0s 500ms;
+}
+/* Single value */
+/* Two values */
+/* Global values */
+.mdn-symbol-interest-delay-006 {
+  interest-delay: inherit;
+}
+.mdn-symbol-interest-delay-007 {
+  interest-delay: initial;
+}
+.mdn-symbol-interest-delay-008 {
+  interest-delay: revert;
+}
+.mdn-symbol-interest-delay-009 {
+  interest-delay: revert-layer;
+}
+.mdn-symbol-interest-delay-010 {
+  interest-delay: unset;
+}
+
+/* lighting-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/lighting-color#syntax */
+/* examples: 8 */
+/* <color> values */
+.mdn-symbol-lighting-color-001 {
+  lighting-color: red;
+}
+.mdn-symbol-lighting-color-002 {
+  lighting-color: hsl(120deg 75% 25% / 60%);
+}
+.mdn-symbol-lighting-color-003 {
+  lighting-color: currentColor;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-lighting-color-004 {
+  lighting-color: inherit;
+}
+.mdn-symbol-lighting-color-005 {
+  lighting-color: initial;
+}
+.mdn-symbol-lighting-color-006 {
+  lighting-color: revert;
+}
+.mdn-symbol-lighting-color-007 {
+  lighting-color: revert-layer;
+}
+.mdn-symbol-lighting-color-008 {
+  lighting-color: unset;
+}
+
+/* margin */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin#syntax */
+/* examples: 12 */
+/* apply to all four sides */
+.mdn-symbol-margin-001 {
+  margin: 1em;
+}
+.mdn-symbol-margin-002 {
+  margin: -3px;
+}
+/* apply to all four sides */
+/* top and bottom | left and right */
+.mdn-symbol-margin-003 {
+  margin: 5% auto;
+}
+/* apply to all four sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+.mdn-symbol-margin-004 {
+  margin: 1em auto 2em;
+}
+/* apply to all four sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+.mdn-symbol-margin-005 {
+  margin: 2px 1em 0 auto;
+}
+/* apply to all four sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* anchor-size() values */
+.mdn-symbol-margin-006 {
+  margin: 5% anchor-size(width);
+}
+/* Keyword values */
+.mdn-symbol-margin-007 {
+  margin: auto;
+}
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-008 {
+  margin: inherit;
+}
+.mdn-symbol-margin-009 {
+  margin: initial;
+}
+.mdn-symbol-margin-010 {
+  margin: revert;
+}
+.mdn-symbol-margin-011 {
+  margin: revert-layer;
+}
+.mdn-symbol-margin-012 {
+  margin: unset;
+}
+
+/* margin-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-block#syntax */
+/* examples: 12 */
+/* <length> values */
+.mdn-symbol-margin-block-001 {
+  margin-block: 10px 20px; /* An absolute length */
+}
+.mdn-symbol-margin-block-002 {
+  margin-block: 1em 2em; /* relative to the text size */
+}
+.mdn-symbol-margin-block-003 {
+  margin-block: 5% 2%; /* relative to the nearest block container's width */
+}
+.mdn-symbol-margin-block-004 {
+  margin-block: 10px; /* sets both start and end values */
+}
+.mdn-symbol-margin-block-005 {
+  margin-block: anchor-size(inline);
+}
+.mdn-symbol-margin-block-006 {
+  margin-block: calc(anchor-size(width) / 4) 1em;
+}
+/* <length> values */
+/* Keyword values */
+.mdn-symbol-margin-block-007 {
+  margin-block: auto;
+}
+/* <length> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-block-008 {
+  margin-block: inherit;
+}
+.mdn-symbol-margin-block-009 {
+  margin-block: initial;
+}
+.mdn-symbol-margin-block-010 {
+  margin-block: revert;
+}
+.mdn-symbol-margin-block-011 {
+  margin-block: revert-layer;
+}
+.mdn-symbol-margin-block-012 {
+  margin-block: unset;
+}
+
+/* margin-block-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-block-end#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-margin-block-end-001 {
+  margin-block-end: 10px; /* An absolute length */
+}
+.mdn-symbol-margin-block-end-002 {
+  margin-block-end: 1em; /* relative to the text size */
+}
+.mdn-symbol-margin-block-end-003 {
+  margin-block-end: 5%; /* relative to the nearest block container's width */
+}
+.mdn-symbol-margin-block-end-004 {
+  margin-block-end: anchor-size(inline);
+}
+.mdn-symbol-margin-block-end-005 {
+  margin-block-end: calc(anchor-size(--my-anchor block, 20px) / 4);
+}
+/* <length> values */
+/* Keyword values */
+.mdn-symbol-margin-block-end-006 {
+  margin-block-end: auto;
+}
+/* <length> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-block-end-007 {
+  margin-block-end: inherit;
+}
+.mdn-symbol-margin-block-end-008 {
+  margin-block-end: initial;
+}
+.mdn-symbol-margin-block-end-009 {
+  margin-block-end: revert;
+}
+.mdn-symbol-margin-block-end-010 {
+  margin-block-end: revert-layer;
+}
+.mdn-symbol-margin-block-end-011 {
+  margin-block-end: unset;
+}
+
+/* margin-block-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-block-start#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-margin-block-start-001 {
+  margin-block-start: 10px; /* An absolute length */
+}
+.mdn-symbol-margin-block-start-002 {
+  margin-block-start: 1em; /* relative to the text size */
+}
+.mdn-symbol-margin-block-start-003 {
+  margin-block-start: 5%; /* relative to the nearest block container's width */
+}
+.mdn-symbol-margin-block-start-004 {
+  margin-block-start: anchor-size(width);
+}
+.mdn-symbol-margin-block-start-005 {
+  margin-block-start: calc(anchor-size(--my-anchor block, 20px) / 3);
+}
+/* <length> values */
+/* Keyword values */
+.mdn-symbol-margin-block-start-006 {
+  margin-block-start: auto;
+}
+/* <length> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-block-start-007 {
+  margin-block-start: inherit;
+}
+.mdn-symbol-margin-block-start-008 {
+  margin-block-start: initial;
+}
+.mdn-symbol-margin-block-start-009 {
+  margin-block-start: revert;
+}
+.mdn-symbol-margin-block-start-010 {
+  margin-block-start: revert-layer;
+}
+.mdn-symbol-margin-block-start-011 {
+  margin-block-start: unset;
+}
+
+/* margin-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-inline#syntax */
+/* examples: 12 */
+/* <length> values */
+.mdn-symbol-margin-inline-001 {
+  margin-inline: 10px 20px; /* An absolute length */
+}
+.mdn-symbol-margin-inline-002 {
+  margin-inline: 1em 2em; /* relative to the text size */
+}
+.mdn-symbol-margin-inline-003 {
+  margin-inline: 5% 2%; /* relative to the nearest block container's width */
+}
+.mdn-symbol-margin-inline-004 {
+  margin-inline: 10px; /* sets both start and end values */
+}
+.mdn-symbol-margin-inline-005 {
+  margin-inline: anchor-size(width);
+}
+.mdn-symbol-margin-inline-006 {
+  margin-inline: calc(anchor-size(self-block) / 5) auto;
+}
+/* <length> values */
+/* Keyword values */
+.mdn-symbol-margin-inline-007 {
+  margin-inline: auto;
+}
+/* <length> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-inline-008 {
+  margin-inline: inherit;
+}
+.mdn-symbol-margin-inline-009 {
+  margin-inline: initial;
+}
+.mdn-symbol-margin-inline-010 {
+  margin-inline: revert;
+}
+.mdn-symbol-margin-inline-011 {
+  margin-inline: revert-layer;
+}
+.mdn-symbol-margin-inline-012 {
+  margin-inline: unset;
+}
+
+/* margin-inline-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-inline-end#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-margin-inline-end-001 {
+  margin-inline-end: 10px; /* An absolute length */
+}
+.mdn-symbol-margin-inline-end-002 {
+  margin-inline-end: 1em; /* relative to the text size */
+}
+.mdn-symbol-margin-inline-end-003 {
+  margin-inline-end: 5%; /* relative to the nearest block container's width */
+}
+.mdn-symbol-margin-inline-end-004 {
+  margin-inline-end: anchor-size(height);
+}
+.mdn-symbol-margin-inline-end-005 {
+  margin-inline-end: calc(anchor-size(--my-anchor self-inline, 25px) / 5);
+}
+/* <length> values */
+/* Keyword values */
+.mdn-symbol-margin-inline-end-006 {
+  margin-inline-end: auto;
+}
+/* <length> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-inline-end-007 {
+  margin-inline-end: inherit;
+}
+.mdn-symbol-margin-inline-end-008 {
+  margin-inline-end: initial;
+}
+.mdn-symbol-margin-inline-end-009 {
+  margin-inline-end: revert;
+}
+.mdn-symbol-margin-inline-end-010 {
+  margin-inline-end: revert-layer;
+}
+.mdn-symbol-margin-inline-end-011 {
+  margin-inline-end: unset;
+}
+
+/* margin-inline-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-inline-start#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-margin-inline-start-001 {
+  margin-inline-start: 10px; /* An absolute length */
+}
+.mdn-symbol-margin-inline-start-002 {
+  margin-inline-start: 1em; /* relative to the text size */
+}
+.mdn-symbol-margin-inline-start-003 {
+  margin-inline-start: 5%; /* relative to the nearest block container's width */
+}
+.mdn-symbol-margin-inline-start-004 {
+  margin-inline-start: anchor-size(block);
+}
+.mdn-symbol-margin-inline-start-005 {
+  margin-inline-start: calc(anchor-size(--my-anchor width, 30px) / 4);
+}
+/* <length> values */
+/* Keyword values */
+.mdn-symbol-margin-inline-start-006 {
+  margin-inline-start: auto;
+}
+/* <length> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-margin-inline-start-007 {
+  margin-inline-start: inherit;
+}
+.mdn-symbol-margin-inline-start-008 {
+  margin-inline-start: initial;
+}
+.mdn-symbol-margin-inline-start-009 {
+  margin-inline-start: revert;
+}
+.mdn-symbol-margin-inline-start-010 {
+  margin-inline-start: revert-layer;
+}
+.mdn-symbol-margin-inline-start-011 {
+  margin-inline-start: unset;
+}
+
+/* mask-border-slice */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mask-border-slice#syntax */
+/* examples: 10 */
+/* All sides */
+.mdn-symbol-mask-border-slice-001 {
+  mask-border-slice: 30%;
+}
+/* All sides */
+/* top and bottom | left and right */
+.mdn-symbol-mask-border-slice-002 {
+  mask-border-slice: 10% 30%;
+}
+/* All sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+.mdn-symbol-mask-border-slice-003 {
+  mask-border-slice: 30 30% 45;
+}
+/* All sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+.mdn-symbol-mask-border-slice-004 {
+  mask-border-slice: 7 12 14 5;
+}
+/* All sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* Using the `fill` keyword */
+.mdn-symbol-mask-border-slice-005 {
+  mask-border-slice: 10% fill 7 12;
+}
+/* All sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* Using the `fill` keyword */
+/* Global values */
+.mdn-symbol-mask-border-slice-006 {
+  mask-border-slice: inherit;
+}
+.mdn-symbol-mask-border-slice-007 {
+  mask-border-slice: initial;
+}
+.mdn-symbol-mask-border-slice-008 {
+  mask-border-slice: revert;
+}
+.mdn-symbol-mask-border-slice-009 {
+  mask-border-slice: revert-layer;
+}
+.mdn-symbol-mask-border-slice-010 {
+  mask-border-slice: unset;
+}
+
+/* max-block-size */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/max-block-size#syntax */
+/* examples: 15 */
+/* <length> values */
+.mdn-symbol-max-block-size-001 {
+  max-block-size: 300px;
+}
+.mdn-symbol-max-block-size-002 {
+  max-block-size: 25em;
+}
+.mdn-symbol-max-block-size-003 {
+  max-block-size: anchor-size(--my-anchor self-inline, 250px);
+}
+.mdn-symbol-max-block-size-004 {
+  max-block-size: calc(anchor-size(width) / 2);
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-max-block-size-005 {
+  max-block-size: 75%;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+.mdn-symbol-max-block-size-006 {
+  max-block-size: none;
+}
+.mdn-symbol-max-block-size-007 {
+  max-block-size: max-content;
+}
+.mdn-symbol-max-block-size-008 {
+  max-block-size: min-content;
+}
+.mdn-symbol-max-block-size-009 {
+  max-block-size: fit-content;
+}
+.mdn-symbol-max-block-size-010 {
+  max-block-size: fit-content(20em);
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-max-block-size-011 {
+  max-block-size: inherit;
+}
+.mdn-symbol-max-block-size-012 {
+  max-block-size: initial;
+}
+.mdn-symbol-max-block-size-013 {
+  max-block-size: revert;
+}
+.mdn-symbol-max-block-size-014 {
+  max-block-size: revert-layer;
+}
+.mdn-symbol-max-block-size-015 {
+  max-block-size: unset;
+}
+
+/* max-inline-size */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/max-inline-size#syntax */
+/* examples: 15 */
+/* <length> values */
+.mdn-symbol-max-inline-size-001 {
+  max-inline-size: 300px;
+}
+.mdn-symbol-max-inline-size-002 {
+  max-inline-size: 25em;
+}
+.mdn-symbol-max-inline-size-003 {
+  max-inline-size: anchor-size(width);
+}
+.mdn-symbol-max-inline-size-004 {
+  max-inline-size: anchor-size(--my-anchor self-block, 200px);
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-max-inline-size-005 {
+  max-inline-size: 75%;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+.mdn-symbol-max-inline-size-006 {
+  max-inline-size: none;
+}
+.mdn-symbol-max-inline-size-007 {
+  max-inline-size: max-content;
+}
+.mdn-symbol-max-inline-size-008 {
+  max-inline-size: min-content;
+}
+.mdn-symbol-max-inline-size-009 {
+  max-inline-size: fit-content;
+}
+.mdn-symbol-max-inline-size-010 {
+  max-inline-size: fit-content(20em);
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-max-inline-size-011 {
+  max-inline-size: inherit;
+}
+.mdn-symbol-max-inline-size-012 {
+  max-inline-size: initial;
+}
+.mdn-symbol-max-inline-size-013 {
+  max-inline-size: revert;
+}
+.mdn-symbol-max-inline-size-014 {
+  max-inline-size: revert-layer;
+}
+.mdn-symbol-max-inline-size-015 {
+  max-inline-size: unset;
+}
+
+/* min-block-size */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/min-block-size#syntax */
+/* examples: 13 */
+/* <length> values */
+.mdn-symbol-min-block-size-001 {
+  min-block-size: 100px;
+}
+.mdn-symbol-min-block-size-002 {
+  min-block-size: 5em;
+}
+.mdn-symbol-min-block-size-003 {
+  min-block-size: anchor-size(self-inline);
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-min-block-size-004 {
+  min-block-size: 10%;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+.mdn-symbol-min-block-size-005 {
+  min-block-size: max-content;
+}
+.mdn-symbol-min-block-size-006 {
+  min-block-size: min-content;
+}
+.mdn-symbol-min-block-size-007 {
+  min-block-size: fit-content;
+}
+.mdn-symbol-min-block-size-008 {
+  min-block-size: fit-content(20em);
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-min-block-size-009 {
+  min-block-size: inherit;
+}
+.mdn-symbol-min-block-size-010 {
+  min-block-size: initial;
+}
+.mdn-symbol-min-block-size-011 {
+  min-block-size: revert;
+}
+.mdn-symbol-min-block-size-012 {
+  min-block-size: revert-layer;
+}
+.mdn-symbol-min-block-size-013 {
+  min-block-size: unset;
+}
+
+/* min-inline-size */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/min-inline-size#syntax */
+/* examples: 13 */
+/* <length> values */
+.mdn-symbol-min-inline-size-001 {
+  min-inline-size: 100px;
+}
+.mdn-symbol-min-inline-size-002 {
+  min-inline-size: 5em;
+}
+.mdn-symbol-min-inline-size-003 {
+  min-inline-size: anchor-size(width);
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-min-inline-size-004 {
+  min-inline-size: 10%;
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+.mdn-symbol-min-inline-size-005 {
+  min-inline-size: max-content;
+}
+.mdn-symbol-min-inline-size-006 {
+  min-inline-size: min-content;
+}
+.mdn-symbol-min-inline-size-007 {
+  min-inline-size: fit-content;
+}
+.mdn-symbol-min-inline-size-008 {
+  min-inline-size: fit-content(20em);
+}
+/* <length> values */
+/* <percentage> values */
+/* Keyword values */
+/* Global values */
+.mdn-symbol-min-inline-size-009 {
+  min-inline-size: inherit;
+}
+.mdn-symbol-min-inline-size-010 {
+  min-inline-size: initial;
+}
+.mdn-symbol-min-inline-size-011 {
+  min-inline-size: revert;
+}
+.mdn-symbol-min-inline-size-012 {
+  min-inline-size: revert-layer;
+}
+.mdn-symbol-min-inline-size-013 {
+  min-inline-size: unset;
+}
+
+/* negative */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/negative#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-negative-001 {
+  negative: ltr;
+}
+
+/* object-position */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/object-position#syntax */
+/* examples: 17 */
+/* Keyword values */
+.mdn-symbol-object-position-001 {
+  object-position: top;
+}
+.mdn-symbol-object-position-002 {
+  object-position: bottom;
+}
+.mdn-symbol-object-position-003 {
+  object-position: left;
+}
+.mdn-symbol-object-position-004 {
+  object-position: right;
+}
+.mdn-symbol-object-position-005 {
+  object-position: center;
+}
+/* Keyword values */
+/* <percentage> values */
+.mdn-symbol-object-position-006 {
+  object-position: 25% 75%;
+}
+/* Keyword values */
+/* <percentage> values */
+/* <length> values */
+.mdn-symbol-object-position-007 {
+  object-position: 0 0;
+}
+.mdn-symbol-object-position-008 {
+  object-position: 1cm 2cm;
+}
+.mdn-symbol-object-position-009 {
+  object-position: 10ch 8em;
+}
+/* Keyword values */
+/* <percentage> values */
+/* <length> values */
+/* Edge offsets values */
+.mdn-symbol-object-position-010 {
+  object-position: bottom 10px right 20px;
+}
+.mdn-symbol-object-position-011 {
+  object-position: right 3em bottom 10px;
+}
+.mdn-symbol-object-position-012 {
+  object-position: top 0 right 10px;
+}
+/* Keyword values */
+/* <percentage> values */
+/* <length> values */
+/* Edge offsets values */
+/* Global values */
+.mdn-symbol-object-position-013 {
+  object-position: inherit;
+}
+.mdn-symbol-object-position-014 {
+  object-position: initial;
+}
+.mdn-symbol-object-position-015 {
+  object-position: revert;
+}
+.mdn-symbol-object-position-016 {
+  object-position: revert-layer;
+}
+.mdn-symbol-object-position-017 {
+  object-position: unset;
+}
+
+/* offset-distance */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/offset-distance#syntax */
+/* examples: 8 */
+/* Default value */
+.mdn-symbol-offset-distance-001 {
+  offset-distance: 0;
+}
+/* Default value */
+/* the middle of the offset-path */
+.mdn-symbol-offset-distance-002 {
+  offset-distance: 50%;
+}
+/* Default value */
+/* the middle of the offset-path */
+/* a fixed length positioned along the path */
+.mdn-symbol-offset-distance-003 {
+  offset-distance: 40px;
+}
+/* Default value */
+/* the middle of the offset-path */
+/* a fixed length positioned along the path */
+/* Global values */
+.mdn-symbol-offset-distance-004 {
+  offset-distance: inherit;
+}
+.mdn-symbol-offset-distance-005 {
+  offset-distance: initial;
+}
+.mdn-symbol-offset-distance-006 {
+  offset-distance: revert;
+}
+.mdn-symbol-offset-distance-007 {
+  offset-distance: revert-layer;
+}
+.mdn-symbol-offset-distance-008 {
+  offset-distance: unset;
+}
+
+/* offset-rotate */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/offset-rotate#syntax */
+/* examples: 10 */
+/* Follow the path direction, with optional additional angle */
+.mdn-symbol-offset-rotate-001 {
+  offset-rotate: auto;
+}
+.mdn-symbol-offset-rotate-002 {
+  offset-rotate: auto 45deg;
+}
+/* Follow the path direction, with optional additional angle */
+/* Follow the path direction but facing the opposite direction of `auto` */
+.mdn-symbol-offset-rotate-003 {
+  offset-rotate: reverse;
+}
+/* Follow the path direction, with optional additional angle */
+/* Follow the path direction but facing the opposite direction of `auto` */
+/* Keep a constant rotation regardless the position on the path */
+.mdn-symbol-offset-rotate-004 {
+  offset-rotate: 90deg;
+}
+.mdn-symbol-offset-rotate-005 {
+  offset-rotate: 0.5turn;
+}
+/* Follow the path direction, with optional additional angle */
+/* Follow the path direction but facing the opposite direction of `auto` */
+/* Keep a constant rotation regardless the position on the path */
+/* Global values */
+.mdn-symbol-offset-rotate-006 {
+  offset-rotate: inherit;
+}
+.mdn-symbol-offset-rotate-007 {
+  offset-rotate: initial;
+}
+.mdn-symbol-offset-rotate-008 {
+  offset-rotate: revert;
+}
+.mdn-symbol-offset-rotate-009 {
+  offset-rotate: revert-layer;
+}
+.mdn-symbol-offset-rotate-010 {
+  offset-rotate: unset;
+}
+
+/* opacity */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/opacity#syntax */
+/* examples: 7 */
+.mdn-symbol-opacity-001 {
+  opacity: 0.9;
+}
+.mdn-symbol-opacity-002 {
+  opacity: 90%;
+}
+/* Global values */
+.mdn-symbol-opacity-003 {
+  opacity: inherit;
+}
+.mdn-symbol-opacity-004 {
+  opacity: initial;
+}
+.mdn-symbol-opacity-005 {
+  opacity: revert;
+}
+.mdn-symbol-opacity-006 {
+  opacity: revert-layer;
+}
+.mdn-symbol-opacity-007 {
+  opacity: unset;
+}
+
+/* order */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/order#syntax */
+/* examples: 7 */
+/* <integer> values */
+.mdn-symbol-order-001 {
+  order: 5;
+}
+.mdn-symbol-order-002 {
+  order: -5;
+}
+/* <integer> values */
+/* Global values */
+.mdn-symbol-order-003 {
+  order: inherit;
+}
+.mdn-symbol-order-004 {
+  order: initial;
+}
+.mdn-symbol-order-005 {
+  order: revert;
+}
+.mdn-symbol-order-006 {
+  order: revert-layer;
+}
+.mdn-symbol-order-007 {
+  order: unset;
+}
+
+/* orphans */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/orphans#syntax */
+/* examples: 7 */
+/* <integer> values */
+.mdn-symbol-orphans-001 {
+  orphans: 2;
+}
+.mdn-symbol-orphans-002 {
+  orphans: 3;
+}
+/* <integer> values */
+/* Global values */
+.mdn-symbol-orphans-003 {
+  orphans: inherit;
+}
+.mdn-symbol-orphans-004 {
+  orphans: initial;
+}
+.mdn-symbol-orphans-005 {
+  orphans: revert;
+}
+.mdn-symbol-orphans-006 {
+  orphans: revert-layer;
+}
+.mdn-symbol-orphans-007 {
+  orphans: unset;
+}
+
+/* outline-offset */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/outline-offset#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-outline-offset-001 {
+  outline-offset: 3px;
+}
+.mdn-symbol-outline-offset-002 {
+  outline-offset: 0.2em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-outline-offset-003 {
+  outline-offset: inherit;
+}
+.mdn-symbol-outline-offset-004 {
+  outline-offset: initial;
+}
+.mdn-symbol-outline-offset-005 {
+  outline-offset: revert;
+}
+.mdn-symbol-outline-offset-006 {
+  outline-offset: revert-layer;
+}
+.mdn-symbol-outline-offset-007 {
+  outline-offset: unset;
+}
+
+/* outline-width */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/outline-width#syntax */
+/* examples: 10 */
+/* Keyword values */
+.mdn-symbol-outline-width-001 {
+  outline-width: thin;
+}
+.mdn-symbol-outline-width-002 {
+  outline-width: medium;
+}
+.mdn-symbol-outline-width-003 {
+  outline-width: thick;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-outline-width-004 {
+  outline-width: 1px;
+}
+.mdn-symbol-outline-width-005 {
+  outline-width: 0.1em;
+}
+/* Keyword values */
+/* <length> values */
+/* Global values */
+.mdn-symbol-outline-width-006 {
+  outline-width: inherit;
+}
+.mdn-symbol-outline-width-007 {
+  outline-width: initial;
+}
+.mdn-symbol-outline-width-008 {
+  outline-width: revert;
+}
+.mdn-symbol-outline-width-009 {
+  outline-width: revert-layer;
+}
+.mdn-symbol-outline-width-010 {
+  outline-width: unset;
+}
+
+/* pad */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/pad#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-pad-001 {
+  pad: ltr;
+}
+
+/* padding */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding#syntax */
+/* examples: 9 */
+/* Apply to all four sides */
+.mdn-symbol-padding-001 {
+  padding: 1em;
+}
+/* Apply to all four sides */
+/* top and bottom | left and right */
+.mdn-symbol-padding-002 {
+  padding: 5% 10%;
+}
+/* Apply to all four sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+.mdn-symbol-padding-003 {
+  padding: 1em 2em 2em;
+}
+/* Apply to all four sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+.mdn-symbol-padding-004 {
+  padding: 5px 1em 0 2em;
+}
+/* Apply to all four sides */
+/* top and bottom | left and right */
+/* top | left and right | bottom */
+/* top | right | bottom | left */
+/* Global values */
+.mdn-symbol-padding-005 {
+  padding: inherit;
+}
+.mdn-symbol-padding-006 {
+  padding: initial;
+}
+.mdn-symbol-padding-007 {
+  padding: revert;
+}
+.mdn-symbol-padding-008 {
+  padding: revert-layer;
+}
+.mdn-symbol-padding-009 {
+  padding: unset;
+}
+
+/* padding-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-block#syntax */
+/* examples: 9 */
+/* <length> values */
+.mdn-symbol-padding-block-001 {
+  padding-block: 10px 20px; /* An absolute length */
+}
+.mdn-symbol-padding-block-002 {
+  padding-block: 1em 2em; /* relative to the text size */
+}
+.mdn-symbol-padding-block-003 {
+  padding-block: 10px; /* sets both start and end values */
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-padding-block-004 {
+  padding-block: 5% 2%; /* relative to the nearest block container's width */
+}
+/* <length> values */
+/* <percentage> values */
+/* Global values */
+.mdn-symbol-padding-block-005 {
+  padding-block: inherit;
+}
+.mdn-symbol-padding-block-006 {
+  padding-block: initial;
+}
+.mdn-symbol-padding-block-007 {
+  padding-block: revert;
+}
+.mdn-symbol-padding-block-008 {
+  padding-block: revert-layer;
+}
+.mdn-symbol-padding-block-009 {
+  padding-block: unset;
+}
+
+/* padding-block-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-block-end#syntax */
+/* examples: 8 */
+/* <length> values */
+.mdn-symbol-padding-block-end-001 {
+  padding-block-end: 10px; /* An absolute length */
+}
+.mdn-symbol-padding-block-end-002 {
+  padding-block-end: 1em; /* A length relative to the text size */
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-block-end-003 {
+  padding-block-end: 5%; /* A padding relative to the block container's width */
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-block-end-004 {
+  padding-block-end: inherit;
+}
+.mdn-symbol-padding-block-end-005 {
+  padding-block-end: initial;
+}
+.mdn-symbol-padding-block-end-006 {
+  padding-block-end: revert;
+}
+.mdn-symbol-padding-block-end-007 {
+  padding-block-end: revert-layer;
+}
+.mdn-symbol-padding-block-end-008 {
+  padding-block-end: unset;
+}
+
+/* padding-block-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-block-start#syntax */
+/* examples: 8 */
+/* <length> values */
+.mdn-symbol-padding-block-start-001 {
+  padding-block-start: 10px; /* An absolute length */
+}
+.mdn-symbol-padding-block-start-002 {
+  padding-block-start: 1em; /* A length relative to the text size */
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-block-start-003 {
+  padding-block-start: 5%; /* A padding relative to the block container's width */
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-block-start-004 {
+  padding-block-start: inherit;
+}
+.mdn-symbol-padding-block-start-005 {
+  padding-block-start: initial;
+}
+.mdn-symbol-padding-block-start-006 {
+  padding-block-start: revert;
+}
+.mdn-symbol-padding-block-start-007 {
+  padding-block-start: revert-layer;
+}
+.mdn-symbol-padding-block-start-008 {
+  padding-block-start: unset;
+}
+
+/* padding-bottom */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-bottom#syntax */
+/* examples: 9 */
+/* <length> values */
+.mdn-symbol-padding-bottom-001 {
+  padding-bottom: 0.5em;
+}
+.mdn-symbol-padding-bottom-002 {
+  padding-bottom: 0;
+}
+.mdn-symbol-padding-bottom-003 {
+  padding-bottom: 2cm;
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-bottom-004 {
+  padding-bottom: 10%;
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-bottom-005 {
+  padding-bottom: inherit;
+}
+.mdn-symbol-padding-bottom-006 {
+  padding-bottom: initial;
+}
+.mdn-symbol-padding-bottom-007 {
+  padding-bottom: revert;
+}
+.mdn-symbol-padding-bottom-008 {
+  padding-bottom: revert-layer;
+}
+.mdn-symbol-padding-bottom-009 {
+  padding-bottom: unset;
+}
+
+/* padding-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-inline#syntax */
+/* examples: 9 */
+/* <length> values */
+.mdn-symbol-padding-inline-001 {
+  padding-inline: 10px 20px; /* An absolute length */
+}
+.mdn-symbol-padding-inline-002 {
+  padding-inline: 1em 2em; /* relative to the text size */
+}
+.mdn-symbol-padding-inline-003 {
+  padding-inline: 10px; /* sets both start and end values */
+}
+/* <length> values */
+/* <percentage> values */
+.mdn-symbol-padding-inline-004 {
+  padding-inline: 5% 2%; /* relative to the nearest block container's width */
+}
+/* <length> values */
+/* <percentage> values */
+/* Global values */
+.mdn-symbol-padding-inline-005 {
+  padding-inline: inherit;
+}
+.mdn-symbol-padding-inline-006 {
+  padding-inline: initial;
+}
+.mdn-symbol-padding-inline-007 {
+  padding-inline: revert;
+}
+.mdn-symbol-padding-inline-008 {
+  padding-inline: revert-layer;
+}
+.mdn-symbol-padding-inline-009 {
+  padding-inline: unset;
+}
+
+/* padding-inline-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-inline-end#syntax */
+/* examples: 8 */
+/* <length> values */
+.mdn-symbol-padding-inline-end-001 {
+  padding-inline-end: 10px; /* An absolute length */
+}
+.mdn-symbol-padding-inline-end-002 {
+  padding-inline-end: 1em; /* A length relative to the text size */
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-inline-end-003 {
+  padding-inline-end: 5%; /* A padding relative to the block container's width */
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-inline-end-004 {
+  padding-inline-end: inherit;
+}
+.mdn-symbol-padding-inline-end-005 {
+  padding-inline-end: initial;
+}
+.mdn-symbol-padding-inline-end-006 {
+  padding-inline-end: revert;
+}
+.mdn-symbol-padding-inline-end-007 {
+  padding-inline-end: revert-layer;
+}
+.mdn-symbol-padding-inline-end-008 {
+  padding-inline-end: unset;
+}
+
+/* padding-inline-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-inline-start#syntax */
+/* examples: 8 */
+/* <length> values */
+.mdn-symbol-padding-inline-start-001 {
+  padding-inline-start: 10px; /* An absolute length */
+}
+.mdn-symbol-padding-inline-start-002 {
+  padding-inline-start: 1em; /* A length relative to the text size */
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-inline-start-003 {
+  padding-inline-start: 5%; /* A padding relative to the block container's width */
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-inline-start-004 {
+  padding-inline-start: inherit;
+}
+.mdn-symbol-padding-inline-start-005 {
+  padding-inline-start: initial;
+}
+.mdn-symbol-padding-inline-start-006 {
+  padding-inline-start: revert;
+}
+.mdn-symbol-padding-inline-start-007 {
+  padding-inline-start: revert-layer;
+}
+.mdn-symbol-padding-inline-start-008 {
+  padding-inline-start: unset;
+}
+
+/* padding-left */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-left#syntax */
+/* examples: 9 */
+/* <length> values */
+.mdn-symbol-padding-left-001 {
+  padding-left: 0.5em;
+}
+.mdn-symbol-padding-left-002 {
+  padding-left: 0;
+}
+.mdn-symbol-padding-left-003 {
+  padding-left: 2cm;
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-left-004 {
+  padding-left: 10%;
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-left-005 {
+  padding-left: inherit;
+}
+.mdn-symbol-padding-left-006 {
+  padding-left: initial;
+}
+.mdn-symbol-padding-left-007 {
+  padding-left: revert;
+}
+.mdn-symbol-padding-left-008 {
+  padding-left: revert-layer;
+}
+.mdn-symbol-padding-left-009 {
+  padding-left: unset;
+}
+
+/* padding-right */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-right#syntax */
+/* examples: 9 */
+/* <length> values */
+.mdn-symbol-padding-right-001 {
+  padding-right: 0.5em;
+}
+.mdn-symbol-padding-right-002 {
+  padding-right: 0;
+}
+.mdn-symbol-padding-right-003 {
+  padding-right: 2cm;
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-right-004 {
+  padding-right: 10%;
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-right-005 {
+  padding-right: inherit;
+}
+.mdn-symbol-padding-right-006 {
+  padding-right: initial;
+}
+.mdn-symbol-padding-right-007 {
+  padding-right: revert;
+}
+.mdn-symbol-padding-right-008 {
+  padding-right: revert-layer;
+}
+.mdn-symbol-padding-right-009 {
+  padding-right: unset;
+}
+
+/* padding-top */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-top#syntax */
+/* examples: 9 */
+/* <length> values */
+.mdn-symbol-padding-top-001 {
+  padding-top: 0.5em;
+}
+.mdn-symbol-padding-top-002 {
+  padding-top: 0;
+}
+.mdn-symbol-padding-top-003 {
+  padding-top: 2cm;
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-padding-top-004 {
+  padding-top: 10%;
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-padding-top-005 {
+  padding-top: inherit;
+}
+.mdn-symbol-padding-top-006 {
+  padding-top: initial;
+}
+.mdn-symbol-padding-top-007 {
+  padding-top: revert;
+}
+.mdn-symbol-padding-top-008 {
+  padding-top: revert-layer;
+}
+.mdn-symbol-padding-top-009 {
+  padding-top: unset;
+}
+
+/* perspective-origin */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/perspective-origin#syntax */
+/* examples: 8 */
+/* One-value syntax */
+.mdn-symbol-perspective-origin-001 {
+  perspective-origin: x-position;
+}
+/* One-value syntax */
+/* Two-value syntax */
+.mdn-symbol-perspective-origin-002 {
+  perspective-origin: x-position y-position;
+}
+.mdn-symbol-perspective-origin-003 {
+  perspective-origin: y-position x-position;
+}
+/* Global values */
+.mdn-symbol-perspective-origin-004 {
+  perspective-origin: inherit;
+}
+.mdn-symbol-perspective-origin-005 {
+  perspective-origin: initial;
+}
+.mdn-symbol-perspective-origin-006 {
+  perspective-origin: revert;
+}
+.mdn-symbol-perspective-origin-007 {
+  perspective-origin: revert-layer;
+}
+.mdn-symbol-perspective-origin-008 {
+  perspective-origin: unset;
+}
+
+/* position-try */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-try#syntax */
+/* examples: 12 */
+/* position-try-fallbacks only */
+.mdn-symbol-position-try-001 {
+  position-try: normal flip-block;
+}
+.mdn-symbol-position-try-002 {
+  position-try: top;
+}
+.mdn-symbol-position-try-003 {
+  position-try: --custom-try-option;
+}
+.mdn-symbol-position-try-004 {
+  position-try: flip-block flip-inline;
+}
+.mdn-symbol-position-try-005 {
+  position-try: top, right, bottom;
+}
+.mdn-symbol-position-try-006 {
+  position-try: --custom-try-option1, --custom-try-option2;
+}
+/* position-try-order and position-try-fallbacks */
+.mdn-symbol-position-try-007 {
+  position-try: normal none;
+}
+/* Global values */
+.mdn-symbol-position-try-008 {
+  position-try: inherit;
+}
+.mdn-symbol-position-try-009 {
+  position-try: initial;
+}
+.mdn-symbol-position-try-010 {
+  position-try: revert;
+}
+.mdn-symbol-position-try-011 {
+  position-try: revert-layer;
+}
+.mdn-symbol-position-try-012 {
+  position-try: unset;
+}
+
+/* prefix */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/prefix#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-prefix-001 {
+  prefix: ltr;
+}
+
+/* reading-order */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/reading-order#syntax */
+/* examples: 7 */
+/* <integer> values */
+.mdn-symbol-reading-order-001 {
+  reading-order: 1;
+}
+.mdn-symbol-reading-order-002 {
+  reading-order: -1;
+}
+/* <integer> values */
+/* Global values */
+.mdn-symbol-reading-order-003 {
+  reading-order: inherit;
+}
+.mdn-symbol-reading-order-004 {
+  reading-order: initial;
+}
+.mdn-symbol-reading-order-005 {
+  reading-order: revert;
+}
+.mdn-symbol-reading-order-006 {
+  reading-order: revert-layer;
+}
+.mdn-symbol-reading-order-007 {
+  reading-order: unset;
+}
+
+/* scroll-margin */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-001 {
+  scroll-margin: 10px;
+}
+.mdn-symbol-scroll-margin-002 {
+  scroll-margin: 1em 0.5em 1em 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-003 {
+  scroll-margin: inherit;
+}
+.mdn-symbol-scroll-margin-004 {
+  scroll-margin: initial;
+}
+.mdn-symbol-scroll-margin-005 {
+  scroll-margin: revert;
+}
+.mdn-symbol-scroll-margin-006 {
+  scroll-margin: revert-layer;
+}
+.mdn-symbol-scroll-margin-007 {
+  scroll-margin: unset;
+}
+
+/* scroll-margin-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-block#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-block-001 {
+  scroll-margin-block: 10px;
+}
+.mdn-symbol-scroll-margin-block-002 {
+  scroll-margin-block: 1em 0.5em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-block-003 {
+  scroll-margin-block: inherit;
+}
+.mdn-symbol-scroll-margin-block-004 {
+  scroll-margin-block: initial;
+}
+.mdn-symbol-scroll-margin-block-005 {
+  scroll-margin-block: revert;
+}
+.mdn-symbol-scroll-margin-block-006 {
+  scroll-margin-block: revert-layer;
+}
+.mdn-symbol-scroll-margin-block-007 {
+  scroll-margin-block: unset;
+}
+
+/* scroll-margin-block-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-block-end#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-block-end-001 {
+  scroll-margin-block-end: 10px;
+}
+.mdn-symbol-scroll-margin-block-end-002 {
+  scroll-margin-block-end: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-block-end-003 {
+  scroll-margin-block-end: inherit;
+}
+.mdn-symbol-scroll-margin-block-end-004 {
+  scroll-margin-block-end: initial;
+}
+.mdn-symbol-scroll-margin-block-end-005 {
+  scroll-margin-block-end: revert;
+}
+.mdn-symbol-scroll-margin-block-end-006 {
+  scroll-margin-block-end: revert-layer;
+}
+.mdn-symbol-scroll-margin-block-end-007 {
+  scroll-margin-block-end: unset;
+}
+
+/* scroll-margin-block-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-block-start#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-block-start-001 {
+  scroll-margin-block-start: 10px;
+}
+.mdn-symbol-scroll-margin-block-start-002 {
+  scroll-margin-block-start: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-block-start-003 {
+  scroll-margin-block-start: inherit;
+}
+.mdn-symbol-scroll-margin-block-start-004 {
+  scroll-margin-block-start: initial;
+}
+.mdn-symbol-scroll-margin-block-start-005 {
+  scroll-margin-block-start: revert;
+}
+.mdn-symbol-scroll-margin-block-start-006 {
+  scroll-margin-block-start: revert-layer;
+}
+.mdn-symbol-scroll-margin-block-start-007 {
+  scroll-margin-block-start: unset;
+}
+
+/* scroll-margin-bottom */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-bottom#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-bottom-001 {
+  scroll-margin-bottom: 10px;
+}
+.mdn-symbol-scroll-margin-bottom-002 {
+  scroll-margin-bottom: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-bottom-003 {
+  scroll-margin-bottom: inherit;
+}
+.mdn-symbol-scroll-margin-bottom-004 {
+  scroll-margin-bottom: initial;
+}
+.mdn-symbol-scroll-margin-bottom-005 {
+  scroll-margin-bottom: revert;
+}
+.mdn-symbol-scroll-margin-bottom-006 {
+  scroll-margin-bottom: revert-layer;
+}
+.mdn-symbol-scroll-margin-bottom-007 {
+  scroll-margin-bottom: unset;
+}
+
+/* scroll-margin-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-inline#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-inline-001 {
+  scroll-margin-inline: 10px;
+}
+.mdn-symbol-scroll-margin-inline-002 {
+  scroll-margin-inline: 1em 0.5em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-inline-003 {
+  scroll-margin-inline: inherit;
+}
+.mdn-symbol-scroll-margin-inline-004 {
+  scroll-margin-inline: initial;
+}
+.mdn-symbol-scroll-margin-inline-005 {
+  scroll-margin-inline: revert;
+}
+.mdn-symbol-scroll-margin-inline-006 {
+  scroll-margin-inline: revert-layer;
+}
+.mdn-symbol-scroll-margin-inline-007 {
+  scroll-margin-inline: unset;
+}
+
+/* scroll-margin-inline-end */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-inline-end#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-inline-end-001 {
+  scroll-margin-inline-end: 10px;
+}
+.mdn-symbol-scroll-margin-inline-end-002 {
+  scroll-margin-inline-end: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-inline-end-003 {
+  scroll-margin-inline-end: inherit;
+}
+.mdn-symbol-scroll-margin-inline-end-004 {
+  scroll-margin-inline-end: initial;
+}
+.mdn-symbol-scroll-margin-inline-end-005 {
+  scroll-margin-inline-end: revert;
+}
+.mdn-symbol-scroll-margin-inline-end-006 {
+  scroll-margin-inline-end: revert-layer;
+}
+.mdn-symbol-scroll-margin-inline-end-007 {
+  scroll-margin-inline-end: unset;
+}
+
+/* scroll-margin-inline-start */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-inline-start#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-inline-start-001 {
+  scroll-margin-inline-start: 10px;
+}
+.mdn-symbol-scroll-margin-inline-start-002 {
+  scroll-margin-inline-start: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-inline-start-003 {
+  scroll-margin-inline-start: inherit;
+}
+.mdn-symbol-scroll-margin-inline-start-004 {
+  scroll-margin-inline-start: initial;
+}
+.mdn-symbol-scroll-margin-inline-start-005 {
+  scroll-margin-inline-start: revert;
+}
+.mdn-symbol-scroll-margin-inline-start-006 {
+  scroll-margin-inline-start: revert-layer;
+}
+.mdn-symbol-scroll-margin-inline-start-007 {
+  scroll-margin-inline-start: unset;
+}
+
+/* scroll-margin-left */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-left#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-left-001 {
+  scroll-margin-left: 10px;
+}
+.mdn-symbol-scroll-margin-left-002 {
+  scroll-margin-left: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-left-003 {
+  scroll-margin-left: inherit;
+}
+.mdn-symbol-scroll-margin-left-004 {
+  scroll-margin-left: initial;
+}
+.mdn-symbol-scroll-margin-left-005 {
+  scroll-margin-left: revert;
+}
+.mdn-symbol-scroll-margin-left-006 {
+  scroll-margin-left: revert-layer;
+}
+.mdn-symbol-scroll-margin-left-007 {
+  scroll-margin-left: unset;
+}
+
+/* scroll-margin-right */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-right#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-right-001 {
+  scroll-margin-right: 10px;
+}
+.mdn-symbol-scroll-margin-right-002 {
+  scroll-margin-right: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-right-003 {
+  scroll-margin-right: inherit;
+}
+.mdn-symbol-scroll-margin-right-004 {
+  scroll-margin-right: initial;
+}
+.mdn-symbol-scroll-margin-right-005 {
+  scroll-margin-right: revert;
+}
+.mdn-symbol-scroll-margin-right-006 {
+  scroll-margin-right: revert-layer;
+}
+.mdn-symbol-scroll-margin-right-007 {
+  scroll-margin-right: unset;
+}
+
+/* scroll-margin-top */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-top#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-top-001 {
+  scroll-margin-top: 10px;
+}
+.mdn-symbol-scroll-margin-top-002 {
+  scroll-margin-top: 1em;
+}
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-margin-top-003 {
+  scroll-margin-top: inherit;
+}
+.mdn-symbol-scroll-margin-top-004 {
+  scroll-margin-top: initial;
+}
+.mdn-symbol-scroll-margin-top-005 {
+  scroll-margin-top: revert;
+}
+.mdn-symbol-scroll-margin-top-006 {
+  scroll-margin-top: revert-layer;
+}
+.mdn-symbol-scroll-margin-top-007 {
+  scroll-margin-top: unset;
+}
+
+/* scroll-padding */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-padding#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-scroll-padding-001 {
+  scroll-padding: auto;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-scroll-padding-002 {
+  scroll-padding: 10px;
+}
+.mdn-symbol-scroll-padding-003 {
+  scroll-padding: 1em 0.5em 1em 1em;
+}
+.mdn-symbol-scroll-padding-004 {
+  scroll-padding: 10%;
+}
+/* Keyword values */
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-padding-005 {
+  scroll-padding: inherit;
+}
+.mdn-symbol-scroll-padding-006 {
+  scroll-padding: initial;
+}
+.mdn-symbol-scroll-padding-007 {
+  scroll-padding: revert;
+}
+.mdn-symbol-scroll-padding-008 {
+  scroll-padding: revert-layer;
+}
+.mdn-symbol-scroll-padding-009 {
+  scroll-padding: unset;
+}
+
+/* scroll-padding-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-padding-block#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-scroll-padding-block-001 {
+  scroll-padding-block: auto;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-scroll-padding-block-002 {
+  scroll-padding-block: 10px;
+}
+.mdn-symbol-scroll-padding-block-003 {
+  scroll-padding-block: 1em 0.5em;
+}
+.mdn-symbol-scroll-padding-block-004 {
+  scroll-padding-block: 10%;
+}
+/* Keyword values */
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-padding-block-005 {
+  scroll-padding-block: inherit;
+}
+.mdn-symbol-scroll-padding-block-006 {
+  scroll-padding-block: initial;
+}
+.mdn-symbol-scroll-padding-block-007 {
+  scroll-padding-block: revert;
+}
+.mdn-symbol-scroll-padding-block-008 {
+  scroll-padding-block: revert-layer;
+}
+.mdn-symbol-scroll-padding-block-009 {
+  scroll-padding-block: unset;
+}
+
+/* scroll-padding-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-padding-inline#syntax */
+/* examples: 9 */
+/* Keyword values */
+.mdn-symbol-scroll-padding-inline-001 {
+  scroll-padding-inline: auto;
+}
+/* Keyword values */
+/* <length> values */
+.mdn-symbol-scroll-padding-inline-002 {
+  scroll-padding-inline: 10px;
+}
+.mdn-symbol-scroll-padding-inline-003 {
+  scroll-padding-inline: 1em 0.5em;
+}
+.mdn-symbol-scroll-padding-inline-004 {
+  scroll-padding-inline: 10%;
+}
+/* Keyword values */
+/* <length> values */
+/* Global values */
+.mdn-symbol-scroll-padding-inline-005 {
+  scroll-padding-inline: inherit;
+}
+.mdn-symbol-scroll-padding-inline-006 {
+  scroll-padding-inline: initial;
+}
+.mdn-symbol-scroll-padding-inline-007 {
+  scroll-padding-inline: revert;
+}
+.mdn-symbol-scroll-padding-inline-008 {
+  scroll-padding-inline: revert-layer;
+}
+.mdn-symbol-scroll-padding-inline-009 {
+  scroll-padding-inline: unset;
+}
+
+/* scroll-timeline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-timeline#syntax */
+/* examples: 11 */
+/* One value */
+.mdn-symbol-scroll-timeline-001 {
+  scroll-timeline: none;
+}
+.mdn-symbol-scroll-timeline-002 {
+  scroll-timeline: --custom_name_for_timeline;
+}
+/* One value */
+/* Two values */
+.mdn-symbol-scroll-timeline-003 {
+  scroll-timeline: --custom_name_for_timeline block;
+}
+.mdn-symbol-scroll-timeline-004 {
+  scroll-timeline: --custom_name_for_timeline x;
+}
+.mdn-symbol-scroll-timeline-005 {
+  scroll-timeline: none inline;
+}
+.mdn-symbol-scroll-timeline-006 {
+  scroll-timeline: none y;
+}
+/* One value */
+/* Two values */
+/* Global values */
+.mdn-symbol-scroll-timeline-007 {
+  scroll-timeline: inherit;
+}
+.mdn-symbol-scroll-timeline-008 {
+  scroll-timeline: initial;
+}
+.mdn-symbol-scroll-timeline-009 {
+  scroll-timeline: revert;
+}
+.mdn-symbol-scroll-timeline-010 {
+  scroll-timeline: revert-layer;
+}
+.mdn-symbol-scroll-timeline-011 {
+  scroll-timeline: unset;
+}
+
+/* shape-image-threshold */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/shape-image-threshold#syntax */
+/* examples: 6 */
+/* <number> value */
+.mdn-symbol-shape-image-threshold-001 {
+  shape-image-threshold: 0.7;
+}
+/* <number> value */
+/* Global values */
+.mdn-symbol-shape-image-threshold-002 {
+  shape-image-threshold: inherit;
+}
+.mdn-symbol-shape-image-threshold-003 {
+  shape-image-threshold: initial;
+}
+.mdn-symbol-shape-image-threshold-004 {
+  shape-image-threshold: revert;
+}
+.mdn-symbol-shape-image-threshold-005 {
+  shape-image-threshold: revert-layer;
+}
+.mdn-symbol-shape-image-threshold-006 {
+  shape-image-threshold: unset;
+}
+
+/* shape-margin */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/shape-margin#syntax */
+/* examples: 8 */
+/* <length> values */
+.mdn-symbol-shape-margin-001 {
+  shape-margin: 10px;
+}
+.mdn-symbol-shape-margin-002 {
+  shape-margin: 20mm;
+}
+/* <length> values */
+/* <percentage> value */
+.mdn-symbol-shape-margin-003 {
+  shape-margin: 60%;
+}
+/* <length> values */
+/* <percentage> value */
+/* Global values */
+.mdn-symbol-shape-margin-004 {
+  shape-margin: inherit;
+}
+.mdn-symbol-shape-margin-005 {
+  shape-margin: initial;
+}
+.mdn-symbol-shape-margin-006 {
+  shape-margin: revert;
+}
+.mdn-symbol-shape-margin-007 {
+  shape-margin: revert-layer;
+}
+.mdn-symbol-shape-margin-008 {
+  shape-margin: unset;
+}
+
+/* size-adjust */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/size-adjust#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-size-adjust-001 {
+  size-adjust: inherit;
+}
+
+/* stop-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/stop-color#syntax */
+/* examples: 8 */
+/* <color> values */
+.mdn-symbol-stop-color-001 {
+  stop-color: red;
+}
+.mdn-symbol-stop-color-002 {
+  stop-color: hsl(120deg 75% 25% / 60%);
+}
+.mdn-symbol-stop-color-003 {
+  stop-color: currentColor;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-stop-color-004 {
+  stop-color: inherit;
+}
+.mdn-symbol-stop-color-005 {
+  stop-color: initial;
+}
+.mdn-symbol-stop-color-006 {
+  stop-color: revert;
+}
+.mdn-symbol-stop-color-007 {
+  stop-color: revert-layer;
+}
+.mdn-symbol-stop-color-008 {
+  stop-color: unset;
+}
+
+/* stop-opacity */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/stop-opacity#syntax */
+/* examples: 7 */
+/* numeric and percentage values */
+.mdn-symbol-stop-opacity-001 {
+  stop-opacity: 0.2;
+}
+.mdn-symbol-stop-opacity-002 {
+  stop-opacity: 20%;
+}
+/* numeric and percentage values */
+/* Global values */
+.mdn-symbol-stop-opacity-003 {
+  stop-opacity: inherit;
+}
+.mdn-symbol-stop-opacity-004 {
+  stop-opacity: initial;
+}
+.mdn-symbol-stop-opacity-005 {
+  stop-opacity: revert;
+}
+.mdn-symbol-stop-opacity-006 {
+  stop-opacity: revert-layer;
+}
+.mdn-symbol-stop-opacity-007 {
+  stop-opacity: unset;
+}
+
+/* stroke */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/stroke#syntax */
+/* examples: 11 */
+/* assorted color values */
+.mdn-symbol-stroke-001 {
+  stroke: rgb(153 51 102 / 1);
+}
+.mdn-symbol-stroke-002 {
+  stroke: color-mix(in lch, var(--primaryColor) 35%, gray 15%);
+}
+.mdn-symbol-stroke-003 {
+  stroke: dodgerblue;
+}
+.mdn-symbol-stroke-004 {
+  stroke: currentColor;
+}
+.mdn-symbol-stroke-005 {
+  stroke: transparent;
+}
+.mdn-symbol-stroke-006 {
+  stroke: context-stroke;
+}
+/* assorted color values */
+/* Global values */
+.mdn-symbol-stroke-007 {
+  stroke: inherit;
+}
+.mdn-symbol-stroke-008 {
+  stroke: initial;
+}
+.mdn-symbol-stroke-009 {
+  stroke: revert;
+}
+.mdn-symbol-stroke-010 {
+  stroke: revert-layer;
+}
+.mdn-symbol-stroke-011 {
+  stroke: unset;
+}
+
+/* stroke-miterlimit */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/stroke-miterlimit#syntax */
+/* examples: 7 */
+/* number values */
+.mdn-symbol-stroke-miterlimit-001 {
+  stroke-miterlimit: 1;
+}
+.mdn-symbol-stroke-miterlimit-002 {
+  stroke-miterlimit: 3.1416;
+}
+/* number values */
+/* Global values */
+.mdn-symbol-stroke-miterlimit-003 {
+  stroke-miterlimit: inherit;
+}
+.mdn-symbol-stroke-miterlimit-004 {
+  stroke-miterlimit: initial;
+}
+.mdn-symbol-stroke-miterlimit-005 {
+  stroke-miterlimit: revert;
+}
+.mdn-symbol-stroke-miterlimit-006 {
+  stroke-miterlimit: revert-layer;
+}
+.mdn-symbol-stroke-miterlimit-007 {
+  stroke-miterlimit: unset;
+}
+
+/* stroke-opacity */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/stroke-opacity#syntax */
+/* examples: 8 */
+/* numeric and percentage values */
+.mdn-symbol-stroke-opacity-001 {
+  stroke-opacity: 1;
+}
+.mdn-symbol-stroke-opacity-002 {
+  stroke-opacity: 0.3;
+}
+.mdn-symbol-stroke-opacity-003 {
+  stroke-opacity: 50%;
+}
+/* numeric and percentage values */
+/* Global values */
+.mdn-symbol-stroke-opacity-004 {
+  stroke-opacity: inherit;
+}
+.mdn-symbol-stroke-opacity-005 {
+  stroke-opacity: initial;
+}
+.mdn-symbol-stroke-opacity-006 {
+  stroke-opacity: revert;
+}
+.mdn-symbol-stroke-opacity-007 {
+  stroke-opacity: revert-layer;
+}
+.mdn-symbol-stroke-opacity-008 {
+  stroke-opacity: unset;
+}
+
+/* suffix */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/suffix#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-suffix-001 {
+  suffix: ltr;
+}
+
+/* symbols */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/symbols#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-symbols-001 {
+  symbols: ltr;
+}
+
+/* syntax */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/syntax#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-syntax-001 {
+  syntax: inherit;
+}
+
+/* text-decoration-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-color#syntax */
+/* examples: 10 */
+/* <color> values */
+.mdn-symbol-text-decoration-color-001 {
+  text-decoration-color: currentColor;
+}
+.mdn-symbol-text-decoration-color-002 {
+  text-decoration-color: red;
+}
+.mdn-symbol-text-decoration-color-003 {
+  text-decoration-color: #00ff00;
+}
+.mdn-symbol-text-decoration-color-004 {
+  text-decoration-color: rgb(255 128 128 / 50%);
+}
+.mdn-symbol-text-decoration-color-005 {
+  text-decoration-color: transparent;
+}
+/* <color> values */
+/* Global values */
+.mdn-symbol-text-decoration-color-006 {
+  text-decoration-color: inherit;
+}
+.mdn-symbol-text-decoration-color-007 {
+  text-decoration-color: initial;
+}
+.mdn-symbol-text-decoration-color-008 {
+  text-decoration-color: revert;
+}
+.mdn-symbol-text-decoration-color-009 {
+  text-decoration-color: revert-layer;
+}
+.mdn-symbol-text-decoration-color-010 {
+  text-decoration-color: unset;
+}
+
+/* text-emphasis-color */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-emphasis-color#syntax */
+/* examples: 10 */
+/* Initial value */
+.mdn-symbol-text-emphasis-color-001 {
+  text-emphasis-color: currentColor;
+}
+/* Initial value */
+/* <color> */
+.mdn-symbol-text-emphasis-color-002 {
+  text-emphasis-color: #555555;
+}
+.mdn-symbol-text-emphasis-color-003 {
+  text-emphasis-color: blue;
+}
+.mdn-symbol-text-emphasis-color-004 {
+  text-emphasis-color: rgb(90 200 160 / 80%);
+}
+.mdn-symbol-text-emphasis-color-005 {
+  text-emphasis-color: transparent;
+}
+/* Initial value */
+/* <color> */
+/* Global values */
+.mdn-symbol-text-emphasis-color-006 {
+  text-emphasis-color: inherit;
+}
+.mdn-symbol-text-emphasis-color-007 {
+  text-emphasis-color: initial;
+}
+.mdn-symbol-text-emphasis-color-008 {
+  text-emphasis-color: revert;
+}
+.mdn-symbol-text-emphasis-color-009 {
+  text-emphasis-color: revert-layer;
+}
+.mdn-symbol-text-emphasis-color-010 {
+  text-emphasis-color: unset;
+}
+
+/* text-indent */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-indent#syntax */
+/* examples: 11 */
+/* <length> values */
+.mdn-symbol-text-indent-001 {
+  text-indent: 3mm;
+}
+.mdn-symbol-text-indent-002 {
+  text-indent: 40px;
+}
+.mdn-symbol-text-indent-003 {
+  text-indent: 15%;
+}
+/* Keyword values */
+.mdn-symbol-text-indent-004 {
+  text-indent: 5em each-line;
+}
+.mdn-symbol-text-indent-005 {
+  text-indent: 5em hanging;
+}
+.mdn-symbol-text-indent-006 {
+  text-indent: 5em hanging each-line;
+}
+/* Keyword values */
+/* Global values */
+.mdn-symbol-text-indent-007 {
+  text-indent: inherit;
+}
+.mdn-symbol-text-indent-008 {
+  text-indent: initial;
+}
+.mdn-symbol-text-indent-009 {
+  text-indent: revert;
+}
+.mdn-symbol-text-indent-010 {
+  text-indent: revert-layer;
+}
+.mdn-symbol-text-indent-011 {
+  text-indent: unset;
+}
+
+/* timeline-trigger */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/timeline-trigger#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-timeline-trigger-001 {
+  timeline-trigger: auto;
+}
+
+/* timeline-trigger-exit-range */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/timeline-trigger-exit-range#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-timeline-trigger-exit-range-001 {
+  timeline-trigger-exit-range: auto;
+}
+
+/* timeline-trigger-range */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/timeline-trigger-range#syntax */
+/* examples: 1 */
+/* fallback exact case */
+.mdn-symbol-timeline-trigger-range-001 {
+  timeline-trigger-range: contain;
+}
+
+/* widows */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/widows#syntax */
+/* examples: 7 */
+/* <integer> values */
+.mdn-symbol-widows-001 {
+  widows: 2;
+}
+.mdn-symbol-widows-002 {
+  widows: 3;
+}
+/* <integer> values */
+/* Global values */
+.mdn-symbol-widows-003 {
+  widows: inherit;
+}
+.mdn-symbol-widows-004 {
+  widows: initial;
+}
+.mdn-symbol-widows-005 {
+  widows: revert;
+}
+.mdn-symbol-widows-006 {
+  widows: revert-layer;
+}
+.mdn-symbol-widows-007 {
+  widows: unset;
+}
+
+/* Generated from MDN syntax pages for parser pipeline coverage */

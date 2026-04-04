@@ -6,9 +6,10 @@ import { createCssExtractor } from "../../src/extractor.js";
 import { createServiceScheduler } from "../../src/scheduler.js";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 import { assertGeneratedSchedulerE2E } from "../lib/generatedSchedulerE2E.js";
-import { isDesignedNoHintProperty } from "../../src/helper/noHintDesign.js";
+import { classifyPropertyStructure, isDesignedNoHintProperty } from "../../src/helper/noHintDesign.js";
 import { getPropertyStatus, getPropertySyntax, listPropertyNames } from "../../src/propertySyntax.js";
 import type { CssExtractorCandidate } from "../../src/extractor.js";
+import type { GeneratedCssCase } from "../lib/cssCaseModel.js";
 
 type PasslistStatistics = {
 	matchedCount: number;
@@ -50,7 +51,7 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 		const matchedCases = cases.filter((generatedCase) => isMatchedHintCase(classifier, extractor, generatedCase.code));
 
 		if (matchedCases.length === 0) {
-			pushNoHintProperty(propertyName, noHintDesignedPropertyNames, noHintTodoPropertyNames);
+			pushNoHintProperty(propertyName, cases, noHintDesignedPropertyNames, noHintTodoPropertyNames);
 			continue;
 		}
 
@@ -64,7 +65,7 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 			});
 			matchedPropertyNames.push(propertyName);
 		} catch {
-			pushNoHintProperty(propertyName, noHintDesignedPropertyNames, noHintTodoPropertyNames);
+			pushNoHintProperty(propertyName, cases, noHintDesignedPropertyNames, noHintTodoPropertyNames);
 		}
 	}
 
@@ -90,13 +91,36 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 	};
 }
 
-function pushNoHintProperty(propertyName: string, designedPropertyNames: string[], todoPropertyNames: string[]): void {
+function pushNoHintProperty(
+	propertyName: string,
+	cases: ReadonlyArray<GeneratedCssCase>,
+	designedPropertyNames: string[],
+	todoPropertyNames: string[],
+): void {
+	if (shouldDesignFromGlobalOnlyReferenceOnlyCases(propertyName, cases)) {
+		designedPropertyNames.push(propertyName);
+		return;
+	}
+
 	if (isDesignedNoHintProperty(propertyName)) {
 		designedPropertyNames.push(propertyName);
 		return;
 	}
 
 	todoPropertyNames.push(propertyName);
+}
+
+function shouldDesignFromGlobalOnlyReferenceOnlyCases(
+	propertyName: string,
+	cases: ReadonlyArray<GeneratedCssCase>,
+): boolean {
+	if (classifyPropertyStructure(propertyName) !== "reference-only") {
+		return false;
+	}
+
+	return (
+		cases.length > 0 && cases.every((generatedCase) => generatedCase.valueAtoms.every((atom) => atom.kind === "global"))
+	);
 }
 
 function isMatchedHintCase(

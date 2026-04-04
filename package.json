@@ -18,7 +18,8 @@
 		"test": "pnpm run test:build && find dist-test/test -name '*.test.js' -print | sort | xargs node --test && node dist-test/test/passlist/generatePasslist.js",
 		"generate:passlist": "pnpm run test:build && node dist-test/test/passlist/generatePasslist.js",
 		"generate:plan": "pnpm run test:build && node dist-test/test/passlist/generateTodoPlan.js",
-		"generate:validation-css": "pnpm run test:build && node dist-test/test/passlist/generateValidationCss.js"
+		"generate:validation-css": "pnpm run test:build && node dist-test/test/passlist/generateValidationCss.js",
+		"generate:mdn-symbol-css": "pnpm run test:build && node dist-test/test/passlist/generateMdnSymbolCss.js"
 	},
 	"keywords": [],
 	"author": "",

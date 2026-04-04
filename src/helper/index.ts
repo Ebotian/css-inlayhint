@@ -10,6 +10,10 @@ export {
 export { classifyPropertyStructure, isDesignedNoHintProperty } from "./noHintDesign.js";
 export {
 	isGridLineProperty,
+	isCornerRadiusProperty,
+	isLogicalAxisRepeatProperty,
+	isInsetProperty,
+	isScrollMarginProperty,
 	usesCommaSeparatedRepeatableListSyntax,
 	usesSlashSeparatedGridLineSyntax,
 	usesUnorderedOptionalGroupSyntax,

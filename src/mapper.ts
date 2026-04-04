@@ -6,7 +6,9 @@ import {
 	assertNoPropertyNameEchoLabels,
 	assertNoValueEchoLabels,
 } from "./helper/labelValidation.js";
+import { tokenizeShorthandValueText } from "./helper/classifyNormalize.js";
 import { getShorthandLabelParts } from "./propertySyntax";
+import { classifyStandardText } from "./share/cssValueAtoms.js";
 
 export type CssHintMapper = {
 	map(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
@@ -56,6 +58,13 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 	const mappedLabel = mapShorthandLabel(instruction.propertyName, instruction.tokenCount, instruction.valueText);
 	if (!mappedLabel) {
 		return instruction;
+	}
+
+	if (instruction.propertyName === "animation-range") {
+		const labelSlots = buildAnimationRangeLabelSlots(instruction.valueText, mappedLabel.split(", "));
+		if (labelSlots) {
+			return { ...instruction, label: mappedLabel, labelSlots };
+		}
 	}
 
 	return {
@@ -173,6 +182,53 @@ function formatCornerName(name: string): string {
 
 	return `${prefix}-${suffix === "left" ? "L" : "R"}`;
 }
+
+function buildAnimationRangeLabelSlots(valueText: string, labelParts: readonly string[]): string[] | null {
+	if (labelParts.length !== 2) {
+		return null;
+	}
+
+	const tokens = tokenizeShorthandValueText(valueText);
+	if (tokens.length === 0) {
+		return null;
+	}
+
+	const slots = Array.from({ length: tokens.length }, () => "");
+	slots[0] = labelParts[0] ?? "";
+
+	if (tokens.length === 1) {
+		return slots;
+	}
+
+	const secondLabelIndex = shouldShiftAnimationRangeEndLabel(tokens) ? 2 : 1;
+	if (secondLabelIndex >= tokens.length) {
+		return null;
+	}
+
+	slots[secondLabelIndex] = labelParts[1] ?? "";
+	return slots;
+}
+
+function shouldShiftAnimationRangeEndLabel(tokens: readonly string[]): boolean {
+	if (tokens.length < 3) {
+		return false;
+	}
+
+	const firstToken = tokens[0]?.toLowerCase();
+	const secondToken = tokens[1] ?? "";
+	if (!firstToken || !ANIMATION_RANGE_RANGE_NAME_TOKENS.has(firstToken)) {
+		return false;
+	}
+
+	return isLengthPercentageToken(secondToken);
+}
+
+function isLengthPercentageToken(token: string): boolean {
+	const atom = classifyStandardText(token, { allowsColor: false });
+	return atom?.kind === "length" || atom?.kind === "percent" || atom?.kind === "zero";
+}
+
+const ANIMATION_RANGE_RANGE_NAME_TOKENS = new Set(["cover", "contain", "entry", "exit"]);
 
 function getDirectionalFamily(propertyName: string): readonly string[] | null {
 	const expanded = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];

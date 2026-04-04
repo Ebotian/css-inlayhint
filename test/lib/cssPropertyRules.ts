@@ -243,6 +243,7 @@ function collectStandardValueAtomsFromRecord(
 	propertyName: string,
 	property: StandardPropertyRecord,
 	syntaxAst: ReturnType<typeof parseStandardCssSyntax>,
+	visitedProperties = new Set<string>([propertyName]),
 ): CssValueAtom[] {
 	const atomsByKind = new Map<CssValueKind, CssValueAtom[]>();
 	const allowsColor = syntaxAstIncludesType(syntaxAst, "color");
@@ -255,6 +256,28 @@ function collectStandardValueAtomsFromRecord(
 
 	for (const atom of collectTypeSyntaxAtoms(syntaxAst, allowsColor)) {
 		appendAtom(atomsByKind, atom);
+	}
+
+	for (const referencedPropertyName of collectReferencedPropertyNames(syntaxAst)) {
+		if (visitedProperties.has(referencedPropertyName)) {
+			continue;
+		}
+
+		visitedProperties.add(referencedPropertyName);
+		const referencedProperty = PROPERTY_BY_NAME.get(referencedPropertyName);
+		if (!referencedProperty) {
+			continue;
+		}
+
+		const referencedSyntaxAst = parseStandardCssSyntax(referencedProperty.syntax ?? "");
+		for (const atom of collectStandardValueAtomsFromRecord(
+			referencedPropertyName,
+			referencedProperty,
+			referencedSyntaxAst,
+			visitedProperties,
+		)) {
+			appendAtom(atomsByKind, atom);
+		}
 	}
 
 	for (const value of property.values ?? []) {
@@ -286,6 +309,21 @@ function collectStandardValueAtomsFromRecord(
 
 			return left.text.localeCompare(right.text);
 		});
+}
+
+function collectReferencedPropertyNames(syntaxAst: ReturnType<typeof parseStandardCssSyntax>): string[] {
+	const names: string[] = [];
+	const seen = new Set<string>();
+	visitCssSyntaxAst(syntaxAst, (node) => {
+		if (node.type !== "Property" || !node.name || seen.has(node.name)) {
+			return;
+		}
+
+		seen.add(node.name);
+		names.push(node.name);
+	});
+
+	return names;
 }
 
 function collectTypeSyntaxAtoms(

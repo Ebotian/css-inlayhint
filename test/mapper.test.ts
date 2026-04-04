@@ -96,21 +96,35 @@ test("mapper derives border-family labels from actual border tokens", () => {
 	assert.ok(!mappedBorderColor.label.includes("border"));
 });
 
-test("mapper rejects redundant reference-only suffix labels", () => {
+test("mapper derives corner-radius labels from single-corner values", () => {
 	const mapper = createCssHintMapper();
 
-	const mappedBlockSize = mapper.map([createInstruction("block-size", 1, "1rem")])[0];
+	const mappedSingle = mapper.map([createInstruction("border-bottom-left-radius", 1, "20%")])[0];
+	const mappedPair = mapper.map([createInstruction("border-bottom-left-radius", 2, "20% 10%")])[0];
 
-	assert.equal(mappedBlockSize.label, "width");
-	assert.ok(!mappedBlockSize.label.includes("block-size"));
-	assert.throws(
-		() => mapper.map([createInstruction("flood-opacity", 1, "0.5")]),
-		/Forbidden label echo of property suffix/,
-	);
-	assert.throws(
-		() => mapper.map([createInstruction("margin-block-end", 1, "1rem")]),
-		/Forbidden label echo of property suffix/,
-	);
+	assert.equal(mappedSingle.label, "all");
+	assert.equal(mappedPair.label, "horizontal, vertical");
+	assert.ok(!mappedSingle.label.includes("border-bottom-left-radius"));
+});
+
+test("mapper derives animation-range labels from reference syntax", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedSingle = mapper.map([createInstruction("animation-range", 1, "cover")])[0];
+	const mappedPair = mapper.map([createInstruction("animation-range", 2, "cover 20%")])[0];
+
+	assert.equal(mappedSingle.label, "start");
+	assert.equal(mappedPair.label, "start, end");
+	assert.ok(!mappedSingle.label.includes("animation-range"));
+});
+
+test("mapper keeps non-hintable reference-only properties on the fallback path", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedTimeline = mapper.map([createInstruction("animation-timeline", 1, "auto")])[0];
+
+	assert.equal(mappedTimeline.label, "animation-timeline-1-values");
+	assert.ok(mappedTimeline.label.includes("animation-timeline"));
 });
 
 test("mapper derives list-style member labels from the actual value text", () => {
@@ -160,9 +174,45 @@ test("mapper derives logical-axis shorthand labels", () => {
 
 	const mappedBlockPadding = mapper.map([createInstruction("scroll-padding-block", 2)])[0];
 	const mappedInlinePadding = mapper.map([createInstruction("scroll-padding-inline", 2)])[0];
+	const mappedPaddingBlock = mapper.map([createInstruction("padding-block", 2, "10px 20px")])[0];
+	const mappedPaddingInline = mapper.map([createInstruction("padding-inline", 2, "10px 20px")])[0];
+	const mappedInsetBlock = mapper.map([createInstruction("inset-block", 2, "3px 10px")])[0];
+	const mappedInsetInline = mapper.map([createInstruction("inset-inline", 2, "3px 10px")])[0];
 
 	assert.equal(mappedBlockPadding.label, "start, end");
 	assert.equal(mappedInlinePadding.label, "start, end");
+	assert.equal(mappedPaddingBlock.label, "start, end");
+	assert.equal(mappedPaddingInline.label, "start, end");
+	assert.equal(mappedInsetBlock.label, "start, end");
+	assert.equal(mappedInsetInline.label, "start, end");
+});
+
+test("mapper derives scroll-margin labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedSingle = mapper.map([createInstruction("scroll-margin", 1, "10px")])[0];
+	const mappedPair = mapper.map([createInstruction("scroll-margin", 2, "4px 8px")])[0];
+	const mappedBlock = mapper.map([createInstruction("scroll-margin-block", 2, "3px 10px")])[0];
+	const mappedInline = mapper.map([createInstruction("scroll-margin-inline", 2, "3px 10px")])[0];
+
+	assert.equal(mappedSingle.label, "all");
+	assert.equal(mappedPair.label, "top/bottom, right/left");
+	assert.equal(mappedBlock.label, "start, end");
+	assert.equal(mappedInline.label, "start, end");
+});
+
+test("mapper derives inset labels from repeated edge values", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedSingle = mapper.map([createInstruction("inset", 1, "10px")])[0];
+	const mappedPair = mapper.map([createInstruction("inset", 2, "4px 8px")])[0];
+	const mappedTriple = mapper.map([createInstruction("inset", 3, "5px 15px 10px")])[0];
+	const mappedQuad = mapper.map([createInstruction("inset", 4, "2.4em 3em 3em 3em")])[0];
+
+	assert.equal(mappedSingle.label, "all");
+	assert.equal(mappedPair.label, "top/bottom, right/left");
+	assert.equal(mappedTriple.label, "top, right/left, bottom");
+	assert.equal(mappedQuad.label, "top, right, bottom, left");
 });
 
 test("mapper rejects forbidden global labels", () => {

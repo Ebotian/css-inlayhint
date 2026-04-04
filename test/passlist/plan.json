@@ -1,68 +1,31 @@
 {
   "source": "test/passlist/property-pass-statistics.json",
-  "todoCount": 386,
-  "batchCount": 8,
+  "todoCount": 365,
+  "batchCount": 7,
   "batches": [
     {
       "phase": 1,
       "key": "reference-only",
-      "complexity": "repeat",
-      "count": 18,
+      "complexity": "compound",
+      "count": 4,
       "properties": [
-        "animation-range",
-        "border-block-color",
-        "border-block-style",
-        "border-block-width",
-        "border-inline-color",
-        "border-inline-style",
-        "border-inline-width",
-        "inset",
-        "inset-block",
-        "inset-inline",
-        "interest-delay",
-        "margin-block",
-        "margin-inline",
-        "padding-block",
-        "padding-inline",
-        "scroll-timeline",
-        "timeline-trigger-exit-range",
-        "timeline-trigger-range"
+        "gap",
+        "place-content",
+        "place-items",
+        "place-self"
       ],
-      "rationale": "reference-only / repeat-heavy but still structure-driven",
+      "rationale": "reference-only / nested or mixed syntax, best left for later",
       "validation": {
-        "representativeProperty": "animation-range",
-        "localSyntax": "[ <'animation-range-start'> <'animation-range-end'>? ]#",
-        "mdnSyntax": "[ <'animation-range-start'> <'animation-range-end'>? ]#",
+        "representativeProperty": "gap",
+        "localSyntax": "<'row-gap'> <'column-gap'>?",
+        "mdnSyntax": "<'row-gap'> <'column-gap'>?",
         "mdnVerified": true,
         "sourceAgreement": "aligned",
-        "sampleCaseCount": 12
+        "sampleCaseCount": 5
       }
     },
     {
       "phase": 2,
-      "key": "reference-only",
-      "complexity": "compound",
-      "count": 6,
-      "properties": [
-        "container",
-        "gap",
-        "place-content",
-        "place-items",
-        "place-self",
-        "position-try"
-      ],
-      "rationale": "reference-only / nested or mixed syntax, best left for later",
-      "validation": {
-        "representativeProperty": "container",
-        "localSyntax": "<'container-name'> [ / <'container-type'> ]?",
-        "mdnSyntax": "<'container-name'> [ / <'container-type'> ]?",
-        "mdnVerified": true,
-        "sourceAgreement": "aligned",
-        "sampleCaseCount": 2
-      }
-    },
-    {
-      "phase": 3,
       "key": "generic-single",
       "complexity": "compound",
       "count": 1,
@@ -80,10 +43,10 @@
       }
     },
     {
-      "phase": 4,
+      "phase": 3,
       "key": "keyword-union",
       "complexity": "compound",
-      "count": 9,
+      "count": 8,
       "properties": [
         "border-image-repeat",
         "mask-border-repeat",
@@ -91,7 +54,6 @@
         "overscroll-behavior",
         "scroll-snap-align",
         "scroll-timeline-axis",
-        "timeline-trigger",
         "view-timeline",
         "view-timeline-axis"
       ],
@@ -106,7 +68,7 @@
       }
     },
     {
-      "phase": 5,
+      "phase": 4,
       "key": "mixed",
       "complexity": "alternation",
       "count": 142,
@@ -265,7 +227,7 @@
       }
     },
     {
-      "phase": 6,
+      "phase": 5,
       "key": "keyword-union",
       "complexity": "alternation",
       "count": 132,
@@ -414,7 +376,7 @@
       }
     },
     {
-      "phase": 7,
+      "phase": 6,
       "key": "mixed",
       "complexity": "compound",
       "count": 43,
@@ -474,7 +436,7 @@
       }
     },
     {
-      "phase": 8,
+      "phase": 7,
       "key": "generic-single",
       "complexity": "repeat",
       "count": 35,
