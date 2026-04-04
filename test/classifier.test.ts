@@ -108,6 +108,23 @@ test("classifier labels shorthands with alternation syntax", () => {
 	assert.equal(formatCssHintClassification(classification), "matched border-1-values");
 });
 
+test("classifier matches phase-one reference-only properties", () => {
+	const collector = createExtractor();
+	const classifier = createCssHintClassifier();
+	const rule = createStandardPropertySamplingRule("block-size");
+	const generatedCase = generateExactCases(rule).find(
+		(candidateCase) => !candidateCase.valueAtoms.some((atom) => atom.kind === "global" || atom.kind === "variable"),
+	);
+
+	assert.ok(generatedCase);
+	const candidate = collector.collectCandidates(generatedCase.code)[0];
+	const classification = classifier.classify(candidate);
+
+	assert.ok(classification);
+	assert.equal(classification.state, "matched");
+	assert.equal(classification.propertyName, "block-size");
+});
+
 test("classifier suppresses global CSS keywords", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();

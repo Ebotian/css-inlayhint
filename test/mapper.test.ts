@@ -78,6 +78,41 @@ test("mapper derives border-radius corner labels from token counts", () => {
 	}
 });
 
+test("mapper derives border-family labels from actual border tokens", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedBorderWidth = mapper.map([createInstruction("border", 1, "1px")])[0];
+	const mappedBorderStyle = mapper.map([createInstruction("border", 1, "solid")])[0];
+	const mappedBorderColor = mapper.map([createInstruction("border", 1, "red")])[0];
+	const mappedBorderPair = mapper.map([createInstruction("border", 2, "1px solid")])[0];
+	const mappedBorderTop = mapper.map([createInstruction("border-top", 3, "1px solid red")])[0];
+
+	assert.equal(mappedBorderWidth.label, "width");
+	assert.equal(mappedBorderStyle.label, "style");
+	assert.equal(mappedBorderColor.label, "color");
+	assert.equal(mappedBorderPair.label, "width, style");
+	assert.equal(mappedBorderTop.label, "width, style, color");
+	assert.ok(!mappedBorderStyle.label.includes("border"));
+	assert.ok(!mappedBorderColor.label.includes("border"));
+});
+
+test("mapper rejects redundant reference-only suffix labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedBlockSize = mapper.map([createInstruction("block-size", 1, "1rem")])[0];
+
+	assert.equal(mappedBlockSize.label, "width");
+	assert.ok(!mappedBlockSize.label.includes("block-size"));
+	assert.throws(
+		() => mapper.map([createInstruction("flood-opacity", 1, "0.5")]),
+		/Forbidden label echo of property suffix/,
+	);
+	assert.throws(
+		() => mapper.map([createInstruction("margin-block-end", 1, "1rem")]),
+		/Forbidden label echo of property suffix/,
+	);
+});
+
 test("mapper derives list-style member labels from the actual value text", () => {
 	const mapper = createCssHintMapper();
 

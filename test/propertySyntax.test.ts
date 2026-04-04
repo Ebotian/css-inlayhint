@@ -38,6 +38,9 @@ test("propertySyntax infers offset-rotate syntax labels from syntax branches", (
 });
 
 test("propertySyntax infers property-reference labels for single-value semantic branches", () => {
+	assert.deepEqual(getShorthandLabelParts("block-size", 1, "0px"), ["width"]);
+	assert.deepEqual(getShorthandLabelParts("flood-opacity", 1, "0.5"), ["opacity"]);
+	assert.deepEqual(getShorthandLabelParts("margin-block-end", 1, "1rem"), ["end"]);
 	assert.deepEqual(getShorthandLabelParts("columns", 1, "12em"), ["width"]);
 	assert.deepEqual(getShorthandLabelParts("columns", 1, "2"), ["count"]);
 	assert.deepEqual(getShorthandLabelParts("text-emphasis", 1, "red"), ["color"]);

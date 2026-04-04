@@ -7,6 +7,7 @@ import {
 	normalizeShorthandMemberLabel,
 	shouldCompactShorthandLabels,
 } from "./classifyNormalize.js";
+import { normalizeReferencedPropertyLabel } from "./semanticMap.js";
 
 const nodeRequire = createRequire(__filename);
 const shorthandApi = nodeRequire("css-shorthand-properties") as {
@@ -75,6 +76,11 @@ export function getShorthandLabelParts(propertyName: string, tokenCount: number,
 	}
 
 	if (!Array.isArray(expanded) || expanded.length === 0) {
+		const referenceLabel = normalizeReferencedPropertyLabel(propertyName);
+		if (referenceLabel) {
+			return Array.from({ length: tokenCount }, () => referenceLabel);
+		}
+
 		return null;
 	}
 

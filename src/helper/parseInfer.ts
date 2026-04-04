@@ -32,7 +32,7 @@ export function inferUnorderedShorthandLabelParts(
 			continue;
 		}
 
-		const matchedMember = expanded.find((memberName) => matchesShorthandMemberToken(memberName, token));
+		const matchedMember = findBestMatchedShorthandMember(expanded, token);
 		if (!matchedMember) {
 			return null;
 		}
@@ -205,29 +205,55 @@ export function matchesSyntaxBranchToken(branch: unknown, token: string): boolea
 }
 
 export function matchesShorthandMemberToken(memberName: string, token: string): boolean {
+	return getShorthandMemberMatchScore(memberName, token) !== null;
+}
+
+function findBestMatchedShorthandMember(expanded: readonly string[], token: string): string | null {
+	let bestMember: string | null = null;
+	let bestScore = -1;
+
+	for (const memberName of expanded) {
+		const score = getShorthandMemberMatchScore(memberName, token);
+		if (score === null || score <= bestScore) {
+			continue;
+		}
+
+		bestScore = score;
+		bestMember = memberName;
+	}
+
+	return bestMember;
+}
+
+function getShorthandMemberMatchScore(memberName: string, token: string): number | null {
 	const syntax = getPropertySyntax(memberName);
 	if (!syntax) {
-		return false;
+		return null;
 	}
 
 	const syntaxAst = getPropertySyntaxAst(memberName);
-	let matched = false;
+	let bestScore: number | null = null;
 	visitCssSyntaxAst(syntaxAst as ReturnType<typeof parseCssSyntax>, (node) => {
-		if (matched) {
+		if (bestScore === 2) {
 			return;
 		}
 
 		if (node.type === "Keyword" && node.name?.toLowerCase() === token.toLowerCase()) {
-			matched = true;
+			bestScore = 2;
 			return;
 		}
 
 		if (node.type === "Type" && matchesTypeNodeToken(node.name ?? "", token)) {
-			matched = true;
+			bestScore = bestScore ?? 1;
+			return;
+		}
+
+		if (node.type === "Property" && matchesReferencedPropertyToken(node.name ?? "", token)) {
+			bestScore = bestScore ?? 1;
 		}
 	});
 
-	return matched;
+	return bestScore;
 }
 
 function getPropertySyntaxAst(propertyName: string): unknown {

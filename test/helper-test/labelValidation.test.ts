@@ -13,5 +13,9 @@ test("labelValidation rejects global and echoed property-name labels", () => {
 		() => assertNoPropertyNameEchoLabels("font-variant-numeric", ["font-variant-numeric-1-values"]),
 		/Forbidden label echo/,
 	);
+	assert.throws(
+		() => assertNoValueEchoLabels("margin-block-end", "1rem", ["end"]),
+		/Forbidden label echo of property suffix/,
+	);
 	assert.throws(() => assertNoValueEchoLabels("text-box", "normal", ["normal"]), /Forbidden label echo of value/);
 });

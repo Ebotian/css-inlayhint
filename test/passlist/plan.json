@@ -1,71 +1,10 @@
 {
   "source": "test/passlist/property-pass-statistics.json",
-  "todoCount": 430,
-  "batchCount": 9,
+  "todoCount": 386,
+  "batchCount": 8,
   "batches": [
     {
       "phase": 1,
-      "key": "reference-only",
-      "complexity": "simple",
-      "count": 44,
-      "properties": [
-        "block-size",
-        "border-block",
-        "border-block-end-color",
-        "border-block-end-style",
-        "border-block-end-width",
-        "border-block-start-color",
-        "border-block-start-style",
-        "border-block-start-width",
-        "border-bottom-color",
-        "border-end-end-radius",
-        "border-end-start-radius",
-        "border-inline",
-        "border-inline-end-color",
-        "border-inline-end-style",
-        "border-inline-end-width",
-        "border-inline-start-color",
-        "border-inline-start-style",
-        "border-inline-start-width",
-        "border-start-end-radius",
-        "border-start-start-radius",
-        "column-rule-style",
-        "column-rule-width",
-        "fill-opacity",
-        "flood-opacity",
-        "inline-size",
-        "inset-block-end",
-        "inset-block-start",
-        "inset-inline-end",
-        "inset-inline-start",
-        "margin-block-end",
-        "margin-block-start",
-        "margin-inline-end",
-        "margin-inline-start",
-        "max-block-size",
-        "max-inline-size",
-        "min-block-size",
-        "min-inline-size",
-        "padding-block-end",
-        "padding-block-start",
-        "padding-inline-end",
-        "padding-inline-start",
-        "stop-color",
-        "stop-opacity",
-        "stroke-opacity"
-      ],
-      "rationale": "reference-only / lowest cross-validation risk",
-      "validation": {
-        "representativeProperty": "block-size",
-        "localSyntax": "<'width'>",
-        "mdnSyntax": "<'width'>",
-        "mdnVerified": true,
-        "sourceAgreement": "aligned",
-        "sampleCaseCount": 6
-      }
-    },
-    {
-      "phase": 2,
       "key": "reference-only",
       "complexity": "repeat",
       "count": 18,
@@ -100,7 +39,7 @@
       }
     },
     {
-      "phase": 3,
+      "phase": 2,
       "key": "reference-only",
       "complexity": "compound",
       "count": 6,
@@ -123,7 +62,7 @@
       }
     },
     {
-      "phase": 4,
+      "phase": 3,
       "key": "generic-single",
       "complexity": "compound",
       "count": 1,
@@ -141,7 +80,7 @@
       }
     },
     {
-      "phase": 5,
+      "phase": 4,
       "key": "keyword-union",
       "complexity": "compound",
       "count": 9,
@@ -167,7 +106,7 @@
       }
     },
     {
-      "phase": 6,
+      "phase": 5,
       "key": "mixed",
       "complexity": "alternation",
       "count": 142,
@@ -326,7 +265,7 @@
       }
     },
     {
-      "phase": 7,
+      "phase": 6,
       "key": "keyword-union",
       "complexity": "alternation",
       "count": 132,
@@ -475,7 +414,7 @@
       }
     },
     {
-      "phase": 8,
+      "phase": 7,
       "key": "mixed",
       "complexity": "compound",
       "count": 43,
@@ -535,7 +474,7 @@
       }
     },
     {
-      "phase": 9,
+      "phase": 8,
       "key": "generic-single",
       "complexity": "repeat",
       "count": 35,

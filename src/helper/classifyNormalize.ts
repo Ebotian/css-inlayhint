@@ -1,26 +1,18 @@
+import { createRequire } from "node:module";
+
+const nodeRequire = createRequire(__filename);
+const cssTree = nodeRequire("css-tree") as {
+	lexer: {
+		matchType(typeName: string, valueText: string): { matched: boolean };
+	};
+};
+
 export function tokenizeShorthandValueText(valueText: string): string[] {
 	return valueText.match(/[^\s,]+/g) ?? [];
 }
 
 export function matchesSyntaxTypeToken(typeName: string, token: string): boolean {
-	const loweredTypeName = typeName.toLowerCase();
-	if (loweredTypeName === "angle") {
-		return /^(?:[+-]?(?:\d*\.?\d+))(?:deg|grad|rad|turn)$/i.test(token) || /^calc\(/i.test(token);
-	}
-
-	if (loweredTypeName.includes("length") || loweredTypeName.includes("percentage")) {
-		return /^(?:[+-]?\d*\.?\d+(?:[a-z]+|%)|0(?:[a-z%]+)?)$/i.test(token);
-	}
-
-	if (loweredTypeName.includes("color")) {
-		return (
-			/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(token) ||
-			/^[a-z][a-z-]*$/i.test(token) ||
-			/^[a-z-]+\(/i.test(token)
-		);
-	}
-
-	return false;
+	return matchesCssTreeTypeToken(typeName, token);
 }
 
 export function normalizeSyntaxTypeLabel(typeName: string): string | null {
@@ -57,32 +49,24 @@ export function normalizeSyntaxKeywordLabel(name: string): string {
 }
 
 export function matchesTypeNodeToken(typeName: string, token: string): boolean {
-	const loweredToken = token.toLowerCase();
-	if (typeName.toLowerCase().includes("color")) {
-		return (
-			/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(token) ||
-			/^[a-z][a-z-]*$/i.test(token) ||
-			/^[a-z-]+\(/i.test(token)
-		);
+	return matchesCssTreeTypeToken(typeName, token);
+}
+
+function matchesCssTreeTypeToken(typeName: string, token: string): boolean {
+	const normalizedTypeName = normalizeCssTreeTypeName(typeName);
+	if (!normalizedTypeName) {
+		return false;
 	}
 
-	if (typeName.toLowerCase().includes("length") || typeName.toLowerCase().includes("percentage")) {
-		return /^(?:[+-]?\d*\.?\d+(?:[a-z]+|%)|0(?:[a-z%]+)?)$/i.test(token);
+	try {
+		return cssTree.lexer.matchType(normalizedTypeName, token).matched;
+	} catch {
+		return false;
 	}
+}
 
-	if (typeName.toLowerCase().includes("image")) {
-		return /^[a-z-]+\(/i.test(token) || loweredToken === "none";
-	}
-
-	if (typeName.toLowerCase().includes("string")) {
-		return /^['\"].*['\"]$/.test(token) || loweredToken === "none";
-	}
-
-	if (typeName.toLowerCase().includes("custom-ident") || typeName.toLowerCase().includes("ident")) {
-		return /^[a-z_][a-z0-9_-]*$/i.test(token);
-	}
-
-	return false;
+function normalizeCssTreeTypeName(typeName: string): string {
+	return typeName.trim().split(/\s+/)[0] ?? "";
 }
 
 export function normalizeShorthandMemberLabel(member: string, members: readonly string[]): string {

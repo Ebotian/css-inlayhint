@@ -1,4 +1,5 @@
 import { getPropertySyntax } from "./summary.js";
+import { normalizeReferencedPropertyLabel } from "./semanticMap.js";
 
 export type PropertyStructure =
 	| "shorthand-family"
@@ -14,6 +15,14 @@ export function classifyPropertyStructure(propertyName: string): PropertyStructu
 }
 
 export function isDesignedNoHintProperty(propertyName: string): boolean {
+	if (isReferenceOnlySuffixEchoProperty(propertyName)) {
+		return true;
+	}
+
+	if (DESIGNED_NO_HINT_REFERENCE_ONLY_PROPERTIES.has(propertyName)) {
+		return true;
+	}
+
 	if (classifyPropertyStructure(propertyName) !== "generic-single") {
 		return false;
 	}
@@ -78,3 +87,38 @@ function extractLiteralTokens(syntax: string, angleTokens: readonly string[]): s
 	}
 	return [...new Set(literals.filter((value) => value.length > 0))];
 }
+
+function isReferenceOnlySuffixEchoProperty(propertyName: string): boolean {
+	if (classifyPropertyStructure(propertyName) !== "reference-only") {
+		return false;
+	}
+
+	const label = normalizeReferencedPropertyLabel(propertyName);
+	if (!label) {
+		return false;
+	}
+
+	const suffix = propertyName
+		.split("-")
+		.map((part) => part.trim())
+		.filter(Boolean)
+		.at(-1);
+
+	return suffix === label;
+}
+
+const DESIGNED_NO_HINT_REFERENCE_ONLY_PROPERTIES = new Set([
+	"border-block",
+	"border-inline",
+	"border-end-end-radius",
+	"border-end-start-radius",
+	"border-start-end-radius",
+	"border-start-start-radius",
+	"fill-opacity",
+	"inset-block-end",
+	"inset-block-start",
+	"inset-inline-end",
+	"inset-inline-start",
+	"stop-opacity",
+	"stroke-opacity",
+]);

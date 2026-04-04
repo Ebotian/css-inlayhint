@@ -27,6 +27,13 @@ export function assertNoValueEchoLabels(
 		return;
 	}
 
+	if (isSingleValueEcho(propertyName, valueParts, compactLabelParts)) {
+		const suffixLabel = getPropertyNameSuffix(propertyName);
+		if (suffixLabel && compactLabelParts[0] === suffixLabel) {
+			throw new Error(`Forbidden label echo of property suffix "${suffixLabel}" for ${propertyName}`);
+		}
+	}
+
 	if (
 		compactLabelParts.length === valueParts.length &&
 		compactLabelParts.every((part, index) => part === (valueParts[index] ?? ""))
@@ -37,4 +44,22 @@ export function assertNoValueEchoLabels(
 	if (compactLabelParts.length === 1 && valueParts.length === 1 && compactLabelParts[0] === valueParts[0]) {
 		throw new Error(`Forbidden label echo of value "${valueParts[0]}" for ${propertyName}`);
 	}
+}
+
+function isSingleValueEcho(
+	propertyName: string,
+	valueParts: readonly string[],
+	labelParts: readonly string[],
+): boolean {
+	return valueParts.length === 1 && labelParts.length === 1 && Boolean(getPropertyNameSuffix(propertyName));
+}
+
+function getPropertyNameSuffix(propertyName: string): string {
+	return (
+		propertyName
+			.split("-")
+			.map((part) => part.trim())
+			.filter(Boolean)
+			.at(-1) ?? ""
+	);
 }

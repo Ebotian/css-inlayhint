@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 
 import type { CssExtractorCandidate } from "./extractor";
+import { isReferenceOnlyHintProperty } from "./helper/semanticMap.js";
 
 export type CssHintStrategy = "inline-right" | "block-end-right";
 
@@ -147,6 +148,10 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 	}
 
 	if (syntax.includes("<grid-line>") || syntax.includes("||") || syntax.includes("#") || hasBoundedRepetition(syntax)) {
+		return true;
+	}
+
+	if (isReferenceOnlyHintProperty(propertyName)) {
 		return true;
 	}
 

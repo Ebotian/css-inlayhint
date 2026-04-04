@@ -1,7 +1,16 @@
 import { classifyStandardText } from "../share/cssValueAtoms.js";
 
 export function normalizeReferencedPropertyLabel(propertyName: string): string | null {
-	return REFERENCED_PROPERTY_LABELS.get(propertyName) ?? null;
+	return inferReferencedPropertyLabel(propertyName) ?? REFERENCED_PROPERTY_LABELS.get(propertyName) ?? null;
+}
+
+export function isReferenceOnlyHintProperty(propertyName: string): boolean {
+	const label = normalizeReferencedPropertyLabel(propertyName);
+	if (!label) {
+		return false;
+	}
+
+	return !isReferenceOnlySuffixEchoProperty(propertyName, label);
 }
 
 export function matchesReferencedPropertyToken(propertyName: string, token: string): boolean {
@@ -18,7 +27,15 @@ export function matchesReferencedPropertyToken(propertyName: string, token: stri
 		return /^[+-]?\d+$/.test(token) || token.toLowerCase() === "auto";
 	}
 
-	if (label === "width" || label === "height" || label === "size" || label === "thickness") {
+	if (
+		label === "width" ||
+		label === "height" ||
+		label === "size" ||
+		label === "thickness" ||
+		label === "start" ||
+		label === "end" ||
+		label === "opacity"
+	) {
 		return (
 			classifyStandardText(token, { allowsColor: false })?.kind === "length" ||
 			classifyStandardText(token, { allowsColor: false })?.kind === "zero" ||
@@ -54,9 +71,60 @@ export function matchesReferencedPropertyToken(propertyName: string, token: stri
 	return false;
 }
 
+function inferReferencedPropertyLabel(propertyName: string): string | null {
+	if (/^(?:block|inline|max-block|max-inline|min-block|min-inline)-size$/.test(propertyName)) {
+		return "width";
+	}
+
+	const borderDirectionalMatch = propertyName.match(/^border-(?:block|inline)-(?:start|end)-(color|style|width)$/);
+	if (borderDirectionalMatch) {
+		return borderDirectionalMatch[1] ?? null;
+	}
+
+	if (/^border-bottom-color$/.test(propertyName)) {
+		return "color";
+	}
+
+	const columnRuleMatch = propertyName.match(/^column-rule-(style|width)$/);
+	if (columnRuleMatch) {
+		return columnRuleMatch[1] ?? null;
+	}
+
+	const logicalEdgeMatch = propertyName.match(/^(?:inset|margin|padding)-(?:block|inline)-(start|end)$/);
+	if (logicalEdgeMatch) {
+		return logicalEdgeMatch[1] ?? null;
+	}
+
+	if (/^(?:fill|flood|stop|stroke)-opacity$/.test(propertyName)) {
+		return "opacity";
+	}
+
+	if (/^stop-color$/.test(propertyName)) {
+		return "color";
+	}
+
+	if (/^column-(width|count)$/.test(propertyName)) {
+		return propertyName.endsWith("width") ? "width" : "count";
+	}
+
+	if (/^text-emphasis-(style|color)$/.test(propertyName)) {
+		return propertyName.endsWith("style") ? "style" : "color";
+	}
+
+	return null;
+}
+
+function isReferenceOnlySuffixEchoProperty(propertyName: string, label: string): boolean {
+	const suffix = propertyName
+		.split("-")
+		.map((part) => part.trim())
+		.filter(Boolean)
+		.at(-1);
+
+	return suffix === label;
+}
+
 const REFERENCED_PROPERTY_LABELS = new Map<string, string>([
-	["column-width", "width"],
-	["column-count", "count"],
 	["text-emphasis-style", "style"],
 	["text-emphasis-color", "color"],
 	["text-box-trim", "trim"],

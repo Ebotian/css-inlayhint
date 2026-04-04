@@ -1,5 +1,153 @@
 /* Generated validation CSS for left-hint verification */
 
+/* min-block-size (5 cases) */
+/* min-block-size/1-value/global */
+.probe {
+  min-block-size: inherit;
+}
+/* min-block-size/1-value/global */
+.probe {
+  min-block-size: initial;
+}
+/* min-block-size/1-value/length */
+.probe {
+  min-block-size: 0cap;
+}
+/* min-block-size/1-value/length */
+.probe {
+  min-block-size: 0ch;
+}
+/* min-block-size/1-value/percent */
+.probe {
+  min-block-size: 0%;
+}
+
+/* min-inline-size (5 cases) */
+/* min-inline-size/1-value/global */
+.probe {
+  min-inline-size: inherit;
+}
+/* min-inline-size/1-value/global */
+.probe {
+  min-inline-size: initial;
+}
+/* min-inline-size/1-value/length */
+.probe {
+  min-inline-size: 0cap;
+}
+/* min-inline-size/1-value/length */
+.probe {
+  min-inline-size: 0ch;
+}
+/* min-inline-size/1-value/percent */
+.probe {
+  min-inline-size: 0%;
+}
+
+/* block-size (6 cases) */
+/* block-size/1-value/auto */
+.probe {
+  block-size: auto;
+}
+/* block-size/1-value/global */
+.probe {
+  block-size: inherit;
+}
+/* block-size/1-value/global */
+.probe {
+  block-size: initial;
+}
+/* block-size/1-value/length */
+.probe {
+  block-size: 0cap;
+}
+/* block-size/1-value/length */
+.probe {
+  block-size: 0ch;
+}
+/* block-size/1-value/percent */
+.probe {
+  block-size: 0%;
+}
+
+/* inline-size (6 cases) */
+/* inline-size/1-value/auto */
+.probe {
+  inline-size: auto;
+}
+/* inline-size/1-value/global */
+.probe {
+  inline-size: inherit;
+}
+/* inline-size/1-value/global */
+.probe {
+  inline-size: initial;
+}
+/* inline-size/1-value/length */
+.probe {
+  inline-size: 0cap;
+}
+/* inline-size/1-value/length */
+.probe {
+  inline-size: 0ch;
+}
+/* inline-size/1-value/percent */
+.probe {
+  inline-size: 0%;
+}
+
+/* max-block-size (6 cases) */
+/* max-block-size/1-value/global */
+.probe {
+  max-block-size: inherit;
+}
+/* max-block-size/1-value/global */
+.probe {
+  max-block-size: initial;
+}
+/* max-block-size/1-value/keyword */
+.probe {
+  max-block-size: none;
+}
+/* max-block-size/1-value/length */
+.probe {
+  max-block-size: 0cap;
+}
+/* max-block-size/1-value/length */
+.probe {
+  max-block-size: 0ch;
+}
+/* max-block-size/1-value/percent */
+.probe {
+  max-block-size: 0%;
+}
+
+/* max-inline-size (6 cases) */
+/* max-inline-size/1-value/global */
+.probe {
+  max-inline-size: inherit;
+}
+/* max-inline-size/1-value/global */
+.probe {
+  max-inline-size: initial;
+}
+/* max-inline-size/1-value/keyword */
+.probe {
+  max-inline-size: none;
+}
+/* max-inline-size/1-value/length */
+.probe {
+  max-inline-size: 0cap;
+}
+/* max-inline-size/1-value/length */
+.probe {
+  max-inline-size: 0ch;
+}
+/* max-inline-size/1-value/percent */
+.probe {
+  max-inline-size: 0%;
+}
+
 /* grid-column-end (8 cases) */
 /* grid-column-end/1-value/auto */
 .probe {
