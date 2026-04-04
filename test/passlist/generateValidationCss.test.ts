@@ -8,7 +8,10 @@ type PasslistStatistics = {
 	totalCount: number;
 	matchedProperties: Record<string, true>;
 	noHintCount: number;
-	noHintProperties: Record<string, true>;
+	noHintDesignedCount: number;
+	noHintDesignedProperties: Record<string, true>;
+	noHintTodoCount: number;
+	noHintTodoProperties: Record<string, true>;
 };
 
 test("validation css sorts properties by ascending generated case count", () => {
@@ -21,7 +24,10 @@ test("validation css sorts properties by ascending generated case count", () => 
 			large: true,
 		},
 		noHintCount: 0,
-		noHintProperties: {},
+		noHintDesignedCount: 0,
+		noHintDesignedProperties: {},
+		noHintTodoCount: 0,
+		noHintTodoProperties: {},
 	};
 
 	const counts = new Map([
@@ -48,7 +54,10 @@ test("validation css throws when a property generates no cases", () => {
 			broken: true,
 		},
 		noHintCount: 0,
-		noHintProperties: {},
+		noHintDesignedCount: 0,
+		noHintDesignedProperties: {},
+		noHintTodoCount: 0,
+		noHintTodoProperties: {},
 	};
 
 	assert.throws(() => renderValidationCss(statistics, () => []), /Generated no validation cases for property: broken/);
@@ -62,9 +71,12 @@ test("validation css ignores no-hint properties", () => {
 			visible: true,
 		},
 		noHintCount: 1,
-		noHintProperties: {
+		noHintDesignedCount: 1,
+		noHintDesignedProperties: {
 			silent: true,
 		},
+		noHintTodoCount: 0,
+		noHintTodoProperties: {},
 	};
 
 	const rendered = renderValidationCss(statistics, (propertyName) =>

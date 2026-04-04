@@ -8,7 +8,10 @@ type PasslistStatistics = {
 	totalCount: number;
 	matchedProperties: Record<string, true>;
 	noHintCount: number;
-	noHintProperties: Record<string, true>;
+	noHintDesignedCount: number;
+	noHintDesignedProperties: Record<string, true>;
+	noHintTodoCount: number;
+	noHintTodoProperties: Record<string, true>;
 };
 
 type ValidationCase = {

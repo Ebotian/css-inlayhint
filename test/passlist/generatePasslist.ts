@@ -6,6 +6,7 @@ import { createCssExtractor } from "../../src/extractor.js";
 import { createServiceScheduler } from "../../src/scheduler.js";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 import { assertGeneratedSchedulerE2E } from "../lib/generatedSchedulerE2E.js";
+import { isDesignedNoHintProperty } from "../../src/helper/noHintDesign.js";
 import { getPropertyStatus, getPropertySyntax, listPropertyNames } from "../../src/propertySyntax.js";
 import type { CssExtractorCandidate } from "../../src/extractor.js";
 
@@ -14,7 +15,10 @@ type PasslistStatistics = {
 	totalCount: number;
 	matchedProperties: Record<string, true>;
 	noHintCount: number;
-	noHintProperties: Record<string, true>;
+	noHintDesignedCount: number;
+	noHintDesignedProperties: Record<string, true>;
+	noHintTodoCount: number;
+	noHintTodoProperties: Record<string, true>;
 };
 
 const FULL_RANGE = {
@@ -36,7 +40,8 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 	});
 
 	const matchedPropertyNames: string[] = [];
-	const noHintPropertyNames: string[] = [];
+	const noHintDesignedPropertyNames: string[] = [];
+	const noHintTodoPropertyNames: string[] = [];
 	for (const propertyName of candidatePropertyNames) {
 		const classifier = createCssHintClassifier();
 		const extractor = createCssExtractor();
@@ -45,7 +50,7 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 		const matchedCases = cases.filter((generatedCase) => isMatchedHintCase(classifier, extractor, generatedCase.code));
 
 		if (matchedCases.length === 0) {
-			noHintPropertyNames.push(propertyName);
+			pushNoHintProperty(propertyName, noHintDesignedPropertyNames, noHintTodoPropertyNames);
 			continue;
 		}
 
@@ -59,22 +64,39 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 			});
 			matchedPropertyNames.push(propertyName);
 		} catch {
-			noHintPropertyNames.push(propertyName);
+			pushNoHintProperty(propertyName, noHintDesignedPropertyNames, noHintTodoPropertyNames);
 		}
 	}
 
 	const matchedProperties = Object.fromEntries(
 		matchedPropertyNames.map((propertyName) => [propertyName, true] as const),
 	);
-	const noHintProperties = Object.fromEntries(noHintPropertyNames.map((propertyName) => [propertyName, true] as const));
+	const noHintDesignedProperties = Object.fromEntries(
+		noHintDesignedPropertyNames.map((propertyName) => [propertyName, true] as const),
+	);
+	const noHintTodoProperties = Object.fromEntries(
+		noHintTodoPropertyNames.map((propertyName) => [propertyName, true] as const),
+	);
 
 	return {
 		matchedCount: matchedPropertyNames.length,
 		totalCount: candidatePropertyNames.length,
 		matchedProperties,
-		noHintCount: noHintPropertyNames.length,
-		noHintProperties,
+		noHintCount: noHintDesignedPropertyNames.length + noHintTodoPropertyNames.length,
+		noHintDesignedCount: noHintDesignedPropertyNames.length,
+		noHintDesignedProperties,
+		noHintTodoCount: noHintTodoPropertyNames.length,
+		noHintTodoProperties,
 	};
+}
+
+function pushNoHintProperty(propertyName: string, designedPropertyNames: string[], todoPropertyNames: string[]): void {
+	if (isDesignedNoHintProperty(propertyName)) {
+		designedPropertyNames.push(propertyName);
+		return;
+	}
+
+	todoPropertyNames.push(propertyName);
 }
 
 function isMatchedHintCase(
