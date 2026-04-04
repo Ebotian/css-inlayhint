@@ -7,10 +7,14 @@ declare module "vscode" {
 
 	export interface CancellationToken {
 		readonly isCancellationRequested: boolean;
+		onCancellationRequested(listener: () => unknown): Disposable;
 	}
 
 	export interface TextDocument {
 		readonly languageId: string;
+		readonly uri: { toString(): string };
+		readonly version: number;
+		getText(): string;
 	}
 
 	export interface TextDocumentChangeEvent {
@@ -29,6 +33,8 @@ declare module "vscode" {
 
 	export class Range {
 		constructor(start: Position, end: Position);
+		readonly start: Position;
+		readonly end: Position;
 		contains(position: Position): boolean;
 	}
 
@@ -64,7 +70,10 @@ declare module "vscode" {
 	}
 
 	export namespace workspace {
+		const textDocuments: readonly TextDocument[];
+		function onDidOpenTextDocument(listener: (document: TextDocument) => unknown): Disposable;
 		function onDidChangeTextDocument(listener: (event: TextDocumentChangeEvent) => unknown): Disposable;
+		function onDidCloseTextDocument(listener: (document: TextDocument) => unknown): Disposable;
 		function onDidChangeConfiguration(listener: (event: ConfigurationChangeEvent) => unknown): Disposable;
 	}
 
