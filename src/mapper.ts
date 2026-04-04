@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 
 import type { CssHintInstruction } from "./collector";
+import { getShorthandLabelParts } from "./propertySyntax";
 
 export type CssHintMapper = {
 	map(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
@@ -47,7 +48,7 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 		}
 	}
 
-	const mappedLabel = mapShorthandLabel(instruction.propertyName, instruction.tokenCount);
+	const mappedLabel = mapShorthandLabel(instruction.propertyName, instruction.tokenCount, instruction.valueText);
 	if (!mappedLabel) {
 		return instruction;
 	}
@@ -58,14 +59,19 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 	};
 }
 
-function mapShorthandLabel(propertyName: string, tokenCount: number): string | null {
+function mapShorthandLabel(propertyName: string, tokenCount: number, valueText?: string): string | null {
 	if (propertyName === "border-radius") {
 		return mapCornerLabel(tokenCount);
 	}
 
 	const directions = getDirectionalFamily(propertyName);
 	if (!directions) {
-		return null;
+		const shorthandLabelParts = getShorthandLabelParts(propertyName, tokenCount, valueText);
+		if (!shorthandLabelParts) {
+			return null;
+		}
+
+		return shorthandLabelParts.join(", ");
 	}
 
 	return mapBoxSideLabel(propertyName, tokenCount, directions);

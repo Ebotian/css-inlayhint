@@ -3,7 +3,11 @@ import assert from "node:assert/strict";
 import { TextDocument } from "vscode-css-languageservice";
 import type { InlayHint, Range } from "vscode-languageserver";
 import type { GeneratedCssCase } from "./exactCssCaseGenerator.js";
-import { usesSlashSeparatedGridLineSyntax } from "../../src/propertySyntax.js";
+import {
+	getShorthandLabelParts,
+	usesCommaSeparatedRepeatableListSyntax,
+	usesSlashSeparatedGridLineSyntax,
+} from "../../src/propertySyntax.js";
 import { createCssShapeParser } from "../../src/shapeParser.js";
 import { getDirectionalFamily } from "../../src/propertySyntax.js";
 import { mapGridLineTokenLabel } from "./gridLineHintLabels.js";
@@ -85,9 +89,14 @@ export function buildGeneratedSchedulerExpectedHints(options: {
 	const positions: GeneratedSchedulerExpectedHint[] = [];
 	const valueStartOffset = document.offsetAt(valueRangeStart);
 	const valueText = renderGeneratedValueText(propertyName, valueAtoms);
-	const labelParts = inferLabelParts(propertyName, valueText);
+	const tokenCount = collectValueTokens(propertyName, valueText).length;
+	const labelParts = inferLabelParts(propertyName, valueText, tokenCount);
+	const fallbackLabel = `${propertyName}-${tokenCount}-values`;
+	if (labelParts.some((label) => label === fallbackLabel)) {
+		throw new Error(`Fallback label inference detected for ${propertyName}: ${fallbackLabel}`);
+	}
 
-	for (const [index, match] of [...valueText.matchAll(/[^\s/]+/g)].entries()) {
+	for (const [index, match] of collectValueTokens(propertyName, valueText).entries()) {
 		const label = labelParts[index] ?? "";
 		if (!label) {
 			continue;
@@ -103,12 +112,21 @@ export function buildGeneratedSchedulerExpectedHints(options: {
 }
 
 function renderGeneratedValueText(propertyName: string, valueAtoms: readonly { text: string }[]): string {
-	const separator = usesSlashSeparatedGridLineSyntax(propertyName) && valueAtoms.length > 1 ? " / " : " ";
+	const separator =
+		usesSlashSeparatedGridLineSyntax(propertyName) && valueAtoms.length > 1
+			? " / "
+			: usesCommaSeparatedRepeatableListSyntax(propertyName) && valueAtoms.length > 1
+				? ", "
+				: " ";
 	return valueAtoms.map((atom) => atom.text).join(separator);
 }
 
-function inferLabelParts(propertyName: string, valueText: string): string[] {
-	const tokenCount = [...valueText.matchAll(/[^\s/]+/g)].length;
+function collectValueTokens(propertyName: string, valueText: string): Array<{ index: number; text: string }> {
+	const pattern = usesCommaSeparatedRepeatableListSyntax(propertyName) ? /[^\s,]+/g : /[^\s/]+/g;
+	return [...valueText.matchAll(pattern)].map((match) => ({ index: match.index ?? 0, text: match[0] ?? "" }));
+}
+
+function inferLabelParts(propertyName: string, valueText: string, tokenCount: number): string[] {
 	const parsedShape = createCssShapeParser().parse([
 		{
 			state: "matched",
@@ -137,8 +155,17 @@ function inferLabelParts(propertyName: string, valueText: string): string[] {
 		return inferCornerLabelParts(tokenCount);
 	}
 
+	if (getDirectionalFamily(propertyName)) {
+		return inferBoxSideLabelParts(propertyName, tokenCount);
+	}
+
 	if (parsedShape?.family === "grid-line") {
 		return [...valueText.matchAll(/[^\s/]+/g)].map((match) => mapGridLineTokenLabel(match[0] ?? "") ?? "");
+	}
+
+	const shorthandLabelParts = getShorthandLabelParts(propertyName, tokenCount, valueText);
+	if (shorthandLabelParts) {
+		return shorthandLabelParts;
 	}
 
 	return Array.from({ length: tokenCount }, () => `${propertyName}-${tokenCount}-values`);

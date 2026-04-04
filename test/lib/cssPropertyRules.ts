@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 import mdnProperties from "mdn-data/css/properties.json";
-import { isGridLineProperty } from "../../src/propertySyntax.js";
+import { isGridLineProperty, usesCommaSeparatedRepeatableListSyntax } from "../../src/propertySyntax.js";
 import {
 	parseCssSyntax as parseStandardCssSyntax,
 	parseShorthandArities as parseStandardShorthandArities,
@@ -23,6 +23,12 @@ import type {
 } from "./cssCaseModel.js";
 
 const nodeRequire = createRequire(__filename);
+const shorthandApi = nodeRequire("css-shorthand-properties") as {
+	default?: {
+		expand?(propertyName: string): string[];
+	};
+	expand?(propertyName: string): string[];
+};
 const builtInCssData = nodeRequire("vscode-css-languageservice/lib/esm/data/webCustomData.js") as {
 	cssData: StandardCssData;
 };
@@ -71,15 +77,23 @@ export function createStandardPropertySamplingRule(propertyName: string): CssPro
 	const arities = isGridLineProperty(propertyName)
 		? parseGridLineArities(property.syntax ?? "", syntaxAst)
 		: parseStandardShorthandArities(syntaxAst);
+	const sampledArities =
+		usesCommaSeparatedRepeatableListSyntax(propertyName) && arities.length === 1 ? [1, 2] : arities;
 	const valueAtoms = isGridLineProperty(propertyName)
 		? collectGridLineValueAtoms()
 		: collectStandardValueAtoms(propertyName, syntaxAst);
 
 	return {
 		propertyName,
-		arities,
+		arities: sampledArities,
 		valueAtoms,
 	};
+}
+
+export function collectStandardValueAtomsForProperty(propertyName: string): CssValueAtom[] {
+	const property = getPropertyRecord(propertyName);
+	const syntaxAst = parseStandardCssSyntax(property.syntax ?? "");
+	return collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst);
 }
 
 function collectGridLineValueAtoms(): CssValueAtom[] {
@@ -167,27 +181,36 @@ function collectStandardValueAtoms(
 	propertyName: string,
 	syntaxAst: ReturnType<typeof parseStandardCssSyntax>,
 ): CssValueAtom[] {
-	const atomsByKind = new Map<CssValueKind, CssValueAtom[]>();
 	const property = getPropertyRecord(propertyName);
-	const allowsColor = syntaxAstIncludesType(syntaxAst, "color");
-
-	for (const atom of extractStandardSyntaxAtoms(syntaxAst, { allowsColor })) {
-		appendStandardDistinctAtom(atomsByKind, atom);
+	const atoms = collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst);
+	if (atoms.some((atom) => atom.kind !== "global")) {
+		return atoms;
 	}
 
-	for (const value of property.values ?? []) {
-		const atom = classifyStandardCssText(value.name, { allowsColor });
-		if (atom) {
-			appendStandardDistinctAtom(atomsByKind, atom);
+	const expandedMembers = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];
+	if (!Array.isArray(expandedMembers) || expandedMembers.length === 0) {
+		return atoms;
+	}
+
+	const memberAtomsByKind = new Map<CssValueKind, CssValueAtom[]>();
+	for (const memberName of expandedMembers) {
+		if (memberName === propertyName) {
+			continue;
+		}
+
+		const memberProperty = PROPERTY_BY_NAME.get(memberName);
+		if (!memberProperty) {
+			continue;
+		}
+
+		const memberSyntaxAst = parseStandardCssSyntax(memberProperty.syntax ?? "");
+		for (const atom of collectStandardValueAtomsFromRecord(memberName, memberProperty, memberSyntaxAst)) {
+			appendStandardDistinctAtom(memberAtomsByKind, atom);
 		}
 	}
 
-	for (const atom of collectAtomsFromCompletions(propertyName, allowsColor)) {
-		appendStandardDistinctAtom(atomsByKind, atom);
-	}
-
-	return [...atomsByKind.values()]
-		.flatMap((atoms) => atoms.slice(0, 2))
+	const memberAtoms = [...memberAtomsByKind.values()]
+		.flatMap((memberAtoms) => memberAtoms.slice(0, 2))
 		.sort((left, right) => {
 			const kindDifference = left.kind.localeCompare(right.kind);
 			if (kindDifference !== 0) {
@@ -196,4 +219,53 @@ function collectStandardValueAtoms(
 
 			return left.text.localeCompare(right.text);
 		});
+
+	return memberAtoms.length > 0 ? memberAtoms : atoms;
+}
+
+function collectStandardValueAtomsFromRecord(
+	propertyName: string,
+	property: StandardPropertyRecord,
+	syntaxAst: ReturnType<typeof parseStandardCssSyntax>,
+): CssValueAtom[] {
+	const atomsByKind = new Map<CssValueKind, CssValueAtom[]>();
+	const allowsColor = syntaxAstIncludesType(syntaxAst, "color");
+	const preserveAllAtoms = usesCommaSeparatedRepeatableListSyntax(propertyName);
+	const appendAtom = preserveAllAtoms ? appendDistinctAtomWithoutCap : appendStandardDistinctAtom;
+
+	for (const atom of extractStandardSyntaxAtoms(syntaxAst, { allowsColor })) {
+		appendAtom(atomsByKind, atom);
+	}
+
+	for (const value of property.values ?? []) {
+		const atom = classifyStandardCssText(value.name, { allowsColor });
+		if (atom) {
+			appendAtom(atomsByKind, atom);
+		}
+	}
+
+	for (const atom of collectAtomsFromCompletions(propertyName, allowsColor)) {
+		appendAtom(atomsByKind, atom);
+	}
+
+	return [...atomsByKind.values()]
+		.flatMap((atoms) => (preserveAllAtoms ? atoms : atoms.slice(0, 2)))
+		.sort((left, right) => {
+			const kindDifference = left.kind.localeCompare(right.kind);
+			if (kindDifference !== 0) {
+				return kindDifference;
+			}
+
+			return left.text.localeCompare(right.text);
+		});
+}
+
+function appendDistinctAtomWithoutCap(atomsByKind: Map<CssValueKind, CssValueAtom[]>, atom: CssValueAtom): void {
+	const atoms = atomsByKind.get(atom.kind) ?? [];
+	if (atoms.some((existingAtom) => existingAtom.text === atom.text)) {
+		return;
+	}
+
+	atoms.push(atom);
+	atomsByKind.set(atom.kind, atoms);
 }

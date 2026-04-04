@@ -54,4 +54,33 @@ describe("matching machine", () => {
 			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
 		}
 	});
+
+	test("background-position generator keeps the full position atom set", () => {
+		const rule = createStandardPropertySamplingRule("background-position");
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.ok(cases.length > 7);
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("top")));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("left")));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("right")));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
+		}
+	});
+
+	test("list-style generator expands unordered shorthand members", () => {
+		const rule = createStandardPropertySamplingRule("list-style");
+		const cases = sampleExactCases(constructExactCaseFamilies(rule));
+		const oracle = createCssValidationOracle();
+
+		assert.ok(cases.length > 4);
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("inside")));
+		assert.ok(cases.some((generatedCase) => generatedCase.code.includes("none")));
+
+		for (const generatedCase of cases) {
+			assert.equal(oracle.validate(generatedCase.code).length, 0, generatedCase.code);
+		}
+	});
 });

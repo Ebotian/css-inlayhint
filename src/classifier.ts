@@ -141,18 +141,18 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 		return false;
 	}
 
-	if (
-		!Boolean(shorthandApi && typeof shorthandApi.isShorthand === "function" && shorthandApi.isShorthand(propertyName))
-	) {
-		return false;
-	}
-
 	const syntax = typeof property.syntax === "string" ? property.syntax.trim() : "";
 	if (!syntax) {
 		return false;
 	}
 
-	return syntax.includes("<grid-line>") || syntax.includes("||") || hasBoundedRepetition(syntax);
+	if (syntax.includes("<grid-line>") || syntax.includes("||") || syntax.includes("#") || hasBoundedRepetition(syntax)) {
+		return true;
+	}
+
+	return Boolean(
+		shorthandApi && typeof shorthandApi.isShorthand === "function" && shorthandApi.isShorthand(propertyName),
+	);
 }
 
 function hasBoundedRepetition(syntax: string): boolean {
