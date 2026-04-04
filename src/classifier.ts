@@ -152,7 +152,7 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 		return false;
 	}
 
-	return hasBoundedRepetition(syntax) && !syntax.includes("|");
+	return syntax.includes("<grid-line>") || syntax.includes("||") || hasBoundedRepetition(syntax);
 }
 
 function hasBoundedRepetition(syntax: string): boolean {

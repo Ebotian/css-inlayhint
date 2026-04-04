@@ -35,16 +35,16 @@ function createInstruction(propertyName: string, valueText: string): CssHintInst
 	};
 }
 
-test("shape parser classifies grid-area line shapes", () => {
+test("shape parser classifies grid-line shapes", () => {
 	const parser = createCssShapeParser();
 	const parsed = parser.parse([
 		createInstruction("grid-area", "auto"),
-		createInstruction("grid-area", "some-grid-area"),
-		createInstruction("grid-area", "4 some-grid-area"),
-		createInstruction("grid-area", "span 3 / span some-grid-area"),
+		createInstruction("grid-column", "span 3"),
+		createInstruction("grid-column-start", "4 some-grid-line"),
+		createInstruction("grid-row", "span some-grid-line / 2"),
 	])[0];
 
-	assert.equal(parsed?.shape?.family, "grid-area");
+	assert.equal(parsed?.shape?.family, "grid-line");
 	assert.deepEqual(parsed?.shape?.lineKinds, ["auto"]);
 });
 

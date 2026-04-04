@@ -1,9 +1,11 @@
 import { createRequire } from "node:module";
 import mdnProperties from "mdn-data/css/properties.json";
+import { isGridLineProperty } from "../../src/propertySyntax.js";
 import {
 	parseCssSyntax as parseStandardCssSyntax,
 	parseShorthandArities as parseStandardShorthandArities,
 	syntaxIncludesType as syntaxAstIncludesType,
+	visitCssSyntaxAst,
 } from "./cssSyntaxAst.js";
 import {
 	appendDistinctAtom as appendStandardDistinctAtom,
@@ -66,9 +68,12 @@ export function createDefaultPropertySamplingRules(limit = 8): CssPropertySampli
 export function createStandardPropertySamplingRule(propertyName: string): CssPropertySamplingRule {
 	const property = getPropertyRecord(propertyName);
 	const syntaxAst = parseStandardCssSyntax(property.syntax ?? "");
-	const arities = propertyName === "grid-area" ? [1, 2, 3, 4] : parseStandardShorthandArities(syntaxAst);
-	const valueAtoms =
-		propertyName === "grid-area" ? collectGridAreaValueAtoms() : collectStandardValueAtoms(propertyName, syntaxAst);
+	const arities = isGridLineProperty(propertyName)
+		? parseGridLineArities(property.syntax ?? "", syntaxAst)
+		: parseStandardShorthandArities(syntaxAst);
+	const valueAtoms = isGridLineProperty(propertyName)
+		? collectGridLineValueAtoms()
+		: collectStandardValueAtoms(propertyName, syntaxAst);
 
 	return {
 		propertyName,
@@ -77,16 +82,68 @@ export function createStandardPropertySamplingRule(propertyName: string): CssPro
 	};
 }
 
-function collectGridAreaValueAtoms(): CssValueAtom[] {
+function collectGridLineValueAtoms(): CssValueAtom[] {
 	return [
 		{ kind: "auto", text: "auto" },
 		{ kind: "global", text: "inherit" },
 		{ kind: "global", text: "initial" },
-		{ kind: "custom-ident", text: "some-grid-area" },
-		{ kind: "integer", text: "4 some-grid-area" },
+		{ kind: "custom-ident", text: "some-grid-line" },
+		{ kind: "integer", text: "4 some-grid-line" },
 		{ kind: "integer", text: "span 3" },
-		{ kind: "custom-ident", text: "span some-grid-area" },
+		{ kind: "custom-ident", text: "span some-grid-line" },
+		{ kind: "custom-ident", text: "5 some-grid-line span" },
 	];
+}
+
+function parseGridLineArities(propertySyntax: string, syntaxAst: ReturnType<typeof parseStandardCssSyntax>): number[] {
+	if (!propertySyntax.includes("<grid-line>") || !propertySyntax.includes("/")) {
+		return parseStandardShorthandArities(syntaxAst);
+	}
+
+	const repeatRange = findGridLineRepeatRange(syntaxAst);
+	if (!repeatRange) {
+		return parseStandardShorthandArities(syntaxAst);
+	}
+
+	const arities = new Set<number>();
+	for (let repeatCount = repeatRange.min; repeatCount <= repeatRange.max; repeatCount += 1) {
+		if (repeatCount >= 0) {
+			arities.add(repeatCount + 1);
+		}
+	}
+
+	return arities.size > 0 ? [...arities].sort((left, right) => left - right) : parseStandardShorthandArities(syntaxAst);
+}
+
+function findGridLineRepeatRange(
+	syntaxAst: ReturnType<typeof parseStandardCssSyntax>,
+): { min: number; max: number } | null {
+	let repeatRange: { min: number; max: number } | null = null;
+
+	visitCssSyntaxAst(syntaxAst, (node) => {
+		if (repeatRange || node.type !== "Multiplier") {
+			return;
+		}
+
+		if (!isSlashSeparatedGridLineMultiplier(node.term)) {
+			return;
+		}
+
+		repeatRange = { min: node.min, max: node.max };
+	});
+
+	return repeatRange;
+}
+
+function isSlashSeparatedGridLineMultiplier(term: ReturnType<typeof parseStandardCssSyntax>): boolean {
+	if (term.type !== "Group") {
+		return false;
+	}
+
+	return (
+		term.terms.some((node) => node.type === "Token" && node.value === "/") &&
+		term.terms.some((node) => node.type === "Type" && node.name === "grid-line")
+	);
 }
 
 export function getPropertyRecord(propertyName: string): StandardPropertyRecord {

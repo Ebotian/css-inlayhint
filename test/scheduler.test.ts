@@ -50,6 +50,8 @@ const marginRule = createStandardPropertySamplingRule("margin");
 const marginCases = generateExactCases(marginRule);
 const gridAreaRule = createStandardPropertySamplingRule("grid-area");
 const gridAreaCases = generateExactCases(gridAreaRule);
+const gridColumnRule = createStandardPropertySamplingRule("grid-column");
+const gridColumnCases = generateExactCases(gridColumnRule);
 const schedulerMarginCases = marginCases.filter(
 	(candidateCase) =>
 		candidateCase.valueAtoms.length === 1 &&
@@ -58,7 +60,7 @@ const schedulerMarginCases = marginCases.filter(
 const firstMarginCase = schedulerMarginCases[0];
 const secondMarginCase = schedulerMarginCases[1];
 
-if (!firstMarginCase || !secondMarginCase || gridAreaCases.length === 0) {
+if (!firstMarginCase || !secondMarginCase || gridAreaCases.length === 0 || gridColumnCases.length === 0) {
 	throw new Error("Expected generated margin cases for scheduler tests");
 }
 
@@ -89,7 +91,19 @@ describe("scheduler layer", () => {
 			cases: gridAreaCases,
 			filePrefix: "file:///workspace/grid-area",
 			range: fullRange,
-			labelForToken: mapGridAreaTokenLabel,
+		});
+	});
+
+	test("resolves grid-column end to end", async () => {
+		const scheduler = createServiceScheduler();
+		const extractor = createExtractor();
+
+		await assertGeneratedSchedulerE2E({
+			scheduler,
+			extractor,
+			cases: gridColumnCases,
+			filePrefix: "file:///workspace/grid-column",
+			range: fullRange,
 		});
 	});
 
@@ -121,33 +135,3 @@ describe("scheduler layer", () => {
 		await assert.rejects(scheduler.inlayHints(file, fullRange), /closed|missing|removed/i);
 	});
 });
-
-function mapGridAreaTokenLabel(token: string): string | null {
-	if (token === "auto") {
-		return null;
-	}
-
-	if (token === "span") {
-		return null;
-	}
-
-	if (
-		token === "inherit" ||
-		token === "initial" ||
-		token === "unset" ||
-		token === "revert" ||
-		token === "revert-layer"
-	) {
-		return null;
-	}
-
-	if (/^[+-]?\d+$/.test(token)) {
-		return "line";
-	}
-
-	if (/^[a-z_][a-z0-9_-]*$/i.test(token)) {
-		return "name";
-	}
-
-	return "line";
-}

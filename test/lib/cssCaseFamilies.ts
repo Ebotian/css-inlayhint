@@ -1,4 +1,5 @@
 import fastCartesian from "fast-cartesian";
+import { usesSlashSeparatedGridLineSyntax } from "../../src/propertySyntax.js";
 import type {
 	ConstructedCssCaseFamily,
 	CssPropertySamplingRule,
@@ -35,7 +36,7 @@ export function generateExactCases(rule: CssPropertySamplingRule): GeneratedCssC
 }
 
 export function renderCssDeclaration(propertyName: string, valueAtoms: readonly CssValueAtom[]): string {
-	const separator = propertyName === "grid-area" && valueAtoms.length > 1 ? " / " : " ";
+	const separator = usesSlashSeparatedGridLineSyntax(propertyName) && valueAtoms.length > 1 ? " / " : " ";
 	return `.probe {\n  ${propertyName}: ${valueAtoms.map((atom) => atom.text).join(separator)};\n}`;
 }
 
@@ -51,6 +52,6 @@ export function countExactCases(families: readonly ConstructedCssCaseFamily[]): 
 }
 
 function formatCaseDescription(propertyName: string, valueAtoms: readonly CssValueAtom[]): string {
-	const separator = propertyName === "grid-area" && valueAtoms.length > 1 ? "/" : "+";
+	const separator = usesSlashSeparatedGridLineSyntax(propertyName) && valueAtoms.length > 1 ? "/" : "+";
 	return valueAtoms.map((atom) => atom.kind).join(separator);
 }

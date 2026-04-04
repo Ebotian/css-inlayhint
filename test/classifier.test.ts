@@ -88,7 +88,7 @@ test("classifier labels shorthand declarations that match the syntax rule", () =
 	assert.equal(classification?.label, `${rule.propertyName}-${generatedCase.valueAtoms.length}-values`);
 });
 
-test("classifier suppresses shorthand syntax with alternation", () => {
+test("classifier labels shorthands with alternation syntax", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();
 	const rule = createStandardPropertySamplingRule("border");
@@ -102,9 +102,10 @@ test("classifier suppresses shorthand syntax with alternation", () => {
 	const classification = classifier.classify(candidate);
 
 	assert.ok(classification);
-	assert.equal(classification.state, "ignored");
-	assert.equal(classification.reason, "unsupported shorthand syntax");
-	assert.equal(formatCssHintClassification(classification), "ignored border (unsupported shorthand syntax)");
+	assert.equal(classification.state, "matched");
+	assert.equal(classification.propertyName, "border");
+	assert.equal(classification.label, "border-1-values");
+	assert.equal(formatCssHintClassification(classification), "matched border-1-values");
 });
 
 test("classifier suppresses global CSS keywords", () => {

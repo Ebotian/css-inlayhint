@@ -29,7 +29,7 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 		return instruction;
 	}
 
-	if (instruction.shape?.family === "grid-area") {
+	if (instruction.shape?.family === "grid-line") {
 		return { ...instruction, label: mapGridAreaLabel(instruction.valueText) };
 	}
 

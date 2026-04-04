@@ -40,9 +40,9 @@ describe("matching machine", () => {
 		}
 	});
 
-	test("grid-area generator emits slash-separated legal samples", () => {
-		const rule = createStandardPropertySamplingRule("grid-area");
-		assert.deepEqual(rule.arities, [1, 2, 3, 4]);
+	test("grid-column generator emits slash-separated legal samples", () => {
+		const rule = createStandardPropertySamplingRule("grid-column");
+		assert.deepEqual(rule.arities, [1, 2]);
 
 		const cases = sampleExactCases(constructExactCaseFamilies(rule));
 		const oracle = createCssValidationOracle();

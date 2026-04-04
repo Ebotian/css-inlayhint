@@ -1,4 +1,5 @@
 import type { CssHintInstruction } from "./collector";
+import { isGridLineProperty } from "./propertySyntax";
 
 export type CssHintShapeParser = {
 	parse(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
@@ -14,7 +15,7 @@ export type CssHintShape =
 			tokenCount: number;
 	  }
 	| {
-			family: "grid-area";
+			family: "grid-line";
 			lineKinds: readonly CssHintGridLineKind[];
 	  };
 
@@ -43,10 +44,10 @@ const SHAPE_RULES: readonly ShapeRule[] = [
 		parse: (instruction) => ({ family: "box-sides", tokenCount: instruction.tokenCount }),
 	},
 	{
-		matches: (instruction) => instruction.propertyName === "grid-area",
+		matches: (instruction) => isGridLineProperty(instruction.propertyName),
 		parse: (instruction) => {
-			const lineKinds = parseGridAreaLineKinds(instruction.valueText);
-			return lineKinds.length === 0 ? null : { family: "grid-area", lineKinds };
+			const lineKinds = parseGridLineKinds(instruction.valueText);
+			return lineKinds.length === 0 ? null : { family: "grid-line", lineKinds };
 		},
 	},
 ];
@@ -113,7 +114,7 @@ function parseShape(instruction: CssHintInstruction): CssHintShape | null {
 	return null;
 }
 
-function parseGridAreaLineKinds(valueText: string): readonly CssHintGridLineKind[] {
+function parseGridLineKinds(valueText: string): readonly CssHintGridLineKind[] {
 	return valueText
 		.split("/")
 		.map((part) => classifyGridLine(part.trim()))

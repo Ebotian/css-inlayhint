@@ -1,0 +1,32 @@
+{
+  "passedCount": 26,
+  "totalCount": 534,
+  "passedProperties": {
+    "border": true,
+    "border-bottom": true,
+    "border-color": true,
+    "border-image": true,
+    "border-left": true,
+    "border-radius": true,
+    "border-right": true,
+    "border-style": true,
+    "border-top": true,
+    "border-width": true,
+    "column-rule": true,
+    "columns": true,
+    "flex": true,
+    "flex-flow": true,
+    "font": true,
+    "font-variant": true,
+    "grid-area": true,
+    "grid-column": true,
+    "grid-row": true,
+    "list-style": true,
+    "margin": true,
+    "outline": true,
+    "padding": true,
+    "text-decoration": true,
+    "scroll-padding-block": true,
+    "scroll-padding-inline": true
+  }
+}

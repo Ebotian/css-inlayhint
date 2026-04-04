@@ -108,8 +108,8 @@ test("pipeline forwards shape parsing output into mapper", () => {
 				return [
 					{
 						state: "matched",
-						propertyName: "grid-area",
-						label: "grid-area-1-values",
+						propertyName: "grid-column",
+						label: "grid-column-1-values",
 						kind: "Parameter",
 						strategy: "inline-right",
 						tokenCount: 1,
@@ -136,7 +136,7 @@ test("pipeline forwards shape parsing output into mapper", () => {
 				return [...instructions].map((instruction) => ({
 					...instruction,
 					shape: {
-						family: "grid-area",
+						family: "grid-line",
 						lineKinds: ["span"],
 					},
 				}));
@@ -144,15 +144,15 @@ test("pipeline forwards shape parsing output into mapper", () => {
 		},
 		mapper: {
 			map(instructions) {
-				assert.equal(instructions[0].shape?.family, "grid-area");
+				assert.equal(instructions[0].shape?.family, "grid-line");
 				assert.deepEqual(instructions[0].shape?.lineKinds, ["span"]);
 				return [...instructions];
 			},
 		},
 	});
 
-	const instructions = pipeline.collect(".probe { grid-area: span 3; }");
+	const instructions = pipeline.collect(".probe { grid-column: span 3; }");
 
 	assert.equal(instructions.length, 1);
-	assert.equal(instructions[0].propertyName, "grid-area");
+	assert.equal(instructions[0].propertyName, "grid-column");
 });
