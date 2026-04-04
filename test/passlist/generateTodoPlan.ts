@@ -1,14 +1,27 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
+import { getFormalSyntax } from "../../src/helper/getFormalSyntax.js";
 import { getPropertySyntax } from "../../src/propertySyntax.js";
 import { classifyPropertyStructure, type PropertyStructure } from "../../src/helper/noHintDesign.js";
+import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 
 type PasslistStatistics = {
 	noHintTodoProperties: Record<string, true>;
 };
 
 type PropertyComplexity = "simple" | "repeat" | "alternation" | "compound";
+
+type ValidationAgreement = "aligned" | "verified" | "unverified";
+
+type TodoPlanValidation = {
+	representativeProperty: string;
+	localSyntax: string;
+	mdnSyntax: string;
+	mdnVerified: boolean;
+	sourceAgreement: ValidationAgreement;
+	sampleCaseCount: number;
+};
 
 type TodoPlanBatch = {
 	phase: number;
@@ -17,6 +30,7 @@ type TodoPlanBatch = {
 	count: number;
 	properties: string[];
 	rationale: string;
+	validation: TodoPlanValidation;
 };
 
 type TodoPlan = {
@@ -24,6 +38,12 @@ type TodoPlan = {
 	todoCount: number;
 	batchCount: number;
 	batches: TodoPlanBatch[];
+};
+
+type BatchDescriptor = {
+	key: PropertyStructure;
+	complexity: PropertyComplexity;
+	properties: string[];
 };
 
 const workspaceRoot = resolve(process.cwd());
@@ -41,24 +61,30 @@ const PROPERTY_STRUCTURE_ORDER: PropertyStructure[] = [
 ];
 
 const PROPERTY_COMPLEXITY_ORDER: PropertyComplexity[] = ["simple", "repeat", "alternation", "compound"];
+const VALIDATION_AGREEMENT_ORDER: ValidationAgreement[] = ["aligned", "verified", "unverified"];
 
 if (require.main === module) {
+	void main();
+}
+
+async function main(): Promise<void> {
 	const statistics = readPasslistStatistics(passlistPath);
-	const plan = createTodoPlan(statistics);
+	const plan = await createTodoPlan(statistics);
 
 	mkdirSync(dirname(outputPath), { recursive: true });
 	writeFileSync(outputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
 	console.log(`Wrote ${outputPath}`);
 }
 
-export function createTodoPlan(
+export async function createTodoPlan(
 	statistics: PasslistStatistics,
 	classifyBucket: (propertyName: string) => {
 		key: PropertyStructure;
 		complexity: PropertyComplexity;
 	} = classifyTodoPlanBucket,
-): TodoPlan {
-	const groups = new Map<string, TodoPlanBatch>();
+	validateBatch: (batch: BatchDescriptor) => Promise<TodoPlanValidation> = validateTodoPlanBatch,
+): Promise<TodoPlan> {
+	const groups = new Map<string, BatchDescriptor>();
 
 	for (const propertyName of Object.keys(statistics.noHintTodoProperties)) {
 		const bucket = classifyBucket(propertyName);
@@ -70,64 +96,66 @@ export function createTodoPlan(
 		}
 
 		groups.set(groupKey, {
-			phase: 0,
 			key: bucket.key,
 			complexity: bucket.complexity,
-			count: 0,
 			properties: [propertyName],
-			rationale: describeBatch(bucket.key, bucket.complexity),
 		});
 	}
 
-	const batches = [...groups.values()]
-		.sort((left, right) => {
-			const structureDifference =
-				PROPERTY_STRUCTURE_ORDER.indexOf(left.key) - PROPERTY_STRUCTURE_ORDER.indexOf(right.key);
-			if (structureDifference !== 0) {
-				return structureDifference;
-			}
-
-			const complexityDifference =
-				PROPERTY_COMPLEXITY_ORDER.indexOf(left.complexity) - PROPERTY_COMPLEXITY_ORDER.indexOf(right.complexity);
-			if (complexityDifference !== 0) {
-				return complexityDifference;
-			}
-
-			return left.properties.length - right.properties.length || left.key.localeCompare(right.key);
-		})
-		.map((batch, index) => {
+	const batches = await Promise.all(
+		[...groups.values()].map(async (batch) => {
 			const properties = [...batch.properties].sort((left, right) => left.localeCompare(right));
+			const validation = await validateBatch({
+				key: batch.key,
+				complexity: batch.complexity,
+				properties,
+			});
+
 			return {
-				phase: index + 1,
+				phase: 0,
 				key: batch.key,
 				complexity: batch.complexity,
 				count: properties.length,
 				properties,
-				rationale: batch.rationale,
+				rationale: describeBatch(batch.key, batch.complexity),
+				validation,
 			};
-		});
+		}),
+	);
 
-	const mergedBatches: TodoPlanBatch[] = [];
-	for (const batch of batches) {
-		const previousBatch = mergedBatches[mergedBatches.length - 1];
-		if (batch.count === 1 && previousBatch && previousBatch.key === batch.key) {
-			previousBatch.properties.push(...batch.properties);
-			previousBatch.count = previousBatch.properties.length;
-			continue;
+	batches.sort((left, right) => {
+		const agreementDifference =
+			VALIDATION_AGREEMENT_ORDER.indexOf(left.validation.sourceAgreement) -
+			VALIDATION_AGREEMENT_ORDER.indexOf(right.validation.sourceAgreement);
+		if (agreementDifference !== 0) {
+			return agreementDifference;
 		}
 
-		mergedBatches.push(batch);
-	}
+		const structureDifference =
+			PROPERTY_STRUCTURE_ORDER.indexOf(left.key) - PROPERTY_STRUCTURE_ORDER.indexOf(right.key);
+		if (structureDifference !== 0) {
+			return structureDifference;
+		}
 
-	for (const batch of mergedBatches) {
-		batch.properties.sort((left, right) => left.localeCompare(right));
-	}
+		const complexityDifference =
+			PROPERTY_COMPLEXITY_ORDER.indexOf(left.complexity) - PROPERTY_COMPLEXITY_ORDER.indexOf(right.complexity);
+		if (complexityDifference !== 0) {
+			return complexityDifference;
+		}
+
+		const caseCountDifference = left.validation.sampleCaseCount - right.validation.sampleCaseCount;
+		if (caseCountDifference !== 0) {
+			return caseCountDifference;
+		}
+
+		return left.count - right.count || left.key.localeCompare(right.key);
+	});
 
 	return {
 		source: "test/passlist/property-pass-statistics.json",
 		todoCount: Object.keys(statistics.noHintTodoProperties).length,
-		batchCount: mergedBatches.length,
-		batches: mergedBatches.map((batch, index) => ({ ...batch, phase: index + 1 })),
+		batchCount: batches.length,
+		batches: batches.map((batch, index) => ({ ...batch, phase: index + 1 })),
 	};
 }
 
@@ -139,6 +167,41 @@ export function classifyTodoPlanBucket(propertyName: string): {
 		key: classifyPropertyStructure(propertyName),
 		complexity: classifyPropertyComplexity(getPropertySyntax(propertyName)),
 	};
+}
+
+async function validateTodoPlanBatch(batch: BatchDescriptor): Promise<TodoPlanValidation> {
+	const representativeProperty = batch.properties[0];
+	const localSyntax = normalizeSyntaxSignature(getPropertySyntax(representativeProperty));
+	const sampleCaseCount = generateExactCases(createStandardPropertySamplingRule(representativeProperty)).length;
+
+	try {
+		const mdnPage = await getFormalSyntax(representativeProperty);
+		const mdnSyntax = normalizeSyntaxSignature(extractMdnTopLevelSyntax(mdnPage.formalSyntax));
+		const sourceAgreement =
+			mdnPage.verified && mdnSyntax.length > 0 && mdnSyntax === localSyntax
+				? "aligned"
+				: mdnPage.verified
+					? "verified"
+					: "unverified";
+
+		return {
+			representativeProperty,
+			localSyntax,
+			mdnSyntax,
+			mdnVerified: mdnPage.verified,
+			sourceAgreement,
+			sampleCaseCount,
+		};
+	} catch {
+		return {
+			representativeProperty,
+			localSyntax,
+			mdnSyntax: "",
+			mdnVerified: false,
+			sourceAgreement: "unverified",
+			sampleCaseCount,
+		};
+	}
 }
 
 function classifyPropertyComplexity(syntax: string): PropertyComplexity {
@@ -187,6 +250,36 @@ function describeBatch(key: PropertyStructure, complexity: PropertyComplexity): 
 	};
 
 	return `${structureDescription[key]} / ${complexityDescription[complexity]}`;
+}
+
+function normalizeSyntaxSignature(text: string): string {
+	return text
+		.replace(/\r\n?/g, " ")
+		.replace(/\s+/g, " ")
+		.trim()
+		.replace(/^\s*[^=]+=\s*/, "");
+}
+
+function extractMdnTopLevelSyntax(formalSyntax: string): string {
+	const normalized = formalSyntax.replace(/\r\n?/g, "\n");
+	const lines = normalized.split("\n");
+	const collected: string[] = [];
+	let started = false;
+
+	for (const line of lines) {
+		if (started && line.trim().length === 0) {
+			break;
+		}
+
+		if (!started && line.trim().length === 0) {
+			continue;
+		}
+
+		started = true;
+		collected.push(line);
+	}
+
+	return collected.join("\n");
 }
 
 function extractLiteralTokens(syntax: string, angleTokens: readonly string[]): string[] {
