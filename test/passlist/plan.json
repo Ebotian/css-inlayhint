@@ -1,49 +1,10 @@
 {
   "source": "test/passlist/property-pass-statistics.json",
-  "todoCount": 365,
-  "batchCount": 7,
+  "todoCount": 357,
+  "batchCount": 5,
   "batches": [
     {
       "phase": 1,
-      "key": "reference-only",
-      "complexity": "compound",
-      "count": 4,
-      "properties": [
-        "gap",
-        "place-content",
-        "place-items",
-        "place-self"
-      ],
-      "rationale": "reference-only / nested or mixed syntax, best left for later",
-      "validation": {
-        "representativeProperty": "gap",
-        "localSyntax": "<'row-gap'> <'column-gap'>?",
-        "mdnSyntax": "<'row-gap'> <'column-gap'>?",
-        "mdnVerified": true,
-        "sourceAgreement": "aligned",
-        "sampleCaseCount": 5
-      }
-    },
-    {
-      "phase": 2,
-      "key": "generic-single",
-      "complexity": "compound",
-      "count": 1,
-      "properties": [
-        "background"
-      ],
-      "rationale": "generic-single / nested or mixed syntax, best left for later",
-      "validation": {
-        "representativeProperty": "background",
-        "localSyntax": "<bg-layer>#? , <final-bg-layer>",
-        "mdnSyntax": "<bg-layer>#? , <final-bg-layer>",
-        "mdnVerified": true,
-        "sourceAgreement": "aligned",
-        "sampleCaseCount": 85556
-      }
-    },
-    {
-      "phase": 3,
       "key": "keyword-union",
       "complexity": "compound",
       "count": 8,
@@ -68,10 +29,10 @@
       }
     },
     {
-      "phase": 4,
+      "phase": 2,
       "key": "mixed",
       "complexity": "alternation",
-      "count": 142,
+      "count": 141,
       "properties": [
         "accent-color",
         "align-content",
@@ -128,7 +89,6 @@
         "font-variant-east-asian",
         "font-variant-ligatures",
         "font-variant-numeric",
-        "grid-template",
         "grid-template-areas",
         "grid-template-columns",
         "grid-template-rows",
@@ -227,7 +187,7 @@
       }
     },
     {
-      "phase": 5,
+      "phase": 3,
       "key": "keyword-union",
       "complexity": "alternation",
       "count": 132,
@@ -376,7 +336,7 @@
       }
     },
     {
-      "phase": 6,
+      "phase": 4,
       "key": "mixed",
       "complexity": "compound",
       "count": 43,
@@ -436,10 +396,10 @@
       }
     },
     {
-      "phase": 7,
+      "phase": 5,
       "key": "generic-single",
       "complexity": "repeat",
-      "count": 35,
+      "count": 33,
       "properties": [
         "additive-symbols",
         "animation",
@@ -456,11 +416,9 @@
         "background-clip",
         "background-image",
         "background-origin",
-        "background-position",
         "background-repeat",
         "background-size",
         "font-family",
-        "mask",
         "mask-composite",
         "mask-image",
         "mask-mode",

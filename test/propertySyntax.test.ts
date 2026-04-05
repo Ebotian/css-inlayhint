@@ -54,6 +54,68 @@ test("propertySyntax infers reference-syntax labels from ordered property refs",
 	assert.deepEqual(getShorthandLabelParts("scroll-margin-block", 1, "3px"), ["all"]);
 	assert.deepEqual(getShorthandLabelParts("scroll-margin-block", 2, "3px 10px"), ["start", "end"]);
 	assert.deepEqual(getShorthandLabelParts("scroll-margin-inline", 2, "3px 10px"), ["start", "end"]);
+	assert.deepEqual(getShorthandLabelParts("border-spacing", 1, "2px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("border-spacing", 2, "1cm 2em"), ["horizontal", "vertical"]);
+	assert.deepEqual(getShorthandLabelParts("grid-template", 1, "none"), []);
+	assert.deepEqual(getShorthandLabelParts("grid-template", 1, '"a"'), ["areas"]);
+	assert.deepEqual(getShorthandLabelParts("grid-template", 2, "100px 1fr / 50px 1fr"), ["rows", "columns"]);
+	assert.deepEqual(getShorthandLabelParts("corner-right-shape", 1, "bevel"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("corner-right-shape", 2, "bevel notch"), ["top", "bottom"]);
+	assert.deepEqual(getShorthandLabelParts("corner-inline-end-shape", 2, "squircle scoop"), [
+		"block-start",
+		"block-end",
+	]);
+	assert.deepEqual(getShorthandLabelParts("corner-bottom-shape", 2, "scoop square"), ["left", "right"]);
+	assert.deepEqual(getShorthandLabelParts("corner-block-end-shape", 2, "square scoop"), ["inline-start", "inline-end"]);
+	assert.deepEqual(getShorthandLabelParts("corner-bottom-left-shape", 1, "bevel"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("mask-border-slice", 1, "30%"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("mask-border-slice", 2, "10% 30%"), ["top/bottom", "left/right"]);
+	assert.deepEqual(getShorthandLabelParts("mask-border-slice", 3, "30 30% 45"), ["top", "left/right", "bottom"]);
+	assert.deepEqual(getShorthandLabelParts("mask-border-slice", 4, "7 12 14 5"), ["top", "right", "bottom", "left"]);
+	assert.deepEqual(getShorthandLabelParts("mask-border-slice", 3, "10% fill 7 12"), ["top", "left/right", "bottom"]);
+	assert.deepEqual(getShorthandLabelParts("mask", 2, 'url("masks.svg#star") luminance'), ["image", "mode"]);
+	assert.deepEqual(getShorthandLabelParts("mask", 3, 'url("masks.svg#star") 40px 20px'), ["image", "top", "left"]);
+	assert.deepEqual(getShorthandLabelParts("mask", 5, 'url("masks.svg#star") 0 0/50px 50px'), [
+		"image",
+		"top",
+		"left",
+		"width",
+		"height",
+	]);
+	assert.deepEqual(getShorthandLabelParts("background-position", 4, "bottom 10px right 20px"), [
+		"vertical",
+		"length",
+		"horizontal",
+		"length",
+	]);
+	assert.deepEqual(getShorthandLabelParts("background-position", 4, "right 3em bottom 10px"), [
+		"horizontal",
+		"length",
+		"vertical",
+		"length",
+	]);
+	assert.deepEqual(getShorthandLabelParts("background-position", 3, "bottom 10px right"), [
+		"vertical",
+		"length",
+		"horizontal",
+	]);
+	assert.deepEqual(getShorthandLabelParts("background-position", 1, "x-start"), ["horizontal"]);
+	assert.deepEqual(getShorthandLabelParts("background-position", 1, "y-end"), ["vertical"]);
+	assert.deepEqual(getShorthandLabelParts("background-position", 3, "top right 10px"), [
+		"vertical",
+		"horizontal",
+		"length",
+	]);
+	assert.deepEqual(getShorthandLabelParts("background", 1, "url(x)"), ["image"]);
+	assert.deepEqual(getShorthandLabelParts("background", 2, "url(x) center"), ["image", "position"]);
+	assert.deepEqual(getShorthandLabelParts("background", 2, "border-box red"), ["origin", "color"]);
+	assert.deepEqual(getShorthandLabelParts("gap", 1, "10px"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("gap", 2, "10px 20px"), ["row", "column"]);
+	assert.deepEqual(getShorthandLabelParts("place-content", 1, "center"), ["all"]);
+	assert.deepEqual(getShorthandLabelParts("place-content", 2, "center space-between"), ["align", "justify"]);
+	assert.deepEqual(getShorthandLabelParts("place-items", 2, "center start"), ["align", "justify"]);
+	assert.deepEqual(getShorthandLabelParts("place-self", 2, "center start"), ["align", "justify"]);
+	assert.ok(!getShorthandLabelParts("background", 1, "url(x)")?.some((label) => label.includes("background")));
 	assert.deepEqual(getShorthandLabelParts("columns", 1, "12em"), ["width"]);
 	assert.deepEqual(getShorthandLabelParts("columns", 1, "2"), ["count"]);
 	assert.deepEqual(getShorthandLabelParts("text-emphasis", 1, "red"), ["color"]);

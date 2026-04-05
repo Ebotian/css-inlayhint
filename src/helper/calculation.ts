@@ -5,11 +5,14 @@ import { inferUnorderedShorthandLabelParts, inferUnorderedSyntaxLabelParts } fro
 import {
 	compactShorthandLabels,
 	normalizeShorthandMemberLabel,
+	tokenizeShorthandValueText,
 	shouldCompactShorthandLabels,
 } from "./classifyNormalize.js";
-import { isCornerRadiusProperty, isInsetProperty, isLogicalAxisRepeatProperty, isScrollMarginProperty } from "./judgment.js";
 import { normalizeReferencedPropertyLabel } from "./semanticMap.js";
-import { collectReferencedSyntaxLabels } from "./referenceSyntax.js";
+import { collectReferencedSyntaxLabels, collectReferencedSyntaxPrefixes } from "./referenceSyntax.js";
+import { inferShorthandSemanticLabelParts } from "./shorthandSemantics.js";
+import { classifyStandardText } from "../share/cssValueAtoms.js";
+import { inferStructuredShorthandLabelParts } from "./structuredShorthand.js";
 
 const nodeRequire = createRequire(__filename);
 const shorthandApi = nodeRequire("css-shorthand-properties") as {
@@ -65,6 +68,16 @@ export function getDirectionalFamily(propertyName: string): readonly string[] | 
 }
 
 export function getShorthandLabelParts(propertyName: string, tokenCount: number, valueText?: string): string[] | null {
+	const semanticLabels = inferShorthandSemanticLabelParts(propertyName, valueText, tokenCount);
+	if (semanticLabels !== null) {
+		return semanticLabels;
+	}
+
+	const structuredLabels = inferStructuredShorthandLabelParts(propertyName, tokenCount);
+	if (structuredLabels !== null) {
+		return structuredLabels;
+	}
+
 	const expanded = getShorthandExpansion(propertyName);
 
 	if (usesUnorderedOptionalGroupSyntax(propertyName)) {
@@ -77,39 +90,16 @@ export function getShorthandLabelParts(propertyName: string, tokenCount: number,
 		return inferUnorderedSyntaxLabelParts(propertyName, valueText, tokenCount);
 	}
 
-	if (isCornerRadiusProperty(propertyName)) {
-		if (tokenCount === 1) {
-			return ["all"];
-		}
-
-		if (tokenCount === 2) {
-			return ["horizontal", "vertical"];
-		}
-
-		return null;
-	}
-
-	if (isLogicalAxisRepeatProperty(propertyName)) {
-		if (tokenCount === 1) {
-			return ["all"];
-		}
-
-		if (tokenCount === 2) {
-			return ["start", "end"];
-		}
-
-		return null;
-	}
-
-	if (isInsetProperty(propertyName)) {
-		return inferInsetLabelParts(tokenCount);
-	}
-
-	if (isScrollMarginProperty(propertyName)) {
-		return inferInsetLabelParts(tokenCount);
-	}
-
 	if (!Array.isArray(expanded) || expanded.length === 0) {
+		const referencePrefixes = collectReferencedSyntaxPrefixes(propertyName);
+		if (referencePrefixes.length >= 2) {
+			if (tokenCount === 1) {
+				return ["all"];
+			}
+
+			return referencePrefixes.slice(0, Math.min(tokenCount, referencePrefixes.length));
+		}
+
 		const referenceLabels = collectReferencedSyntaxLabels(propertyName);
 		if (referenceLabels.length >= 2) {
 			return referenceLabels.slice(0, Math.min(tokenCount, referenceLabels.length));
@@ -130,9 +120,16 @@ export function getShorthandLabelParts(propertyName: string, tokenCount: number,
 
 	const normalizedLabels = shouldCompactShorthandLabels(labels as string[])
 		? compactShorthandLabels(labels as string[])
-		: [...expanded];
+		: [...labels];
 	if (tokenCount === 1) {
 		return [normalizedLabels.join("/")];
+	}
+
+	if (tokenCount > normalizedLabels.length) {
+		const fallbackLabels = inferGenericTokenLabels(valueText, tokenCount);
+		if (fallbackLabels) {
+			return fallbackLabels;
+		}
 	}
 
 	if (tokenCount <= normalizedLabels.length) {
@@ -142,18 +139,57 @@ export function getShorthandLabelParts(propertyName: string, tokenCount: number,
 	return null;
 }
 
-function inferInsetLabelParts(tokenCount: number): string[] | null {
-	switch (tokenCount) {
-		case 1:
-			return ["all"];
-		case 2:
-			return ["top/bottom", "right/left"];
-		case 3:
-			return ["top", "right/left", "bottom"];
-		case 4:
-			return ["top", "right", "bottom", "left"];
+function inferGenericTokenLabels(valueText: string | undefined, tokenCount: number): string[] | null {
+	if (!valueText) {
+		return Array.from({ length: tokenCount }, (_unused, index) => (index === 0 ? "value" : `value-${index + 1}`));
+	}
+
+	const tokens = tokenizeShorthandValueText(valueText);
+	const meaningfulTokens = tokens.filter((token) => token !== "/");
+	if (meaningfulTokens.length === 0) {
+		return null;
+	}
+
+	const labels = meaningfulTokens.map(inferGenericTokenLabel);
+	if (labels.length >= tokenCount) {
+		return labels.slice(0, tokenCount) as string[];
+	}
+
+	return [
+		...labels,
+		...Array.from({ length: tokenCount - labels.length }, (_unused, index) => `value-${labels.length + index + 1}`),
+	];
+}
+
+function inferGenericTokenLabel(token: string): string {
+	if (/^(['"]).*\1$/.test(token)) {
+		return "string";
+	}
+
+	if (/^\[[^\]]+\]$/.test(token)) {
+		return "ident";
+	}
+
+	const atom = classifyStandardText(token, { allowsColor: true });
+	if (!atom) {
+		return "value";
+	}
+
+	switch (atom.kind) {
+		case "keyword":
+		case "auto":
+			return "keyword";
+		case "length":
+		case "percent":
+		case "zero":
+		case "calc":
+			return "length";
+		case "color":
+			return "color";
+		case "custom-ident":
+			return "ident";
 		default:
-			return null;
+			return "value";
 	}
 }
 

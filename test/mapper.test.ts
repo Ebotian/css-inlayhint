@@ -201,6 +201,125 @@ test("mapper derives scroll-margin labels", () => {
 	assert.equal(mappedInline.label, "start, end");
 });
 
+test("mapper derives border-spacing labels from semantic axes", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedSingle = mapper.map([createInstruction("border-spacing", 1, "2px")])[0];
+	const mappedPair = mapper.map([createInstruction("border-spacing", 2, "1cm 2em")])[0];
+
+	assert.equal(mappedSingle.label, "all");
+	assert.equal(mappedPair.label, "horizontal, vertical");
+});
+
+test("mapper derives corner-shape labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedRightSingle = mapper.map([createInstruction("corner-right-shape", 1, "bevel")])[0];
+	const mappedRightPair = mapper.map([createInstruction("corner-right-shape", 2, "bevel notch")])[0];
+	const mappedInlineEndPair = mapper.map([createInstruction("corner-inline-end-shape", 2, "squircle scoop")])[0];
+	const mappedBottomPair = mapper.map([createInstruction("corner-bottom-shape", 2, "scoop square")])[0];
+	const mappedBlockEndPair = mapper.map([createInstruction("corner-block-end-shape", 2, "square scoop")])[0];
+	const mappedCornerSingle = mapper.map([createInstruction("corner-bottom-left-shape", 1, "bevel")])[0];
+
+	assert.equal(mappedRightSingle.label, "all");
+	assert.equal(mappedRightPair.label, "top, bottom");
+	assert.equal(mappedInlineEndPair.label, "block-start, block-end");
+	assert.equal(mappedBottomPair.label, "left, right");
+	assert.equal(mappedBlockEndPair.label, "inline-start, inline-end");
+	assert.equal(mappedCornerSingle.label, "all");
+});
+
+test("mapper derives background-position repeatable-list labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedFourToken = mapper.map([createInstruction("background-position", 4, "bottom 10px right 20px")])[0];
+	const mappedThreeTokenEdgeOffset = mapper.map([createInstruction("background-position", 3, "bottom 10px right")])[0];
+	const mappedThreeToken = mapper.map([createInstruction("background-position", 3, "top right 10px")])[0];
+	const mappedTwoLengthToken = mapper.map([createInstruction("background-position", 2, "25% 75%")])[0];
+	const mappedCenter = mapper.map([createInstruction("background-position", 1, "center")])[0];
+	const mappedLogicalDirection = mapper.map([createInstruction("background-position", 1, "x-start")])[0];
+
+	assert.equal(mappedFourToken.label, "vertical, length, horizontal, length");
+	assert.equal(mappedThreeTokenEdgeOffset.label, "vertical, length, horizontal");
+	assert.equal(mappedThreeToken.label, "vertical, horizontal, length");
+	assert.equal(mappedTwoLengthToken.label, "horizontal, vertical");
+	assert.equal(mappedCenter.label, "middle");
+	assert.equal(mappedLogicalDirection.label, "horizontal");
+	assert.deepEqual((mappedFourToken as { labelSlots?: readonly string[] }).labelSlots, [
+		"vertical",
+		"length",
+		"horizontal",
+		"length",
+	]);
+	assert.ok(!mappedFourToken.label.includes("background-position"));
+});
+
+test("mapper suppresses grid-template none and labels string areas", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedNone = mapper.map([createInstruction("grid-template", 1, "none")])[0];
+	const mappedAreas = mapper.map([createInstruction("grid-template", 1, '"a"')])[0];
+
+	assert.equal(mappedNone.label, "");
+	assert.equal(mappedAreas.label, "areas");
+});
+
+test("mapper derives gap and place-family labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedGapSingle = mapper.map([createInstruction("gap", 1, "10px")])[0];
+	const mappedGapPair = mapper.map([createInstruction("gap", 2, "10px 20px")])[0];
+	const mappedPlaceContentSingle = mapper.map([createInstruction("place-content", 1, "center")])[0];
+	const mappedPlaceContentPair = mapper.map([createInstruction("place-content", 2, "center space-between")])[0];
+	const mappedPlaceItemsPair = mapper.map([createInstruction("place-items", 2, "center start")])[0];
+	const mappedPlaceSelfPair = mapper.map([createInstruction("place-self", 2, "center start")])[0];
+
+	assert.equal(mappedGapSingle.label, "all");
+	assert.equal(mappedGapPair.label, "row, column");
+	assert.equal(mappedPlaceContentSingle.label, "all");
+	assert.equal(mappedPlaceContentPair.label, "align, justify");
+	assert.equal(mappedPlaceItemsPair.label, "align, justify");
+	assert.equal(mappedPlaceSelfPair.label, "align, justify");
+});
+
+test("mapper derives mask-border-slice labels and skips fill", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedSingle = mapper.map([createInstruction("mask-border-slice", 1, "30%")])[0];
+	const mappedPair = mapper.map([createInstruction("mask-border-slice", 2, "10% 30%")])[0];
+	const mappedFill = mapper.map([createInstruction("mask-border-slice", 4, "10% fill 7 12")])[0];
+
+	assert.equal(mappedSingle.label, "all");
+	assert.equal(mappedPair.label, "top/bottom, left/right");
+	assert.equal(mappedFill.label, "top, left/right, bottom");
+	assert.deepEqual((mappedFill as { labelSlots?: readonly string[] }).labelSlots, ["top", "", "left/right", "bottom"]);
+});
+
+test("mapper compacts background member labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedSingle = mapper.map([createInstruction("background", 1, "url(x)")])[0];
+	const mappedPair = mapper.map([createInstruction("background", 2, "url(x) center")])[0];
+	const mappedOriginColor = mapper.map([createInstruction("background", 2, "border-box red")])[0];
+
+	assert.equal(mappedSingle.label, "image");
+	assert.equal(mappedPair.label, "image, position");
+	assert.equal(mappedOriginColor.label, "origin, color");
+});
+
+test("mapper derives mask layer labels from the actual value text", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedMode = mapper.map([createInstruction("mask", 2, 'url("masks.svg#star") luminance')])[0];
+	const mappedPosition = mapper.map([createInstruction("mask", 3, 'url("masks.svg#star") 40px 20px')])[0];
+	const mappedLayer = mapper.map([createInstruction("mask", 5, 'url("masks.svg#star") 0 0/50px 50px')])[0];
+
+	assert.equal(mappedMode.label, "image, mode");
+	assert.equal(mappedPosition.label, "image, top, left");
+	assert.equal(mappedLayer.label, "image, top, left, width, height");
+	assert.ok(!mappedLayer.label.includes("mask"));
+});
+
 test("mapper derives inset labels from repeated edge values", () => {
 	const mapper = createCssHintMapper();
 

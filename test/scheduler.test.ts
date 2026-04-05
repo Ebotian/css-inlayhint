@@ -121,9 +121,21 @@ describe("scheduler layer", () => {
 			[
 				{ label: "top:", position: 18 },
 				{ label: "right/left:", position: 22 },
-				{ label: "bottom:", position: 30 },
+				{ label: "bottom:", position: 43 },
 			],
 		);
+	});
+
+	test("resolves grid-template none without producing hints", async () => {
+		const scheduler = createServiceScheduler();
+		const file = "file:///workspace/grid-template.css";
+		const css = "a { grid-template: none; }";
+
+		scheduler.addDocument(file, css, 1);
+
+		const hints = await scheduler.inlayHints(file, fullRange);
+
+		assert.deepEqual(hints, []);
 	});
 
 	test("resolves border-bottom-left-radius two-value corner values end to end", async () => {

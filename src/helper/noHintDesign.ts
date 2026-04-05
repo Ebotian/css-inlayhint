@@ -1,6 +1,6 @@
 import { getPropertySyntax } from "./summary.js";
-import { isCornerRadiusProperty, isInsetProperty, isLogicalAxisRepeatProperty, isScrollMarginProperty } from "./judgment.js";
 import { hasMeaningfulReferenceSyntaxLabels } from "./referenceSyntax.js";
+import { isStructuredShorthandProperty } from "./structuredShorthand.js";
 
 export type PropertyStructure =
 	| "shorthand-family"
@@ -16,19 +16,7 @@ export function classifyPropertyStructure(propertyName: string): PropertyStructu
 }
 
 export function isDesignedNoHintProperty(propertyName: string): boolean {
-	if (isInsetProperty(propertyName)) {
-		return false;
-	}
-
-	if (isScrollMarginProperty(propertyName)) {
-		return false;
-	}
-
-	if (isLogicalAxisRepeatProperty(propertyName)) {
-		return false;
-	}
-
-	if (isCornerRadiusProperty(propertyName)) {
+	if (isStructuredShorthandProperty(propertyName)) {
 		return false;
 	}
 

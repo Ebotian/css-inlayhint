@@ -1,11 +1,11 @@
 import { createRequire } from "node:module";
 
 import type { CssExtractorCandidate } from "./extractor";
-import { isCornerRadiusProperty, isInsetProperty, isLogicalAxisRepeatProperty, isScrollMarginProperty } from "./helper/judgment.js";
 import { isReferenceOnlyHintProperty } from "./helper/semanticMap.js";
 import { classifyPropertyStructure } from "./helper/noHintDesign.js";
 import { getShorthandExpansion } from "./helper/calculation.js";
 import { getPropertyStatus, getPropertySyntax } from "./helper/summary.js";
+import { countStructuredShorthandTokens, isStructuredShorthandProperty } from "./helper/structuredShorthand.js";
 
 export type CssHintStrategy = "inline-right" | "block-end-right";
 
@@ -102,8 +102,7 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 				};
 			}
 
-			const tokenCount =
-				candidate.propertyName === "border-radius" ? countBorderRadiusTokens(valueText) : countValueTokens(valueText);
+			const tokenCount = countStructuredShorthandTokens(candidate.propertyName, valueText);
 			return {
 				state: "matched",
 				propertyName: candidate.propertyName,
@@ -121,7 +120,7 @@ function buildSuppressedClassification(
 	valueText: string,
 	suppressReason: string,
 ): CssHintClassification {
-	const tokenCount = countValueTokens(valueText);
+	const tokenCount = countStructuredShorthandTokens(candidate.propertyName, valueText);
 	return {
 		state: "suppressed",
 		propertyName: candidate.propertyName,
@@ -151,19 +150,7 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 		return true;
 	}
 
-	if (isLogicalAxisRepeatProperty(propertyName)) {
-		return true;
-	}
-
-	if (isInsetProperty(propertyName)) {
-		return true;
-	}
-
-	if (isScrollMarginProperty(propertyName)) {
-		return true;
-	}
-
-	if (isCornerRadiusProperty(propertyName)) {
+	if (isStructuredShorthandProperty(propertyName)) {
 		return true;
 	}
 
@@ -173,76 +160,6 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 	}
 
 	return shorthandExpansion.length > 1;
-}
-
-function countBorderRadiusTokens(valueText: string): number {
-	let tokenCount = 0;
-	let maxTokenCount = 0;
-	let depth = 0;
-	let quote: string | null = null;
-	let inToken = false;
-
-	for (const character of valueText) {
-		if (quote) {
-			if (character === quote) {
-				quote = null;
-			}
-			inToken = true;
-			continue;
-		}
-
-		if (character === '"' || character === "'") {
-			quote = character;
-			inToken = true;
-			continue;
-		}
-
-		if (character === "(" || character === "[" || character === "{") {
-			depth += 1;
-			inToken = true;
-			continue;
-		}
-
-		if ((character === ")" || character === "]" || character === "}") && depth > 0) {
-			depth -= 1;
-			inToken = true;
-			continue;
-		}
-
-		if (depth === 0 && character === "/") {
-			if (inToken) {
-				tokenCount += 1;
-				inToken = false;
-			}
-
-			if (tokenCount > maxTokenCount) {
-				maxTokenCount = tokenCount;
-			}
-
-			tokenCount = 0;
-			continue;
-		}
-
-		if (depth === 0 && (character === "," || /\s/.test(character))) {
-			if (inToken) {
-				tokenCount += 1;
-				inToken = false;
-			}
-			continue;
-		}
-
-		inToken = true;
-	}
-
-	if (inToken) {
-		tokenCount += 1;
-	}
-
-	if (tokenCount > maxTokenCount) {
-		maxTokenCount = tokenCount;
-	}
-
-	return Math.max(1, maxTokenCount);
 }
 
 function hasBoundedRepetition(syntax: string): boolean {

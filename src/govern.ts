@@ -12,6 +12,14 @@ export type CssHintGovernance = {
 
 const DEFAULT_MAX_LABEL_LENGTH = 32;
 
+export function normalizeHintLabelForDisplay(label: string, maxLabelLength = DEFAULT_MAX_LABEL_LENGTH): string {
+	if (label.length <= maxLabelLength) {
+		return label;
+	}
+
+	return label.slice(0, maxLabelLength);
+}
+
 export function createCssHintGovernance(options: CssHintGovernanceOptions = {}): CssHintGovernance {
 	const maxLabelLength = options.maxLabelLength ?? DEFAULT_MAX_LABEL_LENGTH;
 
@@ -64,13 +72,14 @@ function compareHints(left: InlayHint, right: InlayHint): number {
 
 function truncateHintLabel(hint: InlayHint, maxLabelLength: number): InlayHint {
 	const label = normalizeHintLabel(hint.label);
-	if (label.length <= maxLabelLength) {
+	const normalizedLabel = normalizeHintLabelForDisplay(label, maxLabelLength);
+	if (normalizedLabel === label) {
 		return hint;
 	}
 
 	return {
 		...hint,
-		label: label.slice(0, maxLabelLength),
+		label: normalizedLabel,
 	};
 }
 

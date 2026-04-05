@@ -6,6 +6,7 @@ import { createCssExtractor } from "../../src/extractor.js";
 import { createServiceScheduler } from "../../src/scheduler.js";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 import { assertGeneratedSchedulerE2E } from "../lib/generatedSchedulerE2E.js";
+import { assertNoSemanticMultiValueNoHintCases } from "../../src/helper/labelValidation.js";
 import { classifyPropertyStructure, isDesignedNoHintProperty } from "../../src/helper/noHintDesign.js";
 import { getPropertyStatus, getPropertySyntax, listPropertyNames } from "../../src/propertySyntax.js";
 import type { CssExtractorCandidate } from "../../src/extractor.js";
@@ -51,6 +52,9 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 		const matchedCases = cases.filter((generatedCase) => isMatchedHintCase(classifier, extractor, generatedCase.code));
 
 		if (matchedCases.length === 0) {
+			if (isDesignedNoHintProperty(propertyName)) {
+				assertNoSemanticMultiValueNoHintCases(propertyName, cases);
+			}
 			pushNoHintProperty(propertyName, cases, noHintDesignedPropertyNames, noHintTodoPropertyNames);
 			continue;
 		}
@@ -150,4 +154,6 @@ function main(): void {
 		});
 }
 
-main();
+if (require.main === module) {
+	main();
+}

@@ -10,6 +10,9 @@ import {
 } from "../../src/propertySyntax.js";
 import { createCssShapeParser } from "../../src/shapeParser.js";
 import { getDirectionalFamily } from "../../src/propertySyntax.js";
+import { normalizeHintLabelForDisplay } from "../../src/govern.js";
+import { collectShorthandValueTokens } from "../../src/helper/classifyNormalize.js";
+import { resolveShorthandSemanticHints } from "../../src/helper/shorthandSemantics.js";
 import { mapGridLineTokenLabel } from "./gridLineHintLabels.js";
 
 type CssExtractorCandidate = {
@@ -96,14 +99,52 @@ export function buildGeneratedSchedulerExpectedHints(options: {
 		throw new Error(`Fallback label inference detected for ${propertyName}: ${fallbackLabel}`);
 	}
 
+	const semanticHints = resolveShorthandSemanticHints(
+		propertyName,
+		document,
+		{
+			state: "matched",
+			propertyName,
+			label: fallbackLabel,
+			valueText,
+			kind: "Parameter",
+			strategy: "inline-right",
+			tokenCount,
+			range: {
+				start: valueRangeStart,
+				end: {
+					line: valueRangeStart.line,
+					character: valueRangeStart.character + valueText.length,
+				},
+			},
+			valueRange: {
+				start: valueRangeStart,
+				end: {
+					line: valueRangeStart.line,
+					character: valueRangeStart.character + valueText.length,
+				},
+			},
+		},
+		collectValueTokens(propertyName, valueText),
+		labelParts,
+	);
+	if (semanticHints) {
+		return semanticHints.map((hint) => ({
+			label: normalizeHintLabelForDisplay(`${hint.label}:`),
+			position: hint.position,
+		}));
+	}
+
 	for (const [index, match] of collectValueTokens(propertyName, valueText).entries()) {
-		const label = labelParts[index] ?? "";
-		if (!label) {
+		const labelPart = labelParts[index]?.trim() ?? "";
+		if (!labelPart) {
 			continue;
 		}
 
+		const label = normalizeHintLabelForDisplay(`${labelPart}:`);
+
 		positions.push({
-			label: `${label}:`,
+			label,
 			position: document.positionAt(valueStartOffset + (match.index ?? 0)),
 		});
 	}
@@ -121,9 +162,8 @@ function renderGeneratedValueText(propertyName: string, valueAtoms: readonly { t
 	return valueAtoms.map((atom) => atom.text).join(separator);
 }
 
-function collectValueTokens(propertyName: string, valueText: string): Array<{ index: number; text: string }> {
-	const pattern = usesCommaSeparatedRepeatableListSyntax(propertyName) ? /[^\s,]+/g : /[^\s/]+/g;
-	return [...valueText.matchAll(pattern)].map((match) => ({ index: match.index ?? 0, text: match[0] ?? "" }));
+function collectValueTokens(_propertyName: string, valueText: string): Array<{ index: number; text: string }> {
+	return collectShorthandValueTokens(valueText).map((token) => ({ index: token.index, text: token.text }));
 }
 
 function inferLabelParts(propertyName: string, valueText: string, tokenCount: number): string[] {

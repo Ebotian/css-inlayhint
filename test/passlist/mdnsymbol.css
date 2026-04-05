@@ -6785,3 +6785,503 @@
 }
 
 /* Generated from MDN syntax pages for parser pipeline coverage */
+
+/* Generated from MDN syntax pages for parser pipeline coverage */
+
+/* background-position */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background-position#syntax */
+/* examples: 18 */
+/* Keyword values */
+.mdn-symbol-background-position-001 {
+  background-position: top;
+}
+.mdn-symbol-background-position-002 {
+  background-position: bottom;
+}
+.mdn-symbol-background-position-003 {
+  background-position: left;
+}
+.mdn-symbol-background-position-004 {
+  background-position: right;
+}
+.mdn-symbol-background-position-005 {
+  background-position: center;
+}
+/* Keyword values */
+/* <percentage> values */
+.mdn-symbol-background-position-006 {
+  background-position: 25% 75%;
+}
+/* Keyword values */
+/* <percentage> values */
+/* <length> values */
+.mdn-symbol-background-position-007 {
+  background-position: 0 0;
+}
+.mdn-symbol-background-position-008 {
+  background-position: 1cm 2cm;
+}
+.mdn-symbol-background-position-009 {
+  background-position: 10ch 8em;
+}
+/* Edge offsets values */
+.mdn-symbol-background-position-010 {
+  background-position: bottom 10px right 20px;
+}
+.mdn-symbol-background-position-011 {
+  background-position: right 3em bottom 10px;
+}
+.mdn-symbol-background-position-012 {
+  background-position: bottom 10px right;
+}
+.mdn-symbol-background-position-013 {
+  background-position: top right 10px;
+}
+/* Edge offsets values */
+/* Global values */
+.mdn-symbol-background-position-014 {
+  background-position: inherit;
+}
+.mdn-symbol-background-position-015 {
+  background-position: initial;
+}
+.mdn-symbol-background-position-016 {
+  background-position: revert;
+}
+.mdn-symbol-background-position-017 {
+  background-position: revert-layer;
+}
+.mdn-symbol-background-position-018 {
+  background-position: unset;
+}
+
+/* gap */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/gap#syntax */
+/* examples: 19 */
+/* One <length> value */
+.mdn-symbol-gap-001 {
+  gap: 20px;
+}
+.mdn-symbol-gap-002 {
+  gap: 1em;
+}
+.mdn-symbol-gap-003 {
+  gap: 3vmin;
+}
+.mdn-symbol-gap-004 {
+  gap: 0.5cm;
+}
+/* One <length> value */
+/* One <percentage> value */
+.mdn-symbol-gap-005 {
+  gap: 16%;
+}
+.mdn-symbol-gap-006 {
+  gap: 100%;
+}
+/* One <length> value */
+/* One <percentage> value */
+/* Two <length> values */
+.mdn-symbol-gap-007 {
+  gap: 20px 10px;
+}
+.mdn-symbol-gap-008 {
+  gap: 1em 0.5em;
+}
+.mdn-symbol-gap-009 {
+  gap: 3vmin 2vmax;
+}
+.mdn-symbol-gap-010 {
+  gap: 0.5cm 2mm;
+}
+/* One <length> value */
+/* One <percentage> value */
+/* Two <length> values */
+/* One or two <percentage> values */
+.mdn-symbol-gap-011 {
+  gap: 16% 100%;
+}
+.mdn-symbol-gap-012 {
+  gap: 21px 82%;
+}
+/* One <length> value */
+/* One <percentage> value */
+/* Two <length> values */
+/* One or two <percentage> values */
+/* calc() values */
+.mdn-symbol-gap-013 {
+  gap: calc(10% + 20px);
+}
+.mdn-symbol-gap-014 {
+  gap: calc(20px + 10%) calc(10% - 5px);
+}
+/* One <length> value */
+/* One <percentage> value */
+/* Two <length> values */
+/* One or two <percentage> values */
+/* calc() values */
+/* Global values */
+.mdn-symbol-gap-015 {
+  gap: inherit;
+}
+.mdn-symbol-gap-016 {
+  gap: initial;
+}
+.mdn-symbol-gap-017 {
+  gap: revert;
+}
+.mdn-symbol-gap-018 {
+  gap: revert-layer;
+}
+.mdn-symbol-gap-019 {
+  gap: unset;
+}
+
+/* grid-template */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-template#syntax */
+/* examples: 10 */
+/* Keyword value */
+.mdn-symbol-grid-template-001 {
+  grid-template: none;
+}
+/* Keyword value */
+/* grid-template-rows / grid-template-columns values */
+.mdn-symbol-grid-template-002 {
+  grid-template: 100px 1fr / 50px 1fr;
+}
+.mdn-symbol-grid-template-003 {
+  grid-template: auto 1fr / auto 1fr auto;
+}
+.mdn-symbol-grid-template-004 {
+  grid-template: [line-name] 100px / [column-name1] 30% [column-name2] 70%;
+}
+.mdn-symbol-grid-template-005 {
+  grid-template: fit-content(100px) / fit-content(40%);
+}
+/* Global values */
+.mdn-symbol-grid-template-006 {
+  grid-template: inherit;
+}
+.mdn-symbol-grid-template-007 {
+  grid-template: initial;
+}
+.mdn-symbol-grid-template-008 {
+  grid-template: revert;
+}
+.mdn-symbol-grid-template-009 {
+  grid-template: revert-layer;
+}
+.mdn-symbol-grid-template-010 {
+  grid-template: unset;
+}
+
+/* place-content */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/place-content#syntax */
+/* examples: 17 */
+/* Positional alignment */
+/* align-content does not take left and right values */
+.mdn-symbol-place-content-001 {
+  place-content: center start;
+}
+.mdn-symbol-place-content-002 {
+  place-content: start center;
+}
+.mdn-symbol-place-content-003 {
+  place-content: end left;
+}
+.mdn-symbol-place-content-004 {
+  place-content: flex-start center;
+}
+.mdn-symbol-place-content-005 {
+  place-content: flex-end center;
+}
+/* Positional alignment */
+/* align-content does not take left and right values */
+/* Baseline alignment */
+/* justify-content does not take baseline values */
+.mdn-symbol-place-content-006 {
+  place-content: baseline center;
+}
+.mdn-symbol-place-content-007 {
+  place-content: first baseline space-evenly;
+}
+.mdn-symbol-place-content-008 {
+  place-content: last baseline right;
+}
+/* Positional alignment */
+/* align-content does not take left and right values */
+/* Baseline alignment */
+/* justify-content does not take baseline values */
+/* Distributed alignment */
+.mdn-symbol-place-content-009 {
+  place-content: space-between space-evenly;
+}
+.mdn-symbol-place-content-010 {
+  place-content: space-around space-evenly;
+}
+.mdn-symbol-place-content-011 {
+  place-content: space-evenly stretch;
+}
+.mdn-symbol-place-content-012 {
+  place-content: stretch space-evenly;
+}
+/* Positional alignment */
+/* align-content does not take left and right values */
+/* Baseline alignment */
+/* justify-content does not take baseline values */
+/* Distributed alignment */
+/* Global values */
+.mdn-symbol-place-content-013 {
+  place-content: inherit;
+}
+.mdn-symbol-place-content-014 {
+  place-content: initial;
+}
+.mdn-symbol-place-content-015 {
+  place-content: revert;
+}
+.mdn-symbol-place-content-016 {
+  place-content: revert-layer;
+}
+.mdn-symbol-place-content-017 {
+  place-content: unset;
+}
+
+/* place-items */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/place-items#syntax */
+/* examples: 19 */
+/* Positional alignment */
+.mdn-symbol-place-items-001 {
+  place-items: center;
+}
+.mdn-symbol-place-items-002 {
+  place-items: normal start;
+}
+.mdn-symbol-place-items-003 {
+  place-items: center normal;
+}
+.mdn-symbol-place-items-004 {
+  place-items: start legacy;
+}
+.mdn-symbol-place-items-005 {
+  place-items: end normal;
+}
+.mdn-symbol-place-items-006 {
+  place-items: self-start legacy;
+}
+.mdn-symbol-place-items-007 {
+  place-items: self-end normal;
+}
+.mdn-symbol-place-items-008 {
+  place-items: flex-start legacy;
+}
+.mdn-symbol-place-items-009 {
+  place-items: flex-end normal;
+}
+.mdn-symbol-place-items-010 {
+  place-items: anchor-center;
+}
+/* Positional alignment */
+/* Baseline alignment */
+.mdn-symbol-place-items-011 {
+  place-items: baseline normal;
+}
+.mdn-symbol-place-items-012 {
+  place-items: first baseline legacy;
+}
+.mdn-symbol-place-items-013 {
+  place-items: last baseline normal;
+}
+.mdn-symbol-place-items-014 {
+  place-items: stretch legacy;
+}
+/* Positional alignment */
+/* Baseline alignment */
+/* Global values */
+.mdn-symbol-place-items-015 {
+  place-items: inherit;
+}
+.mdn-symbol-place-items-016 {
+  place-items: initial;
+}
+.mdn-symbol-place-items-017 {
+  place-items: revert;
+}
+.mdn-symbol-place-items-018 {
+  place-items: revert-layer;
+}
+.mdn-symbol-place-items-019 {
+  place-items: unset;
+}
+
+/* place-self */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/place-self#syntax */
+/* examples: 19 */
+/* Positional alignment */
+.mdn-symbol-place-self-001 {
+  place-self: auto center;
+}
+.mdn-symbol-place-self-002 {
+  place-self: normal start;
+}
+.mdn-symbol-place-self-003 {
+  place-self: center normal;
+}
+.mdn-symbol-place-self-004 {
+  place-self: start auto;
+}
+.mdn-symbol-place-self-005 {
+  place-self: end normal;
+}
+.mdn-symbol-place-self-006 {
+  place-self: self-start auto;
+}
+.mdn-symbol-place-self-007 {
+  place-self: self-end normal;
+}
+.mdn-symbol-place-self-008 {
+  place-self: flex-start auto;
+}
+.mdn-symbol-place-self-009 {
+  place-self: flex-end normal;
+}
+.mdn-symbol-place-self-010 {
+  place-self: anchor-center;
+}
+/* Positional alignment */
+/* Baseline alignment */
+.mdn-symbol-place-self-011 {
+  place-self: baseline normal;
+}
+.mdn-symbol-place-self-012 {
+  place-self: first baseline auto;
+}
+.mdn-symbol-place-self-013 {
+  place-self: last baseline normal;
+}
+.mdn-symbol-place-self-014 {
+  place-self: stretch auto;
+}
+/* Positional alignment */
+/* Baseline alignment */
+/* Global values */
+.mdn-symbol-place-self-015 {
+  place-self: inherit;
+}
+.mdn-symbol-place-self-016 {
+  place-self: initial;
+}
+.mdn-symbol-place-self-017 {
+  place-self: revert;
+}
+.mdn-symbol-place-self-018 {
+  place-self: revert-layer;
+}
+.mdn-symbol-place-self-019 {
+  place-self: unset;
+}
+
+/* Generated from MDN syntax pages for parser pipeline coverage */
+
+/* background */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background#syntax */
+/* examples: 9 */
+/* Using a <background-color> */
+.mdn-symbol-background-001 {
+  background: green;
+}
+/* Using a <background-color> */
+/* Using a <bg-image> and <repeat-style> */
+.mdn-symbol-background-002 {
+  background: url("test.jpg") repeat-y;
+}
+/* Using a <background-color> */
+/* Using a <bg-image> and <repeat-style> */
+/* Using a <visual-box> and <'background-color'> */
+.mdn-symbol-background-003 {
+  background: border-box red;
+}
+/* Using a <background-color> */
+/* Using a <bg-image> and <repeat-style> */
+/* Using a <visual-box> and <'background-color'> */
+/* A single image, centered and scaled */
+.mdn-symbol-background-004 {
+  background: no-repeat center/80% url("../img/image.png");
+}
+/* Using a <background-color> */
+/* Using a <bg-image> and <repeat-style> */
+/* Using a <visual-box> and <'background-color'> */
+/* A single image, centered and scaled */
+/* Global values */
+.mdn-symbol-background-005 {
+  background: inherit;
+}
+.mdn-symbol-background-006 {
+  background: initial;
+}
+.mdn-symbol-background-007 {
+  background: revert;
+}
+.mdn-symbol-background-008 {
+  background: revert-layer;
+}
+.mdn-symbol-background-009 {
+  background: unset;
+}
+
+/* mask */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mask#syntax */
+/* examples: 14 */
+/* Keyword values */
+.mdn-symbol-mask-001 {
+  mask: none;
+}
+/* Keyword values */
+/* Image values */
+.mdn-symbol-mask-002 {
+  mask: url("mask.png"); /* Raster image used as mask */
+}
+.mdn-symbol-mask-003 {
+  mask: url("masks.svg#star"); /* SVG used as mask */
+}
+/* Keyword values */
+/* Image values */
+/* Combined values */
+.mdn-symbol-mask-004 {
+  mask: url("masks.svg#star") luminance; /* Luminance mask */
+}
+.mdn-symbol-mask-005 {
+  mask: url("masks.svg#star") 40px 20px; /* Mask positioned 40px from the top and 20px from the left */
+}
+.mdn-symbol-mask-006 {
+  mask: url("masks.svg#star") 0 0/50px 50px; /* Mask with a width and height of 50px */
+}
+.mdn-symbol-mask-007 {
+  mask: url("masks.svg#star") repeat-x; /* Horizontally-repeated mask */
+}
+.mdn-symbol-mask-008 {
+  mask: url("masks.svg#star") stroke-box; /* Mask extends to the inside edge of the stroke box */
+}
+.mdn-symbol-mask-009 {
+  mask: url("masks.svg#star") exclude; /* Mask combined with background using non-overlapping parts */
+}
+/* Global values */
+.mdn-symbol-mask-010 {
+  mask: inherit;
+}
+.mdn-symbol-mask-011 {
+  mask: initial;
+}
+.mdn-symbol-mask-012 {
+  mask: revert;
+}
+.mdn-symbol-mask-013 {
+  mask: revert-layer;
+}
+.mdn-symbol-mask-014 {
+  mask: unset;
+}
+
+/* Generated from MDN syntax pages for parser pipeline coverage */
+
+/* Generated from MDN syntax pages for parser pipeline coverage */

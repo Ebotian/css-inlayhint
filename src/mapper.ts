@@ -6,9 +6,10 @@ import {
 	assertNoPropertyNameEchoLabels,
 	assertNoValueEchoLabels,
 } from "./helper/labelValidation.js";
-import { tokenizeShorthandValueText } from "./helper/classifyNormalize.js";
+import { compactShorthandLabels, shouldCompactShorthandLabels } from "./helper/classifyNormalize.js";
+import { buildShorthandSemanticLabelSlots } from "./helper/shorthandSemantics.js";
+import { isBorderRadiusProperty, isCornerShapeProperty } from "./helper/structuredShorthand.js";
 import { getShorthandLabelParts } from "./propertySyntax";
-import { classifyStandardText } from "./share/cssValueAtoms.js";
 
 export type CssHintMapper = {
 	map(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
@@ -56,25 +57,32 @@ function mapInstruction(instruction: CssHintInstruction): CssHintInstruction {
 	}
 
 	const mappedLabel = mapShorthandLabel(instruction.propertyName, instruction.tokenCount, instruction.valueText);
-	if (!mappedLabel) {
+	if (mappedLabel === null) {
 		return instruction;
 	}
 
-	if (instruction.propertyName === "animation-range") {
-		const labelSlots = buildAnimationRangeLabelSlots(instruction.valueText, mappedLabel.split(", "));
-		if (labelSlots) {
-			return { ...instruction, label: mappedLabel, labelSlots };
-		}
+	const labelParts = mappedLabel.split(", ").map((part) => part.trim());
+	if (labelParts.length <= 1) {
+		return {
+			...instruction,
+			label: mappedLabel,
+		};
+	}
+
+	const labelSlots = buildShorthandSemanticLabelSlots(instruction.propertyName, instruction.valueText, labelParts);
+	if (labelSlots) {
+		return { ...instruction, label: mappedLabel, labelSlots };
 	}
 
 	return {
 		...instruction,
 		label: mappedLabel,
+		labelSlots: labelParts,
 	};
 }
 
 function mapShorthandLabel(propertyName: string, tokenCount: number, valueText?: string): string | null {
-	if (propertyName === "border-radius") {
+	if (isBorderRadiusProperty(propertyName)) {
 		return mapCornerLabel(tokenCount);
 	}
 
@@ -85,11 +93,17 @@ function mapShorthandLabel(propertyName: string, tokenCount: number, valueText?:
 			return null;
 		}
 
-		assertNoGlobalLabels(propertyName, shorthandLabelParts);
-		assertNoPropertyNameEchoLabels(propertyName, shorthandLabelParts);
-		assertNoValueEchoLabels(propertyName, valueText, shorthandLabelParts);
+		const normalizedLabelParts = isCornerShapeProperty(propertyName)
+			? [...shorthandLabelParts]
+			: shouldCompactShorthandLabels(shorthandLabelParts)
+				? compactShorthandLabels(shorthandLabelParts)
+				: [...shorthandLabelParts];
 
-		return shorthandLabelParts.join(", ");
+		assertNoGlobalLabels(propertyName, normalizedLabelParts);
+		assertNoPropertyNameEchoLabels(propertyName, normalizedLabelParts);
+		assertNoValueEchoLabels(propertyName, valueText, normalizedLabelParts);
+
+		return normalizedLabelParts.join(", ");
 	}
 
 	return mapBoxSideLabel(propertyName, tokenCount, directions);
@@ -119,7 +133,10 @@ function mapBoxSideLabel(
 }
 
 function mapGridAreaLabel(valueText: string): string {
-	const labels = [...valueText.matchAll(/[^\s/]+/g)].map((match) => mapGridAreaTokenLabel(match[0] ?? "") ?? "");
+	const labels = valueText
+		.split("/")
+		.flatMap((part) => part.trim().split(/\s+/).filter(Boolean))
+		.map((token) => mapGridAreaTokenLabel(token) ?? "");
 
 	return labels.join(", ");
 }
@@ -182,53 +199,6 @@ function formatCornerName(name: string): string {
 
 	return `${prefix}-${suffix === "left" ? "L" : "R"}`;
 }
-
-function buildAnimationRangeLabelSlots(valueText: string, labelParts: readonly string[]): string[] | null {
-	if (labelParts.length !== 2) {
-		return null;
-	}
-
-	const tokens = tokenizeShorthandValueText(valueText);
-	if (tokens.length === 0) {
-		return null;
-	}
-
-	const slots = Array.from({ length: tokens.length }, () => "");
-	slots[0] = labelParts[0] ?? "";
-
-	if (tokens.length === 1) {
-		return slots;
-	}
-
-	const secondLabelIndex = shouldShiftAnimationRangeEndLabel(tokens) ? 2 : 1;
-	if (secondLabelIndex >= tokens.length) {
-		return null;
-	}
-
-	slots[secondLabelIndex] = labelParts[1] ?? "";
-	return slots;
-}
-
-function shouldShiftAnimationRangeEndLabel(tokens: readonly string[]): boolean {
-	if (tokens.length < 3) {
-		return false;
-	}
-
-	const firstToken = tokens[0]?.toLowerCase();
-	const secondToken = tokens[1] ?? "";
-	if (!firstToken || !ANIMATION_RANGE_RANGE_NAME_TOKENS.has(firstToken)) {
-		return false;
-	}
-
-	return isLengthPercentageToken(secondToken);
-}
-
-function isLengthPercentageToken(token: string): boolean {
-	const atom = classifyStandardText(token, { allowsColor: false });
-	return atom?.kind === "length" || atom?.kind === "percent" || atom?.kind === "zero";
-}
-
-const ANIMATION_RANGE_RANGE_NAME_TOKENS = new Set(["cover", "contain", "entry", "exit"]);
 
 function getDirectionalFamily(propertyName: string): readonly string[] | null {
 	const expanded = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];

@@ -1,3 +1,11 @@
+import { tokenizeShorthandValueText } from "./classifyNormalize.js";
+import { getShorthandLabelParts } from "../propertySyntax.js";
+
+type SemanticValueCase = {
+	description: string;
+	valueAtoms: readonly { kind: string; text: string }[];
+};
+
 export function assertNoGlobalLabels(propertyName: string, labelParts: readonly string[]): void {
 	if (labelParts.some((part) => part === "global")) {
 		throw new Error(`Forbidden label "global" for ${propertyName}`);
@@ -21,7 +29,7 @@ export function assertNoValueEchoLabels(
 		return;
 	}
 
-	const valueParts = valueText.match(/[^\s,]+/g) ?? [];
+	const valueParts = tokenizeShorthandValueText(valueText);
 	const compactLabelParts = labelParts.map((part) => part.trim()).filter((part) => part.length > 0);
 	if (valueParts.length === 0 || compactLabelParts.length === 0) {
 		return;
@@ -46,6 +54,47 @@ export function assertNoValueEchoLabels(
 	}
 }
 
+export function assertNoDuplicateLabels(
+	propertyName: string,
+	labelParts: readonly string[],
+	allowDuplicateLabels: boolean,
+): void {
+	if (allowDuplicateLabels) {
+		return;
+	}
+
+	const compactLabelParts = labelParts.filter((part) => part.length > 0);
+	if (new Set(compactLabelParts).size !== compactLabelParts.length) {
+		throw new Error(`Duplicate label detected for ${propertyName}: ${compactLabelParts.join(", ")}`);
+	}
+}
+
+export function validateLabelParts(
+	propertyName: string,
+	labelParts: readonly string[],
+	allowDuplicateLabels: boolean,
+): void {
+	assertNoGlobalLabels(propertyName, labelParts);
+	assertNoPropertyNameEchoLabels(propertyName, labelParts);
+	assertNoDuplicateLabels(propertyName, labelParts, allowDuplicateLabels);
+}
+
+export function assertNoSemanticMultiValueNoHintCases(
+	propertyName: string,
+	cases: ReadonlyArray<SemanticValueCase>,
+): void {
+	const semanticMultiValueCases = cases.filter((generatedCase) =>
+		hasSemanticMultiValueLabelCase(propertyName, generatedCase),
+	);
+	if (semanticMultiValueCases.length === 0) {
+		return;
+	}
+
+	throw new Error(
+		`Property ${propertyName} has semantic multi-value cases without generated hints: ${semanticMultiValueCases[0]?.description ?? "unknown"}`,
+	);
+}
+
 function isSingleValueEcho(
 	propertyName: string,
 	valueParts: readonly string[],
@@ -62,4 +111,18 @@ function getPropertyNameSuffix(propertyName: string): string {
 			.filter(Boolean)
 			.at(-1) ?? ""
 	);
+}
+
+function hasSemanticMultiValueLabelCase(propertyName: string, generatedCase: SemanticValueCase): boolean {
+	const meaningfulAtoms = generatedCase.valueAtoms.filter((atom) => atom.kind !== "global");
+	if (meaningfulAtoms.length < 2) {
+		return false;
+	}
+
+	const inferredLabels = getShorthandLabelParts(
+		propertyName,
+		meaningfulAtoms.length,
+		meaningfulAtoms.map((atom) => atom.text).join(" "),
+	);
+	return Boolean(inferredLabels && inferredLabels.length > 0);
 }

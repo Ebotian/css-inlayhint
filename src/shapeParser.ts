@@ -1,5 +1,6 @@
 import type { CssHintInstruction } from "./collector";
 import { isGridLineProperty } from "./propertySyntax";
+import { isBorderRadiusProperty } from "./helper/structuredShorthand.js";
 
 export type CssHintShapeParser = {
 	parse(instructions: readonly CssHintInstruction[]): CssHintInstruction[];
@@ -36,7 +37,7 @@ type GridLineRule = {
 
 const SHAPE_RULES: readonly ShapeRule[] = [
 	{
-		matches: (instruction) => instruction.propertyName === "border-radius",
+		matches: (instruction) => isBorderRadiusProperty(instruction.propertyName),
 		parse: (instruction) => ({ family: "box-corners", tokenCount: instruction.tokenCount }),
 	},
 	{
