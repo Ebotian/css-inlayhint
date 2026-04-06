@@ -56,8 +56,9 @@ test("labelValidation suppresses singleton label vocabulary properties", () => {
 
 	assert.ok(singletonProperties.length > 0, "expected singleton vocabulary properties to be declared");
 	assert.ok(singletonProperties.includes("background-image"));
-	assert.ok(!singletonProperties.includes("background-clip"));
-	assert.ok(!singletonProperties.includes("background-origin"));
+	assert.ok(singletonProperties.includes("background-clip"));
+	assert.ok(singletonProperties.includes("background-origin"));
+	assert.ok(!singletonProperties.includes("border-right-width"));
 
 	for (const propertyName of singletonProperties) {
 		const classification = classifier.classify({

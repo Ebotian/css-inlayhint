@@ -1932,6 +1932,87 @@
   padding-inline: unset;
 }
 
+/* scroll-margin */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-001 {
+  scroll-margin: 10px;
+}
+.mdn-symbol-scroll-margin-002 {
+  scroll-margin: 1em 0.5em 1em 1em;
+}
+/* Global values */
+.mdn-symbol-scroll-margin-003 {
+  scroll-margin: inherit;
+}
+.mdn-symbol-scroll-margin-004 {
+  scroll-margin: initial;
+}
+.mdn-symbol-scroll-margin-005 {
+  scroll-margin: revert;
+}
+.mdn-symbol-scroll-margin-006 {
+  scroll-margin: revert-layer;
+}
+.mdn-symbol-scroll-margin-007 {
+  scroll-margin: unset;
+}
+
+/* scroll-margin-block */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-block#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-block-001 {
+  scroll-margin-block: 10px;
+}
+.mdn-symbol-scroll-margin-block-002 {
+  scroll-margin-block: 1em 0.5em;
+}
+/* Global values */
+.mdn-symbol-scroll-margin-block-003 {
+  scroll-margin-block: inherit;
+}
+.mdn-symbol-scroll-margin-block-004 {
+  scroll-margin-block: initial;
+}
+.mdn-symbol-scroll-margin-block-005 {
+  scroll-margin-block: revert;
+}
+.mdn-symbol-scroll-margin-block-006 {
+  scroll-margin-block: revert-layer;
+}
+.mdn-symbol-scroll-margin-block-007 {
+  scroll-margin-block: unset;
+}
+
+/* scroll-margin-inline */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-inline#syntax */
+/* examples: 7 */
+/* <length> values */
+.mdn-symbol-scroll-margin-inline-001 {
+  scroll-margin-inline: 10px;
+}
+.mdn-symbol-scroll-margin-inline-002 {
+  scroll-margin-inline: 1em 0.5em;
+}
+/* Global values */
+.mdn-symbol-scroll-margin-inline-003 {
+  scroll-margin-inline: inherit;
+}
+.mdn-symbol-scroll-margin-inline-004 {
+  scroll-margin-inline: initial;
+}
+.mdn-symbol-scroll-margin-inline-005 {
+  scroll-margin-inline: revert;
+}
+.mdn-symbol-scroll-margin-inline-006 {
+  scroll-margin-inline: revert-layer;
+}
+.mdn-symbol-scroll-margin-inline-007 {
+  scroll-margin-inline: unset;
+}
+
 /* scroll-padding */
 /* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-padding#syntax */
 /* examples: 9 */
@@ -2526,6 +2607,42 @@
   aspect-ratio: unset;
 }
 
+/* background-clip */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background-clip#syntax */
+/* examples: 10 */
+/* Keyword values */
+.mdn-symbol-background-clip-001 {
+  background-clip: border-box;
+}
+.mdn-symbol-background-clip-002 {
+  background-clip: padding-box;
+}
+.mdn-symbol-background-clip-003 {
+  background-clip: content-box;
+}
+.mdn-symbol-background-clip-004 {
+  background-clip: text;
+}
+.mdn-symbol-background-clip-005 {
+  background-clip: border-area;
+}
+/* Global values */
+.mdn-symbol-background-clip-006 {
+  background-clip: inherit;
+}
+.mdn-symbol-background-clip-007 {
+  background-clip: initial;
+}
+.mdn-symbol-background-clip-008 {
+  background-clip: revert;
+}
+.mdn-symbol-background-clip-009 {
+  background-clip: revert-layer;
+}
+.mdn-symbol-background-clip-010 {
+  background-clip: unset;
+}
+
 /* background-color */
 /* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background-color#syntax */
 /* examples: 9 */
@@ -2591,6 +2708,36 @@
 }
 .mdn-symbol-background-image-008 {
   background-image: unset;
+}
+
+/* background-origin */
+/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background-origin#syntax */
+/* examples: 8 */
+/* Keyword values */
+.mdn-symbol-background-origin-001 {
+  background-origin: border-box;
+}
+.mdn-symbol-background-origin-002 {
+  background-origin: padding-box;
+}
+.mdn-symbol-background-origin-003 {
+  background-origin: content-box;
+}
+/* Global values */
+.mdn-symbol-background-origin-004 {
+  background-origin: inherit;
+}
+.mdn-symbol-background-origin-005 {
+  background-origin: initial;
+}
+.mdn-symbol-background-origin-006 {
+  background-origin: revert;
+}
+.mdn-symbol-background-origin-007 {
+  background-origin: revert-layer;
+}
+.mdn-symbol-background-origin-008 {
+  background-origin: unset;
 }
 
 /* block-size */
@@ -6855,222 +7002,6 @@
 }
 .mdn-symbol-reading-order-007 {
   reading-order: unset;
-}
-
-/* scroll-margin-block-end */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-block-end#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-block-end-001 {
-  scroll-margin-block-end: 10px;
-}
-.mdn-symbol-scroll-margin-block-end-002 {
-  scroll-margin-block-end: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-block-end-003 {
-  scroll-margin-block-end: inherit;
-}
-.mdn-symbol-scroll-margin-block-end-004 {
-  scroll-margin-block-end: initial;
-}
-.mdn-symbol-scroll-margin-block-end-005 {
-  scroll-margin-block-end: revert;
-}
-.mdn-symbol-scroll-margin-block-end-006 {
-  scroll-margin-block-end: revert-layer;
-}
-.mdn-symbol-scroll-margin-block-end-007 {
-  scroll-margin-block-end: unset;
-}
-
-/* scroll-margin-block-start */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-block-start#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-block-start-001 {
-  scroll-margin-block-start: 10px;
-}
-.mdn-symbol-scroll-margin-block-start-002 {
-  scroll-margin-block-start: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-block-start-003 {
-  scroll-margin-block-start: inherit;
-}
-.mdn-symbol-scroll-margin-block-start-004 {
-  scroll-margin-block-start: initial;
-}
-.mdn-symbol-scroll-margin-block-start-005 {
-  scroll-margin-block-start: revert;
-}
-.mdn-symbol-scroll-margin-block-start-006 {
-  scroll-margin-block-start: revert-layer;
-}
-.mdn-symbol-scroll-margin-block-start-007 {
-  scroll-margin-block-start: unset;
-}
-
-/* scroll-margin-bottom */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-bottom#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-bottom-001 {
-  scroll-margin-bottom: 10px;
-}
-.mdn-symbol-scroll-margin-bottom-002 {
-  scroll-margin-bottom: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-bottom-003 {
-  scroll-margin-bottom: inherit;
-}
-.mdn-symbol-scroll-margin-bottom-004 {
-  scroll-margin-bottom: initial;
-}
-.mdn-symbol-scroll-margin-bottom-005 {
-  scroll-margin-bottom: revert;
-}
-.mdn-symbol-scroll-margin-bottom-006 {
-  scroll-margin-bottom: revert-layer;
-}
-.mdn-symbol-scroll-margin-bottom-007 {
-  scroll-margin-bottom: unset;
-}
-
-/* scroll-margin-inline-end */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-inline-end#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-inline-end-001 {
-  scroll-margin-inline-end: 10px;
-}
-.mdn-symbol-scroll-margin-inline-end-002 {
-  scroll-margin-inline-end: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-inline-end-003 {
-  scroll-margin-inline-end: inherit;
-}
-.mdn-symbol-scroll-margin-inline-end-004 {
-  scroll-margin-inline-end: initial;
-}
-.mdn-symbol-scroll-margin-inline-end-005 {
-  scroll-margin-inline-end: revert;
-}
-.mdn-symbol-scroll-margin-inline-end-006 {
-  scroll-margin-inline-end: revert-layer;
-}
-.mdn-symbol-scroll-margin-inline-end-007 {
-  scroll-margin-inline-end: unset;
-}
-
-/* scroll-margin-inline-start */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-inline-start#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-inline-start-001 {
-  scroll-margin-inline-start: 10px;
-}
-.mdn-symbol-scroll-margin-inline-start-002 {
-  scroll-margin-inline-start: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-inline-start-003 {
-  scroll-margin-inline-start: inherit;
-}
-.mdn-symbol-scroll-margin-inline-start-004 {
-  scroll-margin-inline-start: initial;
-}
-.mdn-symbol-scroll-margin-inline-start-005 {
-  scroll-margin-inline-start: revert;
-}
-.mdn-symbol-scroll-margin-inline-start-006 {
-  scroll-margin-inline-start: revert-layer;
-}
-.mdn-symbol-scroll-margin-inline-start-007 {
-  scroll-margin-inline-start: unset;
-}
-
-/* scroll-margin-left */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-left#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-left-001 {
-  scroll-margin-left: 10px;
-}
-.mdn-symbol-scroll-margin-left-002 {
-  scroll-margin-left: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-left-003 {
-  scroll-margin-left: inherit;
-}
-.mdn-symbol-scroll-margin-left-004 {
-  scroll-margin-left: initial;
-}
-.mdn-symbol-scroll-margin-left-005 {
-  scroll-margin-left: revert;
-}
-.mdn-symbol-scroll-margin-left-006 {
-  scroll-margin-left: revert-layer;
-}
-.mdn-symbol-scroll-margin-left-007 {
-  scroll-margin-left: unset;
-}
-
-/* scroll-margin-right */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-right#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-right-001 {
-  scroll-margin-right: 10px;
-}
-.mdn-symbol-scroll-margin-right-002 {
-  scroll-margin-right: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-right-003 {
-  scroll-margin-right: inherit;
-}
-.mdn-symbol-scroll-margin-right-004 {
-  scroll-margin-right: initial;
-}
-.mdn-symbol-scroll-margin-right-005 {
-  scroll-margin-right: revert;
-}
-.mdn-symbol-scroll-margin-right-006 {
-  scroll-margin-right: revert-layer;
-}
-.mdn-symbol-scroll-margin-right-007 {
-  scroll-margin-right: unset;
-}
-
-/* scroll-margin-top */
-/* source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-margin-top#syntax */
-/* examples: 7 */
-/* <length> values */
-.mdn-symbol-scroll-margin-top-001 {
-  scroll-margin-top: 10px;
-}
-.mdn-symbol-scroll-margin-top-002 {
-  scroll-margin-top: 1em;
-}
-/* Global values */
-.mdn-symbol-scroll-margin-top-003 {
-  scroll-margin-top: inherit;
-}
-.mdn-symbol-scroll-margin-top-004 {
-  scroll-margin-top: initial;
-}
-.mdn-symbol-scroll-margin-top-005 {
-  scroll-margin-top: revert;
-}
-.mdn-symbol-scroll-margin-top-006 {
-  scroll-margin-top: revert-layer;
-}
-.mdn-symbol-scroll-margin-top-007 {
-  scroll-margin-top: unset;
 }
 
 /* shape-image-threshold */

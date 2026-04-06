@@ -12,6 +12,7 @@ import {
 	getNoHintDesignKind,
 	isDesignedNoHintProperty,
 } from "../../src/helper/noHintDesign.js";
+import { isIgnoredScrollMarginPaddingLonghandProperty } from "../../src/helper/judgment.js";
 import { getPropertyStatus, getPropertySyntax, listPropertyNames } from "../../src/propertySyntax.js";
 import type { CssExtractorCandidate } from "../../src/extractor.js";
 import type { GeneratedCssCase } from "../lib/cssCaseModel.js";
@@ -38,6 +39,10 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 	const scheduler = createServiceScheduler();
 	const candidatePropertyNames = listPropertyNames().filter((propertyName) => {
 		if (propertyName.startsWith("-")) {
+			return false;
+		}
+
+		if (isIgnoredScrollMarginPaddingLonghandProperty(propertyName)) {
 			return false;
 		}
 

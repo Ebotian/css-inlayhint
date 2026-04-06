@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
 	isGridLineProperty,
+	isIgnoredScrollMarginPaddingLonghandProperty,
 	usesCommaSeparatedRepeatableListSyntax,
 	usesSlashSeparatedGridLineSyntax,
 	usesUnorderedOptionalGroupSyntax,
@@ -10,6 +11,9 @@ import {
 
 test("judgment classifies syntax families", () => {
 	assert.equal(isGridLineProperty("grid-column"), true);
+	assert.equal(isIgnoredScrollMarginPaddingLonghandProperty("scroll-margin-top"), true);
+	assert.equal(isIgnoredScrollMarginPaddingLonghandProperty("scroll-padding-inline-end"), true);
+	assert.equal(isIgnoredScrollMarginPaddingLonghandProperty("scroll-margin"), false);
 	assert.equal(usesSlashSeparatedGridLineSyntax("grid-column"), true);
 	assert.equal(usesCommaSeparatedRepeatableListSyntax("background-position"), true);
 	assert.equal(usesUnorderedOptionalGroupSyntax("text-decoration"), true);

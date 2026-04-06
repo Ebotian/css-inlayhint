@@ -22,7 +22,6 @@ const SINGLETON_LABEL_VOCABULARY_PROPERTY_NAMES = [
 	"clip-path",
 	"column-count",
 	"column-width",
-	"container",
 	"corner-bottom-left-shape",
 	"corner-bottom-right-shape",
 	"corner-end-end-shape",

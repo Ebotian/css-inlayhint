@@ -5,6 +5,7 @@ import {
 	isGridLineProperty,
 	usesCommaSeparatedRepeatableListSyntax,
 } from "../../src/propertySyntax.js";
+import { isLogicalAxisRepeatProperty, isScrollMarginProperty } from "../../src/helper/judgment.js";
 import {
 	parseCssSyntax as parseStandardCssSyntax,
 	parseShorthandArities as parseStandardShorthandArities,
@@ -100,7 +101,10 @@ export function createStandardPropertySamplingRule(propertyName: string): CssPro
 export function collectStandardValueAtomsForProperty(propertyName: string): CssValueAtom[] {
 	const property = getPropertyRecord(propertyName);
 	const syntaxAst = parseStandardCssSyntax(property.syntax ?? "");
-	return collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst);
+	return addScrollMarginFallbackAtoms(
+		propertyName,
+		collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst),
+	);
 }
 
 function collectGridLineValueAtoms(): CssValueAtom[] {
@@ -189,7 +193,10 @@ function collectStandardValueAtoms(
 	syntaxAst: ReturnType<typeof parseStandardCssSyntax>,
 ): CssValueAtom[] {
 	const property = getPropertyRecord(propertyName);
-	const atoms = collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst);
+	const atoms = addScrollMarginFallbackAtoms(
+		propertyName,
+		collectStandardValueAtomsFromRecord(propertyName, property, syntaxAst),
+	);
 
 	const expandedMembers = shorthandApi?.default?.expand?.(propertyName) ?? shorthandApi.expand?.(propertyName) ?? [];
 	if (!Array.isArray(expandedMembers) || expandedMembers.length === 0) {
@@ -237,6 +244,17 @@ function collectStandardValueAtoms(
 	}
 
 	return [...mergedAtomsByKind.values()].flat();
+}
+
+function addScrollMarginFallbackAtoms(propertyName: string, atoms: readonly CssValueAtom[]): CssValueAtom[] {
+	if (!isScrollMarginSamplingProperty(propertyName) || atoms.some((atom) => atom.kind === "length")) {
+		return [...atoms];
+	}
+
+	return mergeDistinctAtoms(atoms, [
+		{ kind: "length", text: "0px" },
+		{ kind: "length", text: "10px" },
+	]);
 }
 
 function collectStandardValueAtomsFromRecord(
@@ -536,4 +554,21 @@ function appendDistinctAtomWithoutCap(atomsByKind: Map<CssValueKind, CssValueAto
 
 	atoms.push(atom);
 	atomsByKind.set(atom.kind, atoms);
+}
+
+function isScrollMarginSamplingProperty(propertyName: string): boolean {
+	return isScrollMarginProperty(propertyName) || isLogicalAxisRepeatProperty(propertyName);
+}
+
+function mergeDistinctAtoms(baseAtoms: readonly CssValueAtom[], extraAtoms: readonly CssValueAtom[]): CssValueAtom[] {
+	const atomsByKind = new Map<CssValueKind, CssValueAtom[]>();
+	for (const atom of baseAtoms) {
+		appendDistinctAtomWithoutCap(atomsByKind, atom);
+	}
+
+	for (const atom of extraAtoms) {
+		appendDistinctAtomWithoutCap(atomsByKind, atom);
+	}
+
+	return [...atomsByKind.values()].flat();
 }

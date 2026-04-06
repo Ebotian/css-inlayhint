@@ -20,6 +20,12 @@ export function isScrollMarginProperty(propertyName: string): boolean {
 	return propertyName === "scroll-margin";
 }
 
+export function isIgnoredScrollMarginPaddingLonghandProperty(propertyName: string): boolean {
+	return /^(?:scroll-margin|scroll-padding)-(?:block-start|block-end|inline-start|inline-end|top|right|bottom|left)$/.test(
+		propertyName,
+	);
+}
+
 export function usesSlashSeparatedGridLineSyntax(propertyName: string): boolean {
 	const syntax = getPropertySyntax(propertyName);
 	return syntax.includes("<grid-line>") && syntax.includes("/");
