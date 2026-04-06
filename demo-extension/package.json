@@ -1,19 +1,42 @@
 {
-	"name": "css-inlay-hint-demo",
-	"displayName": "CSS Inlay Hint Demo",
-	"description": "Local VS Code extension to preview CSS inlay hints from this repository.",
-	"version": "0.0.1",
-	"private": true,
-	"type": "module",
+	"publisher": "Nicolette86132",
+	"name": "css-inlayhint",
+	"displayName": "css-inlayhint",
+	"description": "A LSP implementation for CSS inlay hints",
+	"version": "0.0.2",
+	"license": "ISC",
+	"icon": "./css-inlayhint-extension.png",
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Ebotian/css-inlayhint.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Ebotian/css-inlayhint/issues"
+	},
+	"homepage": "https://github.com/Ebotian/css-inlayhint#readme",
 	"engines": {
 		"vscode": "^1.87.0"
 	},
 	"main": "./out/extension.js",
 	"activationEvents": [
+		"onStartupFinished",
 		"onLanguage:css"
 	],
+	"dependencies": {
+		"css-shorthand-properties": "^1.1.2",
+		"css-tree": "^3.2.1",
+		"fast-cartesian": "^9.0.1",
+		"mdn-data": "^2.27.1",
+		"vscode-css-languageservice": "^6.3.10",
+		"vscode-languageserver": "^9.0.1"
+	},
 	"scripts": {
 		"compile": "pnpm exec tsc -p .",
-		"watch": "pnpm exec tsc -w -p ."
+		"watch": "pnpm exec tsc -w -p .",
+		"release": "pnpm --dir .. run compile && pnpm run compile && rm -rf dist node_modules && cp -R ../dist ./dist && cp -RL ../node_modules ./dist/node_modules && cp -R ./dist/node_modules/.pnpm/*/node_modules/* ./dist/node_modules/ && pnpm dlx @vscode/vsce package --no-dependencies --follow-symlinks --allow-unused-files-pattern --out css-inlayhint-0.0.2.vsix"
 	}
 }

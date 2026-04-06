@@ -4,5 +4,7 @@
 /dist
 /dist-test
 /learning-CSS
-/demo-extension
-
+/demo-extension/out
+/demo-extension/dist
+/demo-extension/*.vsix
+/demo-extension/node_modules

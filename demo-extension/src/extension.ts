@@ -1,5 +1,20 @@
 import * as vscode from "vscode";
-import { createServiceScheduler, type InlayHint } from "../../dist/index.js";
+import type { InlayHint } from "../../dist/index.js";
+
+type ServiceSchedulerModule = {
+	createServiceScheduler: typeof import("../../dist/index.js").createServiceScheduler;
+};
+
+async function loadServiceSchedulerModule(): Promise<ServiceSchedulerModule> {
+	try {
+		return require("../../dist/index.js") as ServiceSchedulerModule;
+	} catch (error) {
+		if (error instanceof Error && error.message.includes("Cannot find module")) {
+			return require("../dist/index.js") as ServiceSchedulerModule;
+		}
+		throw error;
+	}
+}
 
 function normalizeInlayHintLabel(label: InlayHint["label"]): string {
 	if (typeof label === "string") {
@@ -33,6 +48,7 @@ function toLspRange(range: vscode.Range): {
 }
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
+	const { createServiceScheduler } = await loadServiceSchedulerModule();
 	const scheduler = createServiceScheduler();
 	const changeEmitter = new vscode.EventEmitter<void>();
 	const trackedDocuments = new Map<string, number>();
