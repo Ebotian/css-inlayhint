@@ -54,18 +54,61 @@ export function assertNoValueEchoLabels(
 	}
 }
 
+export function hasValueLabelStringOverlap(valueText: string | undefined, labelParts: readonly string[]): boolean {
+	if (!valueText) {
+		return false;
+	}
+
+	const valueParts = tokenizeShorthandValueText(valueText);
+	const compactLabelParts = labelParts.map((part) => part.trim()).filter((part) => part.length > 0);
+	if (valueParts.length === 0 || compactLabelParts.length === 0) {
+		return false;
+	}
+
+	for (const labelPart of compactLabelParts) {
+		const labelAtoms = collectStringAtoms(labelPart);
+		if (labelAtoms.length === 0) {
+			continue;
+		}
+
+		for (const valuePart of valueParts) {
+			const valueAtoms = collectStringAtoms(valuePart);
+			if (valueAtoms.length === 0) {
+				continue;
+			}
+
+			for (const labelAtom of labelAtoms) {
+				if (valueAtoms.includes(labelAtom)) {
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 export function assertNoDuplicateLabels(
 	propertyName: string,
 	labelParts: readonly string[],
-	allowDuplicateLabels: boolean,
+	allowDuplicateLabels = false,
 ): void {
 	if (allowDuplicateLabels) {
 		return;
 	}
 
-	const compactLabelParts = labelParts.filter((part) => part.length > 0);
-	if (new Set(compactLabelParts).size !== compactLabelParts.length) {
-		throw new Error(`Duplicate label detected for ${propertyName}: ${compactLabelParts.join(", ")}`);
+	const seen = new Set<string>();
+	for (const label of labelParts) {
+		const normalizedLabel = label.trim();
+		if (!normalizedLabel) {
+			continue;
+		}
+
+		if (seen.has(normalizedLabel)) {
+			throw new Error(`Duplicate label detected for ${propertyName}: ${normalizedLabel}`);
+		}
+
+		seen.add(normalizedLabel);
 	}
 }
 
@@ -111,6 +154,14 @@ function getPropertyNameSuffix(propertyName: string): string {
 			.filter(Boolean)
 			.at(-1) ?? ""
 	);
+}
+
+function collectStringAtoms(text: string): string[] {
+	return text
+		.toLowerCase()
+		.split(/[^a-z0-9]+/g)
+		.map((part) => part.trim())
+		.filter((part) => part.length > 0);
 }
 
 function hasSemanticMultiValueLabelCase(propertyName: string, generatedCase: SemanticValueCase): boolean {

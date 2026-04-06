@@ -1,10 +1,18 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { classifyPropertyStructure, isDesignedNoHintProperty } from "../../src/helper/noHintDesign.js";
+import {
+	classifyPropertyStructure,
+	getNoHintDesignKind,
+	isDesignedNoHintProperty,
+	isLogicalListNoHintProperty,
+	isStructureMappingNoHintProperty,
+} from "../../src/helper/noHintDesign.js";
 
 test("noHintDesign classifies plain generic-single properties as designed no-hint", () => {
 	assert.equal(classifyPropertyStructure("font-weight"), "generic-single");
+	assert.equal(isStructureMappingNoHintProperty("font-weight"), true);
+	assert.equal(getNoHintDesignKind("font-weight"), "structure-mapping");
 	assert.equal(isDesignedNoHintProperty("font-weight"), true);
 	assert.equal(classifyPropertyStructure("opacity"), "generic-single");
 	assert.equal(isDesignedNoHintProperty("opacity"), true);
@@ -33,6 +41,35 @@ test("noHintDesign keeps logical-axis repeat properties hintable", () => {
 	assert.equal(isDesignedNoHintProperty("scroll-margin-block"), false);
 	assert.equal(classifyPropertyStructure("scroll-margin-inline"), "generic-single");
 	assert.equal(isDesignedNoHintProperty("scroll-margin-inline"), false);
+});
+
+test("noHintDesign keeps container designed no-hint", () => {
+	assert.equal(classifyPropertyStructure("container"), "reference-only");
+	assert.equal(isStructureMappingNoHintProperty("container"), true);
+	assert.equal(getNoHintDesignKind("container"), "structure-mapping");
+	assert.equal(isDesignedNoHintProperty("container"), true);
+});
+
+test("noHintDesign marks singleton label vocabulary properties as logical-list no-hint", () => {
+	assert.equal(isLogicalListNoHintProperty("animation-delay"), true);
+	assert.equal(isLogicalListNoHintProperty("background-image"), true);
+	assert.equal(isLogicalListNoHintProperty("position-try-fallbacks"), true);
+	assert.equal(isLogicalListNoHintProperty("size"), true);
+	assert.equal(getNoHintDesignKind("animation-delay"), "logical-list");
+	assert.equal(getNoHintDesignKind("background-image"), "logical-list");
+	assert.equal(getNoHintDesignKind("position-try-fallbacks"), "logical-list");
+	assert.equal(getNoHintDesignKind("size"), "logical-list");
+	assert.equal(isDesignedNoHintProperty("animation-delay"), true);
+	assert.equal(isDesignedNoHintProperty("background-image"), true);
+});
+
+test("noHintDesign keeps grid-line properties hintable", () => {
+	assert.equal(isDesignedNoHintProperty("grid-column"), false);
+	assert.equal(isDesignedNoHintProperty("grid-column-start"), false);
+	assert.equal(isDesignedNoHintProperty("grid-column-end"), false);
+	assert.equal(isDesignedNoHintProperty("grid-row-start"), false);
+	assert.equal(isDesignedNoHintProperty("grid-row-end"), false);
+	assert.equal(isDesignedNoHintProperty("grid-area"), false);
 });
 
 test("noHintDesign keeps inset hintable", () => {

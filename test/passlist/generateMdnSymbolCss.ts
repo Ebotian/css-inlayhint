@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
+import { extractMdnSectionHtml } from "../../src/helper/mdnSections.js";
 import { buildMdnPropertyUrl } from "../../src/helper/getFormalSyntax.js";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 import type { GeneratedCssCase } from "../lib/cssCaseModel.js";
@@ -32,8 +33,7 @@ if (require.main === module) {
 
 async function main(): Promise<void> {
 	const statistics = readPasslistStatistics(passlistPath);
-	const existingCssText = readExistingCssText(outputPath);
-	const rendered = await renderMdnSymbolCss(statistics, existingCssText);
+	const rendered = await renderMdnSymbolCss(statistics);
 
 	mkdirSync(dirname(outputPath), { recursive: true });
 	writeFileSync(outputPath, rendered, "utf8");
@@ -60,9 +60,34 @@ export async function renderMdnSymbolCss(statistics: PasslistStatistics, existin
 }
 
 export function collectSymbolPropertyNames(statistics: PasslistStatistics): string[] {
-	return [
-		...new Set([...Object.keys(statistics.matchedProperties), ...Object.keys(statistics.noHintDesignedProperties)]),
-	].sort((left, right) => left.localeCompare(right));
+	const matchedPropertyNames = Object.keys(statistics.matchedProperties).sort((left, right) =>
+		left.localeCompare(right),
+	);
+	const noHintDesignedPropertyNames = Object.keys(statistics.noHintDesignedProperties).sort((left, right) =>
+		left.localeCompare(right),
+	);
+	const seen = new Set<string>();
+	const orderedPropertyNames: string[] = [];
+
+	for (const propertyName of matchedPropertyNames) {
+		if (seen.has(propertyName)) {
+			continue;
+		}
+
+		seen.add(propertyName);
+		orderedPropertyNames.push(propertyName);
+	}
+
+	for (const propertyName of noHintDesignedPropertyNames) {
+		if (seen.has(propertyName)) {
+			continue;
+		}
+
+		seen.add(propertyName);
+		orderedPropertyNames.push(propertyName);
+	}
+
+	return orderedPropertyNames;
 }
 
 export function collectPendingSymbolPropertyNames(statistics: PasslistStatistics, existingCssText = ""): string[] {
@@ -174,8 +199,8 @@ async function fetchMdnSyntaxExamples(url: string): Promise<GeneratedMdnSymbolEx
 	return extractSyntaxExamples(html);
 }
 
-function extractSyntaxExamples(html: string): GeneratedMdnSymbolExample[] {
-	const sectionHtml = extractSectionHtml(html, "syntax");
+export function extractSyntaxExamples(html: string): GeneratedMdnSymbolExample[] {
+	const sectionHtml = extractMdnSectionHtml(html, "syntax");
 	if (sectionHtml.length === 0) {
 		return [];
 	}
@@ -201,9 +226,11 @@ function extractSyntaxExamples(html: string): GeneratedMdnSymbolExample[] {
 	return examples;
 }
 
-function extractSyntaxExamplesFromBlock(text: string): GeneratedMdnSymbolExample[] {
+export function extractSyntaxExamplesFromBlock(text: string): GeneratedMdnSymbolExample[] {
 	const examples: GeneratedMdnSymbolExample[] = [];
 	let currentComments: string[] = [];
+	let commentBuffer: string[] | null = null;
+	let declarationBuffer = "";
 
 	for (const line of text.split(/\r?\n/)) {
 		const trimmed = line.trim();
@@ -211,24 +238,55 @@ function extractSyntaxExamplesFromBlock(text: string): GeneratedMdnSymbolExample
 			continue;
 		}
 
-		const comment = extractCommentLine(trimmed);
-		if (comment) {
-			currentComments = [...currentComments, comment];
+		if (commentBuffer !== null) {
+			commentBuffer.push(trimmed);
+			if (trimmed.includes("*/")) {
+				const comment = extractCommentBlock(commentBuffer);
+				if (comment) {
+					currentComments = [...currentComments, comment];
+				}
+
+				commentBuffer = null;
+			}
 			continue;
 		}
 
-		if (isDeclarationLine(trimmed)) {
-			examples.push({ comments: [...currentComments], declaration: trimmed });
+		if (trimmed.startsWith("/*")) {
+			commentBuffer = [trimmed];
+			if (trimmed.includes("*/")) {
+				const comment = extractCommentBlock(commentBuffer);
+				if (comment) {
+					currentComments = [...currentComments, comment];
+				}
+
+				commentBuffer = null;
+			}
+
 			continue;
 		}
 
-		currentComments = [];
+		const normalizedLine = line.replace(/\s+$/u, "");
+		declarationBuffer =
+			declarationBuffer.length === 0
+				? normalizedLine.trimStart()
+				: `${declarationBuffer}\n  ${normalizedLine.trimStart()}`;
+		while (declarationBuffer.includes(";")) {
+			const semicolonIndex = declarationBuffer.indexOf(";");
+			const declaration = declarationBuffer.slice(0, semicolonIndex + 1).trimEnd();
+			if (isDeclarationLine(normalizeInlineText(declaration))) {
+				examples.push({ comments: [...currentComments], declaration });
+			}
+
+			declarationBuffer = declarationBuffer.slice(semicolonIndex + 1).trim();
+			currentComments = [];
+		}
 	}
 
 	return examples;
 }
 
-function extractCommentLine(text: string): string {
+function extractCommentBlock(lines: readonly string[]): string {
+	const text = lines.join("\n");
 	const match = text.match(/^\/\*\s*([\s\S]*?)\s*\*\/$/);
 	if (!match) {
 		return "";
@@ -239,21 +297,6 @@ function extractCommentLine(text: string): string {
 
 function isDeclarationLine(text: string): boolean {
 	return /^[a-z-][a-z0-9-]*\s*:\s*.+?;\s*(?:\/\*[\s\S]*\*\/\s*)?$/i.test(text);
-}
-
-function extractSectionHtml(html: string, headingId: string): string {
-	const headingIndex = html.indexOf(`id="${headingId}"`);
-	if (headingIndex < 0) {
-		return "";
-	}
-
-	const sectionStart = html.lastIndexOf("<section", headingIndex);
-	if (sectionStart < 0) {
-		return "";
-	}
-
-	const nextSectionIndex = html.indexOf("</section>", headingIndex);
-	return html.slice(sectionStart, nextSectionIndex >= 0 ? nextSectionIndex : html.length);
 }
 
 function stripHtmlTags(html: string): string {
@@ -270,6 +313,8 @@ function stripHtmlTags(html: string): string {
 
 		let cursor = index + 1;
 		let quote: string | null = null;
+		let tagName = "";
+		let sawTagName = false;
 		while (cursor < html.length) {
 			const current = html[cursor];
 			if (quote) {
@@ -286,7 +331,24 @@ function stripHtmlTags(html: string): string {
 				continue;
 			}
 
+			if (!sawTagName && /[a-zA-Z]/.test(current)) {
+				tagName += current.toLowerCase();
+				sawTagName = true;
+				cursor += 1;
+				continue;
+			}
+
+			if (sawTagName && /[a-zA-Z0-9-]/.test(current)) {
+				tagName += current.toLowerCase();
+				cursor += 1;
+				continue;
+			}
+
 			if (current === ">") {
+				if (tagName === "br") {
+					text += "\n";
+				}
+
 				index = cursor + 1;
 				break;
 			}

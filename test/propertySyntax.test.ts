@@ -59,6 +59,20 @@ test("propertySyntax infers reference-syntax labels from ordered property refs",
 	assert.deepEqual(getShorthandLabelParts("grid-template", 1, "none"), []);
 	assert.deepEqual(getShorthandLabelParts("grid-template", 1, '"a"'), ["areas"]);
 	assert.deepEqual(getShorthandLabelParts("grid-template", 2, "100px 1fr / 50px 1fr"), ["rows", "columns"]);
+	assert.deepEqual(getShorthandLabelParts("grid-template", 4, '"a a a" 20% "b b b" auto'), [
+		"areas",
+		"rows",
+		"areas",
+		"rows",
+	]);
+	assert.deepEqual(
+		getShorthandLabelParts(
+			"grid-template",
+			10,
+			'[header-top] "a a a" [header-bottom] [main-top] "b b b" 1fr [main-bottom] / auto 1fr auto',
+		),
+		["rows", "areas", "rows", "rows", "areas", "rows", "rows", "columns", "columns", "columns"],
+	);
 	assert.deepEqual(getShorthandLabelParts("corner-right-shape", 1, "bevel"), ["all"]);
 	assert.deepEqual(getShorthandLabelParts("corner-right-shape", 2, "bevel notch"), ["top", "bottom"]);
 	assert.deepEqual(getShorthandLabelParts("corner-inline-end-shape", 2, "squircle scoop"), [
@@ -106,7 +120,24 @@ test("propertySyntax infers reference-syntax labels from ordered property refs",
 		"horizontal",
 		"length",
 	]);
+	assert.deepEqual(getShorthandLabelParts("background-attachment", 2, "scroll fixed"), ["border", "viewport"]);
+	assert.deepEqual(getShorthandLabelParts("background-blend-mode", 2, "normal multiply"), ["default", "blend"]);
+	assert.deepEqual(getShorthandLabelParts("background-clip", 2, "padding-box text"), ["padding", "glyph"]);
+	assert.deepEqual(getShorthandLabelParts("background-clip", 1, "border-area"), ["border-layer"]);
+	assert.deepEqual(getShorthandLabelParts("background-image", 1, "AccentColor"), ["graphic"]);
+	assert.deepEqual(getShorthandLabelParts("background-image", 2, "url(x) none"), ["graphic", "absent"]);
+	assert.deepEqual(getShorthandLabelParts("background-origin", 2, "padding-box border-box"), ["padding", "border"]);
+	assert.deepEqual(getShorthandLabelParts("background-position-x", 2, "right 20px"), ["horizontal", "length"]);
+	assert.deepEqual(getShorthandLabelParts("background-position-y", 2, "bottom 10px"), ["vertical", "length"]);
+	assert.deepEqual(getShorthandLabelParts("background-repeat", 2, "repeat-x no-repeat"), ["horizontal", "vertical"]);
+	assert.deepEqual(getShorthandLabelParts("background-repeat", 1, "space"), ["distributed"]);
+	assert.deepEqual(getShorthandLabelParts("background-repeat", 1, "round"), ["scaled"]);
+	assert.deepEqual(getShorthandLabelParts("background-size", 1, "cover"), ["fit"]);
+	assert.deepEqual(getShorthandLabelParts("background-size", 2, "auto, contain"), ["width", "fit"]);
+	assert.deepEqual(getShorthandLabelParts("background-size", 2, "20px auto"), ["width", "height"]);
 	assert.deepEqual(getShorthandLabelParts("background", 1, "url(x)"), ["image"]);
+	assert.deepEqual(getShorthandLabelParts("background", 1, "repeat"), ["tiling"]);
+	assert.deepEqual(getShorthandLabelParts("background", 2, "AccentColor, AccentColor"), ["color", "final"]);
 	assert.deepEqual(getShorthandLabelParts("background", 2, "url(x) center"), ["image", "position"]);
 	assert.deepEqual(getShorthandLabelParts("background", 2, "border-box red"), ["origin", "color"]);
 	assert.deepEqual(getShorthandLabelParts("gap", 1, "10px"), ["all"]);

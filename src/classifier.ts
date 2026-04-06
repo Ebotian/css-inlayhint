@@ -1,11 +1,15 @@
 import { createRequire } from "node:module";
 
 import type { CssExtractorCandidate } from "./extractor";
+import { collectShorthandValueTokens } from "./helper/classifyNormalize.js";
+import { isGridLineProperty } from "./helper/judgment.js";
 import { isReferenceOnlyHintProperty } from "./helper/semanticMap.js";
 import { classifyPropertyStructure } from "./helper/noHintDesign.js";
+import { isSingletonLabelVocabularyProperty } from "./helper/singletonLabelVocabulary.js";
 import { getShorthandExpansion } from "./helper/calculation.js";
 import { getPropertyStatus, getPropertySyntax } from "./helper/summary.js";
 import { countStructuredShorthandTokens, isStructuredShorthandProperty } from "./helper/structuredShorthand.js";
+import { hasShorthandSemanticSpec } from "./helper/shorthandSemantics.js";
 
 export type CssHintStrategy = "inline-right" | "block-end-right";
 
@@ -90,8 +94,16 @@ export function createCssHintClassifier(options: CssHintClassifierOptions = {}):
 				return buildSuppressedClassification(candidate, valueText, "global CSS keyword");
 			}
 
+			if (suppressGlobalValues && containsCssWideKeyword(valueText) && !isGridLineProperty(candidate.propertyName)) {
+				return buildSuppressedClassification(candidate, valueText, "global CSS keyword");
+			}
+
 			if (suppressVariableReferences && /\bvar\(/i.test(valueText)) {
 				return buildSuppressedClassification(candidate, valueText, "variable reference");
+			}
+
+			if (isSingletonLabelVocabularyProperty(candidate.propertyName)) {
+				return buildSuppressedClassification(candidate, valueText, "singleton label vocabulary");
 			}
 
 			if (!isRuleBasedHintCandidate(candidate.propertyName)) {
@@ -154,12 +166,20 @@ function isRuleBasedHintCandidate(propertyName: string): boolean {
 		return true;
 	}
 
+	if (hasShorthandSemanticSpec(propertyName)) {
+		return true;
+	}
+
 	const shorthandExpansion = getShorthandExpansion(propertyName);
 	if (syntax.includes("#") || hasBoundedRepetition(syntax)) {
 		return shorthandExpansion.length > 1;
 	}
 
 	return shorthandExpansion.length > 1;
+}
+
+function containsCssWideKeyword(valueText: string): boolean {
+	return collectShorthandValueTokens(valueText).some((token) => CSS_WIDE_KEYWORDS.has(token.text.trim()));
 }
 
 function hasBoundedRepetition(syntax: string): boolean {

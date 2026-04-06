@@ -169,6 +169,95 @@ test("resolver places border-spacing hints on horizontal and vertical values", (
 	);
 });
 
+test("resolver places background-repeat hints on comma-separated layers", () => {
+	const resolver = createCssHintResolver();
+	const css = "a { background-repeat: repeat-x, no-repeat; }";
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, css);
+	const instruction = {
+		...createInstruction("background-repeat", "inline-right", 2),
+		valueText: "repeat-x, no-repeat",
+		range: {
+			start: { line: 0, character: css.indexOf("repeat-x") },
+			end: { line: 0, character: css.indexOf(";") },
+		},
+		valueRange: {
+			start: { line: 0, character: css.indexOf("repeat-x") },
+			end: { line: 0, character: css.indexOf(";") },
+		},
+		label: "horizontal, vertical",
+		labelSlots: ["horizontal", "vertical"],
+	};
+
+	const hints = resolver.resolveInline(document, [instruction]);
+
+	assert.equal(hints.length, 2);
+	assert.deepEqual(
+		hints.map((hint) => hint.label),
+		["horizontal", "vertical"],
+	);
+	assert.deepEqual(
+		hints.map((hint) => hint.position),
+		[document.positionAt(css.indexOf("repeat-x")), document.positionAt(css.indexOf("no-repeat"))],
+	);
+});
+
+test("resolver suppresses overlapping background-clip hints", () => {
+	const resolver = createCssHintResolver();
+	const css = "a { background-clip: padding-box text; }";
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, css);
+	const instruction = {
+		...createInstruction("background-clip", "inline-right", 2),
+		valueText: "padding-box text",
+		label: "padding, glyph",
+		labelSlots: ["padding", "glyph"],
+		range: {
+			start: { line: 0, character: css.indexOf("padding-box") },
+			end: { line: 0, character: css.indexOf(";") },
+		},
+		valueRange: {
+			start: { line: 0, character: css.indexOf("padding-box") },
+			end: { line: 0, character: css.indexOf(";") },
+		},
+	};
+
+	const hints = resolver.resolveInline(document, [instruction]);
+
+	assert.deepEqual(hints, []);
+});
+
+test("resolver keeps grid-line hints even when custom-idents contain label atoms", () => {
+	const resolver = createCssHintResolver();
+	const css = "a { grid-column: 4 some-grid-line; }";
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, css);
+	const instruction = {
+		...createInstruction("grid-column", "inline-right", 2),
+		shape: { family: "grid-line" as const },
+		valueText: "4 some-grid-line",
+		label: "line, name",
+		labelSlots: ["line", "name"],
+		range: {
+			start: { line: 0, character: css.indexOf("4") },
+			end: { line: 0, character: css.indexOf(";") },
+		},
+		valueRange: {
+			start: { line: 0, character: css.indexOf("4") },
+			end: { line: 0, character: css.indexOf(";") },
+		},
+	};
+
+	const hints = resolver.resolveInline(document, [instruction]);
+
+	assert.equal(hints.length, 2);
+	assert.deepEqual(
+		hints.map((hint) => hint.label),
+		["line", "name"],
+	);
+	assert.deepEqual(
+		hints.map((hint) => hint.position),
+		[document.positionAt(css.indexOf("4")), document.positionAt(css.indexOf("some-grid-line"))],
+	);
+});
+
 test("resolver places grid-template hints on semantic track boundaries", () => {
 	const resolver = createCssHintResolver();
 	const css = "a { grid-template: [line-name] 100px / [column-name1] 30% [column-name2] 70%; }";
@@ -197,6 +286,34 @@ test("resolver places grid-template hints on semantic track boundaries", () => {
 	assert.deepEqual(
 		hints.map((hint) => hint.position),
 		[document.positionAt(css.indexOf("100px")), document.positionAt(css.indexOf("30%"))],
+	);
+});
+
+test("resolver places grid-template area and row hints on multiline templates", () => {
+	const resolver = createCssHintResolver();
+	const css = 'a { grid-template:\n  "a a a" 20%\n  "b b b" auto; }';
+	const document = TextDocument.create("untitled://resolver.css", "css", 1, css);
+	const instruction = {
+		...createInstruction("grid-template", "inline-right", 4),
+		valueText: '"a a a" 20%\n  "b b b" auto',
+		label: "areas, rows, areas, rows",
+		labelSlots: ["areas", "rows", "areas", "rows"],
+		range: {
+			start: { line: 0, character: css.indexOf('"a a a"') },
+			end: { line: 2, character: css.indexOf(";") - css.lastIndexOf("\n") - 1 },
+		},
+		valueRange: {
+			start: { line: 0, character: css.indexOf('"a a a"') },
+			end: { line: 2, character: css.indexOf(";") - css.lastIndexOf("\n") - 1 },
+		},
+	};
+
+	const hints = resolver.resolveInline(document, [instruction]);
+
+	assert.equal(hints.length, 4);
+	assert.deepEqual(
+		hints.map((hint) => hint.label),
+		["areas", "rows", "areas", "rows"],
 	);
 });
 

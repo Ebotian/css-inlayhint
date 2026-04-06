@@ -4,7 +4,9 @@ import type { CssHintInstruction } from "./collector";
 import type { CssHintResolvedInstruction } from "./constructor";
 import { validateLabelParts } from "./helper/labelValidation.js";
 import { collectShorthandValueTokens } from "./helper/classifyNormalize.js";
+import { hasValueLabelStringOverlap } from "./helper/labelValidation.js";
 import { resolveShorthandSemanticHints } from "./helper/shorthandSemantics.js";
+import { isSingletonLabelVocabularyProperty } from "./helper/singletonLabelVocabulary.js";
 
 export type CssHintResolver = {
 	resolveInline(document: TextDocument, instructions: readonly CssHintInstruction[]): CssHintResolvedInstruction[];
@@ -29,8 +31,15 @@ function resolveInlineInstruction(
 	document: TextDocument,
 	instruction: CssHintInstruction,
 ): CssHintResolvedInstruction[] {
+	if (isSingletonLabelVocabularyProperty(instruction.propertyName)) {
+		return [];
+	}
+
 	const tokenMatches = collectShorthandValueTokens(instruction.valueText);
 	const labelParts = (instruction.labelSlots ?? instruction.label.split(",")).map((part) => part.trim());
+	if (instruction.shape?.family !== "grid-line" && hasValueLabelStringOverlap(instruction.valueText, labelParts)) {
+		return [];
+	}
 	validateLabelParts(
 		instruction.propertyName,
 		labelParts,

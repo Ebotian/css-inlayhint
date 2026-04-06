@@ -254,14 +254,73 @@ test("mapper derives background-position repeatable-list labels", () => {
 	assert.ok(!mappedFourToken.label.includes("background-position"));
 });
 
+test("mapper derives background-family subproperty labels", () => {
+	const mapper = createCssHintMapper();
+
+	const mappedAttachment = mapper.map([createInstruction("background-attachment", 2, "scroll fixed")])[0];
+	const mappedBlendMode = mapper.map([createInstruction("background-blend-mode", 2, "normal multiply")])[0];
+	const mappedClip = mapper.map([createInstruction("background-clip", 2, "padding-box text")])[0];
+	const mappedClipBorderArea = mapper.map([createInstruction("background-clip", 1, "border-area")])[0];
+	const mappedImageKeyword = mapper.map([createInstruction("background-image", 1, "AccentColor")])[0];
+	const mappedImage = mapper.map([createInstruction("background-image", 2, "url(x) none")])[0];
+	const mappedOrigin = mapper.map([createInstruction("background-origin", 2, "padding-box border-box")])[0];
+	const mappedPositionX = mapper.map([createInstruction("background-position-x", 2, "right 20px")])[0];
+	const mappedPositionY = mapper.map([createInstruction("background-position-y", 2, "bottom 10px")])[0];
+	const mappedRepeat = mapper.map([createInstruction("background-repeat", 2, "repeat-x no-repeat")])[0];
+	const mappedSpace = mapper.map([createInstruction("background-repeat", 1, "space")])[0];
+	const mappedRound = mapper.map([createInstruction("background-repeat", 1, "round")])[0];
+	const mappedSizeMixed = mapper.map([createInstruction("background-size", 2, "auto, contain")])[0];
+	const mappedSize = mapper.map([createInstruction("background-size", 2, "20px auto")])[0];
+
+	assert.equal(mappedAttachment.label, "border, viewport");
+	assert.equal(mappedBlendMode.label, "default, blend");
+	assert.equal(mappedClip.label, "padding, glyph");
+	assert.equal(mappedClipBorderArea.label, "border-layer");
+	assert.equal(mappedImageKeyword.label, "graphic");
+	assert.equal(mappedImage.label, "graphic, absent");
+	assert.equal(mappedOrigin.label, "padding, border");
+	assert.equal(mappedPositionX.label, "horizontal, length");
+	assert.equal(mappedPositionY.label, "vertical, length");
+	assert.equal(mappedRepeat.label, "horizontal, vertical");
+	assert.equal(mappedSpace.label, "distributed");
+	assert.equal(mappedRound.label, "scaled");
+	assert.equal(mappedSizeMixed.label, "width, fit");
+	assert.equal(mappedSize.label, "width, height");
+	assert.equal(mapper.map([createInstruction("background", 1, "repeat")])[0].label, "tiling");
+	assert.equal(mapper.map([createInstruction("background", 2, "AccentColor AccentColor")])[0].label, "color, final");
+	assert.deepEqual((mappedRepeat as { labelSlots?: readonly string[] }).labelSlots, ["horizontal", "vertical"]);
+	assert.deepEqual((mappedSize as { labelSlots?: readonly string[] }).labelSlots, ["width", "height"]);
+});
+
+test("mapper derives animation shorthand labels in source order", () => {
+	const mapper = createCssHintMapper();
+
+	const mapped = mapper.map([createInstruction("animation", 8, "3s ease-in 1s 2 reverse both paused slide-in")])[0];
+
+	assert.equal(mapped.label, "duration, easing, delay, repeat, flow, fill, play, name");
+	assert.ok(!mapped.label.includes("animation"));
+	assert.deepEqual((mapped as { labelSlots?: readonly string[] }).labelSlots, [
+		"duration",
+		"easing",
+		"delay",
+		"repeat",
+		"flow",
+		"fill",
+		"play",
+		"name",
+	]);
+});
+
 test("mapper suppresses grid-template none and labels string areas", () => {
 	const mapper = createCssHintMapper();
 
 	const mappedNone = mapper.map([createInstruction("grid-template", 1, "none")])[0];
 	const mappedAreas = mapper.map([createInstruction("grid-template", 1, '"a"')])[0];
+	const mappedMixed = mapper.map([createInstruction("grid-template", 4, '"a a a" 20% "b b b" auto')])[0];
 
 	assert.equal(mappedNone.label, "");
 	assert.equal(mappedAreas.label, "areas");
+	assert.equal(mappedMixed.label, "areas, rows, areas, rows");
 });
 
 test("mapper derives gap and place-family labels", () => {

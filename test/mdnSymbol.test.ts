@@ -5,6 +5,9 @@ import test from "node:test";
 
 import { createCssExtractor } from "../src/extractor.js";
 import { createServiceScheduler } from "../src/scheduler.js";
+import { extractSyntaxExamples } from "./passlist/generateMdnSymbolCss.js";
+import { extractSyntaxExamplesFromBlock } from "./passlist/generateMdnSymbolCss.js";
+import { collectSymbolPropertyNames as collectMdnSymbolPropertyNames } from "./passlist/generateMdnSymbolCss.js";
 import { collectPendingSymbolPropertyNames } from "./passlist/generateMdnSymbolCss.js";
 
 type PasslistStatistics = {
@@ -38,6 +41,21 @@ test("mdn symbol css covers all matched and designed properties", () => {
 	}
 });
 
+test("mdn symbol property generation prefers matched properties first", () => {
+	const order = collectMdnSymbolPropertyNames({
+		matchedProperties: {
+			b: true,
+			a: true,
+		},
+		noHintDesignedProperties: {
+			d: true,
+			c: true,
+		},
+	});
+
+	assert.deepEqual(order, ["a", "b", "c", "d"]);
+});
+
 test("mdn symbol css flows through the scheduler without label-validation errors", async () => {
 	const cssText = readFileSync(mdnSymbolCssPath, "utf8");
 	const scheduler = createServiceScheduler();
@@ -51,6 +69,64 @@ test("mdn symbol css flows through the scheduler without label-validation errors
 
 	const instructions = await scheduler.inlayHints(file, fullRange);
 	assert.ok(instructions.length > 0, "expected the generated CSS to produce hint instructions");
+});
+
+test("mdn symbol crawler keeps the three animation syntax examples", () => {
+	const examples = extractSyntaxExamplesFromBlock(
+		[
+			"/* @keyframes duration | easing-function | delay |",
+			"iteration-count | direction | fill-mode | play-state | name */",
+			"animation: 3s ease-in 1s 2 reverse both paused slide-in;",
+			"",
+			"/* @keyframes duration | easing-function | delay | name */",
+			"animation: 3s linear 1s slide-in;",
+			"",
+			"/* two animations */",
+			"animation:",
+			"  3s linear slidein,",
+			"  3s ease-out 5s slideout;",
+		].join("\n"),
+	);
+
+	assert.deepEqual(examples, [
+		{
+			comments: [
+				"@keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name",
+			],
+			declaration: "animation: 3s ease-in 1s 2 reverse both paused slide-in;",
+		},
+		{
+			comments: ["@keyframes duration | easing-function | delay | name"],
+			declaration: "animation: 3s linear 1s slide-in;",
+		},
+		{
+			comments: ["two animations"],
+			declaration: ["animation:", "  3s linear slidein,", "  3s ease-out 5s slideout;"].join("\n"),
+		},
+	]);
+});
+
+test("mdn symbol crawler preserves br-wrapped syntax examples", () => {
+	const html = [
+		"<section>",
+		'  <h2 id="syntax">Syntax</h2>',
+		"  <pre><code>",
+		"    /* two animations */<br>",
+		"    animation:<br>",
+		"      3s linear slidein,<br>",
+		"      3s ease-out 5s slideout;<br>",
+		"  </code></pre>",
+		"</section>",
+	].join("\n");
+
+	const examples = extractSyntaxExamples(html);
+
+	assert.deepEqual(examples, [
+		{
+			comments: ["two animations"],
+			declaration: ["animation:", "  3s linear slidein,", "  3s ease-out 5s slideout;"].join("\n"),
+		},
+	]);
 });
 
 test("mdn symbol animation-range positions repeated range labels at group starts", async () => {

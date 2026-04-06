@@ -1,5 +1,7 @@
 import { getPropertySyntax } from "./summary.js";
+import { isGridLineProperty } from "./judgment.js";
 import { hasMeaningfulReferenceSyntaxLabels } from "./referenceSyntax.js";
+import { isSingletonLabelVocabularyProperty } from "./singletonLabelVocabulary.js";
 import { isStructuredShorthandProperty } from "./structuredShorthand.js";
 
 export type PropertyStructure =
@@ -11,11 +13,21 @@ export type PropertyStructure =
 	| "literal"
 	| "other";
 
+export type NoHintDesignKind = "structure-mapping" | "logical-list";
+
 export function classifyPropertyStructure(propertyName: string): PropertyStructure {
 	return classifySyntaxStructure(getPropertySyntax(propertyName));
 }
 
-export function isDesignedNoHintProperty(propertyName: string): boolean {
+export function isStructureMappingNoHintProperty(propertyName: string): boolean {
+	if (propertyName === "container") {
+		return true;
+	}
+
+	if (isGridLineProperty(propertyName)) {
+		return false;
+	}
+
 	if (isStructuredShorthandProperty(propertyName)) {
 		return false;
 	}
@@ -29,6 +41,26 @@ export function isDesignedNoHintProperty(propertyName: string): boolean {
 	}
 
 	return !getPropertySyntax(propertyName).includes("#");
+}
+
+export function isLogicalListNoHintProperty(propertyName: string): boolean {
+	return isSingletonLabelVocabularyProperty(propertyName);
+}
+
+export function getNoHintDesignKind(propertyName: string): NoHintDesignKind | null {
+	if (isLogicalListNoHintProperty(propertyName)) {
+		return "logical-list";
+	}
+
+	if (isStructureMappingNoHintProperty(propertyName)) {
+		return "structure-mapping";
+	}
+
+	return null;
+}
+
+export function isDesignedNoHintProperty(propertyName: string): boolean {
+	return getNoHintDesignKind(propertyName) !== null;
 }
 
 function classifySyntaxStructure(syntax: string): PropertyStructure {

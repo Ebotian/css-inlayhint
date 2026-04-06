@@ -7,7 +7,23 @@ export {
 	getFormalSyntax,
 	parseMdnFormalSyntaxPage,
 } from "./getFormalSyntax.js";
-export { classifyPropertyStructure, isDesignedNoHintProperty } from "./noHintDesign.js";
+export { extractMdnDefinitionEntries, extractMdnSectionHtml, extractMdnSectionText } from "./mdnSections.js";
+export { extractMdnValueEntries, getMdnValues, parseMdnValuesPage } from "./getMdnValues.js";
+export {
+	classifyPropertyStructure,
+	getNoHintDesignKind,
+	isDesignedNoHintProperty,
+	isLogicalListNoHintProperty,
+	isStructureMappingNoHintProperty,
+} from "./noHintDesign.js";
+export {
+	assertNoDuplicateLabels,
+	assertNoGlobalLabels,
+	assertNoPropertyNameEchoLabels,
+	assertNoValueEchoLabels,
+	hasValueLabelStringOverlap,
+	validateLabelParts,
+} from "./labelValidation.js";
 export {
 	isGridLineProperty,
 	isCornerRadiusProperty,

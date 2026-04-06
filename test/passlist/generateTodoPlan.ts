@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 import { getFormalSyntax } from "../../src/helper/getFormalSyntax.js";
+import { getMdnValues } from "../../src/helper/getMdnValues.js";
 import { getPropertySyntax } from "../../src/propertySyntax.js";
 import { classifyPropertyStructure, type PropertyStructure } from "../../src/helper/noHintDesign.js";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
@@ -19,6 +20,15 @@ type TodoPlanValidation = {
 	localSyntax: string;
 	mdnSyntax: string;
 	mdnVerified: boolean;
+	mdnValues?: {
+		url: string;
+		uncertain: boolean;
+		entries: Array<{
+			id: string;
+			label: string;
+			description: string;
+		}>;
+	};
 	sourceAgreement: ValidationAgreement;
 	sampleCaseCount: number;
 };
@@ -176,6 +186,7 @@ async function validateTodoPlanBatch(batch: BatchDescriptor): Promise<TodoPlanVa
 
 	try {
 		const mdnPage = await getFormalSyntax(representativeProperty);
+		const mdnValuesPage = await getMdnValues(representativeProperty);
 		const mdnSyntax = normalizeSyntaxSignature(extractMdnTopLevelSyntax(mdnPage.formalSyntax));
 		const sourceAgreement =
 			mdnPage.verified && mdnSyntax.length > 0 && mdnSyntax === localSyntax
@@ -189,6 +200,11 @@ async function validateTodoPlanBatch(batch: BatchDescriptor): Promise<TodoPlanVa
 			localSyntax,
 			mdnSyntax,
 			mdnVerified: mdnPage.verified,
+			mdnValues: {
+				url: mdnValuesPage.url,
+				uncertain: mdnValuesPage.uncertain,
+				entries: mdnValuesPage.values,
+			},
 			sourceAgreement,
 			sampleCaseCount,
 		};
@@ -198,6 +214,7 @@ async function validateTodoPlanBatch(batch: BatchDescriptor): Promise<TodoPlanVa
 			localSyntax,
 			mdnSyntax: "",
 			mdnVerified: false,
+			mdnValues: undefined,
 			sourceAgreement: "unverified",
 			sampleCaseCount,
 		};

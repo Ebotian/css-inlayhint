@@ -1,5 +1,5 @@
 import type { CssHintInstruction } from "./collector";
-import { isGridLineProperty } from "./propertySyntax";
+import { isGridLineProperty } from "./propertySyntax.js";
 import { isBorderRadiusProperty } from "./helper/structuredShorthand.js";
 
 export type CssHintShapeParser = {

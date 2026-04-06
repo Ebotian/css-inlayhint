@@ -158,6 +158,28 @@ test("classifier suppresses global CSS keywords", () => {
 	assert.equal(formatCssHintClassification(classification), "suppressed margin-1-values (global CSS keyword)");
 });
 
+test("classifier suppresses mixed global CSS keywords", () => {
+	const collector = createExtractor();
+	const classifier = createCssHintClassifier();
+	const candidate = collector.collectCandidates(
+		renderCssDeclaration("background-attachment", [
+			{ kind: "global", text: "inherit" },
+			{ kind: "global", text: "inherit" },
+		]),
+	)[0];
+
+	const classification = classifier.classify(candidate);
+
+	assert.ok(classification);
+	assert.equal(classification.state, "suppressed");
+	assert.equal(classification.propertyName, "background-attachment");
+	assert.equal(classification.suppressReason, "global CSS keyword");
+	assert.equal(
+		formatCssHintClassification(classification),
+		"suppressed background-attachment-2-values (global CSS keyword)",
+	);
+});
+
 test("classifier suppresses variable references", () => {
 	const collector = createExtractor();
 	const classifier = createCssHintClassifier();

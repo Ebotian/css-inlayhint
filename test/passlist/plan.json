@@ -1,6 +1,6 @@
 {
   "source": "test/passlist/property-pass-statistics.json",
-  "todoCount": 357,
+  "todoCount": 350,
   "batchCount": 5,
   "batches": [
     {
@@ -24,6 +24,32 @@
         "localSyntax": "[ stretch | repeat | round | space ]{1,2}",
         "mdnSyntax": "[ stretch | repeat | round | space ]{1,2}",
         "mdnVerified": true,
+        "mdnValues": {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-image-repeat#values",
+          "uncertain": false,
+          "entries": [
+            {
+              "id": "stretch",
+              "label": "stretch",
+              "description": "The source image's edge regions are stretched to fill the gap between each border."
+            },
+            {
+              "id": "repeat",
+              "label": "repeat",
+              "description": "The source image's edge regions are tiled (repeated) to fill the gap between each border. Tiles may be clipped to achieve the proper fit."
+            },
+            {
+              "id": "round",
+              "label": "round",
+              "description": "The source image's edge regions are tiled (repeated) to fill the gap between each border. Tiles may be stretched to achieve the proper fit."
+            },
+            {
+              "id": "space",
+              "label": "space",
+              "description": "The source image's edge regions are tiled (repeated) to fill the gap between each border. Extra space will be distributed in between tiles to achieve the proper fit."
+            }
+          ]
+        },
         "sourceAgreement": "aligned",
         "sampleCaseCount": 20
       }
@@ -182,6 +208,22 @@
         "localSyntax": "auto | <color>",
         "mdnSyntax": "auto | <color>",
         "mdnVerified": true,
+        "mdnValues": {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/accent-color#values",
+          "uncertain": false,
+          "entries": [
+            {
+              "id": "auto",
+              "label": "auto",
+              "description": "Represents a UA-chosen color, which should match the accent color of the platform, if any."
+            },
+            {
+              "id": "color",
+              "label": "<color>",
+              "description": "Specifies the color to be used as the accent color."
+            }
+          ]
+        },
         "sourceAgreement": "aligned",
         "sampleCaseCount": 9
       }
@@ -190,7 +232,7 @@
       "phase": 3,
       "key": "keyword-union",
       "complexity": "alternation",
-      "count": 132,
+      "count": 131,
       "properties": [
         "alignment-baseline",
         "all",
@@ -240,7 +282,6 @@
         "font-variant-emoji",
         "font-variant-position",
         "forced-color-adjust",
-        "grid",
         "grid-auto-flow",
         "hanging-punctuation",
         "hyphens",
@@ -331,6 +372,52 @@
         "localSyntax": "baseline | alphabetic | ideographic | middle | central | mathematical | text-before-edge | text-after-edge",
         "mdnSyntax": "baseline | <baseline-metric>",
         "mdnVerified": true,
+        "mdnValues": {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/alignment-baseline#values",
+          "uncertain": false,
+          "entries": [
+            {
+              "id": "baseline",
+              "label": "baseline",
+              "description": "Use the dominant-baseline value of the parent."
+            },
+            {
+              "id": "alphabetic",
+              "label": "alphabetic",
+              "description": "Used in writing Latin, Cyrillic, Greek, and many other scripts; matches the box's alphabetic baseline to that of its parent, corresponding to the bottom of most, but not all characters."
+            },
+            {
+              "id": "central",
+              "label": "central",
+              "description": "Matches the box's central baseline to the central baseline of its parent, corresponding to the ideographic central baseline, halfway between the ideographic-under and ideographic-over baselines."
+            },
+            {
+              "id": "ideographic",
+              "label": "ideographic",
+              "description": "Matches the box's ideographic character face under-side baseline to that of its parent, with the derived baseline-table constructed using the ideographic baseline-table in the font."
+            },
+            {
+              "id": "mathematical",
+              "label": "mathematical",
+              "description": "Matches the box's mathematical baseline to that of its parent, corresponding to the center baseline around which mathematical characters are designed."
+            },
+            {
+              "id": "middle",
+              "label": "middle",
+              "description": "Aligns the vertical midpoint of the box with the baseline of the parent box plus half the x-height of the parent. Uses the x-middle baselines; except under text-orientation: upright; (where the alphabetic and x-height baselines are essentially meaningless), in which case it uses the central baseline instead."
+            },
+            {
+              "id": "text-bottom",
+              "label": "text-bottom",
+              "description": "Matches the bottom of the box to the top of the parent's content area, using the line-under edge of an inline's content box."
+            },
+            {
+              "id": "text-top",
+              "label": "text-top",
+              "description": "Matches the top of the box to the top of the parent's content area; the line-over edge of an inline's content box."
+            }
+          ]
+        },
         "sourceAgreement": "verified",
         "sampleCaseCount": 4
       }
@@ -339,7 +426,7 @@
       "phase": 4,
       "key": "mixed",
       "complexity": "compound",
-      "count": 43,
+      "count": 41,
       "properties": [
         "anchor-name",
         "anchor-scope",
@@ -348,8 +435,6 @@
         "animation-range-end",
         "animation-range-start",
         "animation-trigger",
-        "background-position-x",
-        "background-position-y",
         "border-image-outset",
         "border-image-slice",
         "border-image-width",
@@ -391,6 +476,22 @@
         "localSyntax": "none | <dashed-ident>#",
         "mdnSyntax": "none | <anchor-name>#",
         "mdnVerified": true,
+        "mdnValues": {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/anchor-name#values",
+          "uncertain": false,
+          "entries": [
+            {
+              "id": "none",
+              "label": "none",
+              "description": "The default value. Setting anchor-name: none on an element means that it is not defined as an anchor element. If the element was previously defined as an anchor and associated with a positioned element, setting anchor-name: none disassociates the two."
+            },
+            {
+              "id": "dashed-ident",
+              "label": "<dashed-ident>",
+              "description": "One or more comma-separated arbitrary custom identifiers defining the name or names of the anchor, which can then be referenced in a position-anchor property."
+            }
+          ]
+        },
         "sourceAgreement": "verified",
         "sampleCaseCount": 20
       }
@@ -399,10 +500,9 @@
       "phase": 5,
       "key": "generic-single",
       "complexity": "repeat",
-      "count": 33,
+      "count": 29,
       "properties": [
         "additive-symbols",
-        "animation",
         "animation-composition",
         "animation-delay",
         "animation-direction",
@@ -411,14 +511,9 @@
         "animation-play-state",
         "animation-timeline",
         "animation-timing-function",
-        "background-attachment",
-        "background-blend-mode",
-        "background-clip",
-        "background-image",
-        "background-origin",
-        "background-repeat",
-        "background-size",
         "font-family",
+        "mask",
+        "mask-border-slice",
         "mask-composite",
         "mask-image",
         "mask-mode",
@@ -427,8 +522,10 @@
         "mask-repeat",
         "mask-size",
         "override-colors",
+        "scroll-margin",
+        "scroll-margin-block",
+        "scroll-margin-inline",
         "timeline-trigger-source",
-        "transition",
         "transition-behavior",
         "transition-delay",
         "transition-duration",

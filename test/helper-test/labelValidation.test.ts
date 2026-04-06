@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { createCssHintClassifier } from "../../src/classifier.js";
+import { SINGLETON_LABEL_VOCABULARY_PROPERTIES } from "../../src/helper/singletonLabelVocabulary.js";
 import {
 	assertNoGlobalLabels,
 	assertNoSemanticMultiValueNoHintCases,
@@ -46,4 +48,24 @@ test("labelValidation ignores single-value-only cases in the semantic guard", ()
 			},
 		]),
 	);
+});
+
+test("labelValidation suppresses singleton label vocabulary properties", () => {
+	const classifier = createCssHintClassifier();
+	const singletonProperties = [...SINGLETON_LABEL_VOCABULARY_PROPERTIES];
+
+	assert.ok(singletonProperties.length > 0, "expected singleton vocabulary properties to be declared");
+	assert.ok(singletonProperties.includes("background-image"));
+	assert.ok(!singletonProperties.includes("background-clip"));
+	assert.ok(!singletonProperties.includes("background-origin"));
+
+	for (const propertyName of singletonProperties) {
+		const classification = classifier.classify({
+			propertyName,
+			valueText: "x",
+		} as never);
+
+		assert.equal(classification.state, "suppressed", propertyName);
+		assert.equal(classification.suppressReason, "singleton label vocabulary", propertyName);
+	}
 });

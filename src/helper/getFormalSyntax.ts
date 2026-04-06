@@ -1,3 +1,5 @@
+import { extractMdnSectionHtml } from "./mdnSections.js";
+
 export type MdnFormalSyntaxPage = {
 	propertyName: string;
 	url: string;
@@ -56,20 +58,7 @@ export function extractMdnPropertyDescription(html: string): string {
 }
 
 export function extractMdnFormalSyntax(html: string): string {
-	const headingIndex = html.indexOf('id="formal_syntax"');
-	if (headingIndex < 0) {
-		return "";
-	}
-
-	const sectionStart = html.lastIndexOf("<section", headingIndex);
-	if (sectionStart < 0) {
-		return "";
-	}
-
-	const nextHeadingIndex = html.indexOf('id="examples"', headingIndex);
-	const sectionEnd =
-		nextHeadingIndex >= 0 ? html.lastIndexOf("</section>", nextHeadingIndex) : html.indexOf("</section>", headingIndex);
-	const sectionHtml = html.slice(sectionStart, sectionEnd >= 0 ? sectionEnd : html.length);
+	const sectionHtml = extractMdnSectionHtml(html, "formal_syntax");
 	const preMatch = sectionHtml.match(/<pre\b[^>]*>([\s\S]*?)<\/pre>/i);
 	if (!preMatch) {
 		return "";

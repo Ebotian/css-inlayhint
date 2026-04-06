@@ -7,7 +7,11 @@ import { createServiceScheduler } from "../../src/scheduler.js";
 import { createStandardPropertySamplingRule, generateExactCases } from "../lib/exactCssCaseGenerator.js";
 import { assertGeneratedSchedulerE2E } from "../lib/generatedSchedulerE2E.js";
 import { assertNoSemanticMultiValueNoHintCases } from "../../src/helper/labelValidation.js";
-import { classifyPropertyStructure, isDesignedNoHintProperty } from "../../src/helper/noHintDesign.js";
+import {
+	classifyPropertyStructure,
+	getNoHintDesignKind,
+	isDesignedNoHintProperty,
+} from "../../src/helper/noHintDesign.js";
 import { getPropertyStatus, getPropertySyntax, listPropertyNames } from "../../src/propertySyntax.js";
 import type { CssExtractorCandidate } from "../../src/extractor.js";
 import type { GeneratedCssCase } from "../lib/cssCaseModel.js";
@@ -29,6 +33,9 @@ const FULL_RANGE = {
 };
 
 async function createPasslistStatistics(): Promise<PasslistStatistics> {
+	const classifier = createCssHintClassifier();
+	const extractor = createCssExtractor();
+	const scheduler = createServiceScheduler();
 	const candidatePropertyNames = listPropertyNames().filter((propertyName) => {
 		if (propertyName.startsWith("-")) {
 			return false;
@@ -45,14 +52,13 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 	const noHintDesignedPropertyNames: string[] = [];
 	const noHintTodoPropertyNames: string[] = [];
 	for (const propertyName of candidatePropertyNames) {
-		const classifier = createCssHintClassifier();
-		const extractor = createCssExtractor();
 		const rule = createStandardPropertySamplingRule(propertyName);
 		const cases = generateExactCases(rule);
 		const matchedCases = cases.filter((generatedCase) => isMatchedHintCase(classifier, extractor, generatedCase.code));
+		const designKind = getNoHintDesignKind(propertyName);
 
 		if (matchedCases.length === 0) {
-			if (isDesignedNoHintProperty(propertyName)) {
+			if (designKind === "structure-mapping") {
 				assertNoSemanticMultiValueNoHintCases(propertyName, cases);
 			}
 			pushNoHintProperty(propertyName, cases, noHintDesignedPropertyNames, noHintTodoPropertyNames);
@@ -61,7 +67,7 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 
 		try {
 			await assertGeneratedSchedulerE2E({
-				scheduler: createServiceScheduler(),
+				scheduler,
 				extractor,
 				cases: matchedCases,
 				filePrefix: `file:///workspace/passlist/${propertyName}`,
@@ -69,6 +75,9 @@ async function createPasslistStatistics(): Promise<PasslistStatistics> {
 			});
 			matchedPropertyNames.push(propertyName);
 		} catch {
+			if (designKind === "structure-mapping") {
+				assertNoSemanticMultiValueNoHintCases(propertyName, cases);
+			}
 			pushNoHintProperty(propertyName, cases, noHintDesignedPropertyNames, noHintTodoPropertyNames);
 		}
 	}
@@ -137,7 +146,8 @@ function isMatchedHintCase(
 		return false;
 	}
 
-	return classifier.classify(candidate).state === "matched";
+	const classification = classifier.classify(candidate);
+	return classification.state === "matched";
 }
 
 function main(): void {
